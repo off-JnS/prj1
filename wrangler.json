@@ -1,0 +1,6 @@
+{
+  "name": "prj1",
+  "assets": {
+    "directory": "./dist"
+  }
+}
