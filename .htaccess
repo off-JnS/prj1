@@ -1,0 +1,9 @@
+# Deny public access to submissions.csv and sensitive files
+<Files "submissions.csv">
+    Require all denied
+</Files>
+
+# Optional: prevent directory listing
+Options -Indexes
+
+## version feature removed; version.txt not used

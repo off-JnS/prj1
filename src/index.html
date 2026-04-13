@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1 - Digitale Evolution</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo/PRJ-favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/logo/PRJ-favicon.png">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body id="top">
+    <!-- Navigation -->
+    <nav class="navbar award" aria-label="Hauptnavigation">
+        <div class="nav-container">
+            <a href="#top" class="logo-brand" aria-label="PRJ1 Startseite">
+                <img id="navbarLogo" alt="PRJ1 Logo" class="navbar-logo">
+            </a>
+
+            <!-- nav-actions removed: restored minimal centered logo navbar -->
+        </div>
+    </nav>
+
+    <main id="main">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img id="heroLogo" alt="PRJ1" class="hero-logo">
+            <h1 class="hero-title">
+                <span class="word">Digital</span>
+                <span class="word">Evolution</span>
+            </h1>
+            <p class="hero-subtitle" data-i18="heroSubtitle">Ihr bester Partner für digitale Transformation.</p>
+            <button class="hero-cta btn" id="openFormBtnHero" data-i18="heroCTA">Kontakt aufnehmen</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up" data-i18="sectionTitle">Why PRJ1?</h2>
+                <p class="section-subtitle fade-in-up" data-i18="sectionSubtitle">Erleben Sie die perfekte Verbindung von Design und Funktionalität</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in-up">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7L2 12C2 17.55 7.84 21.74 12 23C16.16 21.74 22 17.55 22 12V7L12 2Z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18="feature1_title">Premium-Qualität</h3>
+                    <p data-i18="feature1_desc">Sorgfältig gestaltet mit höchstem Anspruch an Qualität und bewährten Praktiken.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                            <path d="M12.5 7H11v6l5.2 3.2"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18="feature2_title">Schnell & Effizient</h3>
+                    <p data-i18="feature2_desc">Schnelle Rückmeldung und effiziente Problemlösung.</p>
+                </div>
+                <div class="feature-card fade-in-up delay-2">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"/>
+                        </svg>
+                    </div>
+                    <h3 data-i18="feature3_title">Persönliche Beratung</h3>
+                    <p data-i18="feature3_desc">Individuelle Betreuung und fachkundige Beratung für Ihr Projekt.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="container cta-inner">
+            <h2 class="cta-text fade-in-up" data-i18="ctaText">Bereit, etwas Großes zu schaffen?</h2>
+            <p class="cta-subtext fade-in-up" data-i18="ctaSubtext">Schreiben Sie mir eine kurze Nachricht.</p>
+            <div class="cta-actions fade-in-up">
+                <button class="cta-button btn primary" id="openFormBtn" data-i18="ctaButton">Kontakt aufnehmen</button>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <!-- Contact Form Modal -->
+    <div class="modal" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="contactTitle" aria-describedby="contactSubtitle" aria-hidden="true">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content slide-up" tabindex="-1">
+            <button class="modal-close" id="closeFormBtn" aria-label="Kontaktformular schließen">&times;</button>
+            <div class="form-header">
+                <h2 id="contactTitle" data-i18="contactTitle">Kontakt aufnehmen</h2>
+                <p id="contactSubtitle" data-i18="contactSubtitle">Wir freuen uns auf Ihre Nachricht</p>
+            </div>
+            <form id="contactForm" class="contact-form" action="/proxy.php" method="post">
+                <div class="form-group">
+                    <label class="form-label sr-only" for="name" data-i18="labelName">Ihr Name</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name"
+                        placeholder="Ihr Name" data-i18-placeholder="namePlaceholder"
+                        required
+                        class="form-input"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label sr-only" for="email" data-i18="labelEmail">Ihre E-Mail</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        placeholder="Ihre E-Mail" data-i18-placeholder="emailPlaceholder"
+                        required
+                        class="form-input"
+                    >
+                </div>
+                <div class="form-group">
+                    <label class="form-label sr-only" for="message" data-i18="labelMessage">Ihre Nachricht</label>
+                    <textarea 
+                        id="message" 
+                        name="message"
+                        placeholder="Ihre Nachricht" data-i18-placeholder="messagePlaceholder"
+                        required
+                        class="form-input form-textarea"
+                    ></textarea>
+                </div>
+                <button type="submit" class="submit-btn btn" data-i18="submitButton">Nachricht senden</button>
+            </form>
+            <div class="form-feedback" id="formFeedback"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p data-i18="footerText">&copy; 2026 PRJ1. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>
