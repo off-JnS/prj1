@@ -3,8 +3,3 @@
 @import "./styles/layout.css";
 @import "./styles/components.css";
 @import "./styles/responsive.css";
-    --secondary: #000000;
-
-    --gray: #1a1a1a;
-
-    --text: #ffffff;

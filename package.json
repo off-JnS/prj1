@@ -8,6 +8,10 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.51.0",
+    "bcryptjs": "^2.4.3"
+  },
   "devDependencies": {
     "vite": "^6.0.0"
   }

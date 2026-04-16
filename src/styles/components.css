@@ -512,6 +512,62 @@ body.menu-open { overflow: hidden; }
     width: 100%;
 }
 
+/* ==================== PROJECTS SECTION ==================== */
+
+.projects {
+    padding: var(--space-7) var(--space-4);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.015) 0%, rgba(255, 255, 255, 0.04) 100%);
+}
+
+.projects-card {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(8px);
+}
+
+.projects-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.9rem;
+    align-items: center;
+}
+
+.projects-submit {
+    min-width: 220px;
+    padding: 1rem 1.75rem;
+}
+
+.projects-feedback {
+    margin-top: 1rem;
+    min-height: 1.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+.projects-feedback.success {
+    background-color: #1a3a1a;
+    border: 1px solid #355e3b;
+    color: #4ade80;
+}
+
+.projects-feedback.error {
+    background-color: #3a1a1a;
+    border: 1px solid #6b2f2f;
+    color: #ff7c7c;
+}
+
+.projects-feedback.loading {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--muted);
+}
+
 /* ==================== CTA SECTION ==================== */
 
 .cta-section {

@@ -75,6 +75,33 @@
         </div>
     </section>
 
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title fade-in-up" data-i18="projectsTitle">Projects</h2>
+                <p class="section-subtitle fade-in-up" data-i18="projectsSubtitle">Kundenzugang: Geben Sie Ihr Passwort ein, um direkt zu Ihrem Projekt zu gelangen.</p>
+            </div>
+            <div class="projects-card fade-in-up delay-1">
+                <form id="projectsAccessForm" class="projects-form" novalidate>
+                    <label class="form-label sr-only" for="projectsPassword" data-i18="projectsPasswordLabel">Projektpasswort</label>
+                    <input
+                        type="password"
+                        id="projectsPassword"
+                        name="password"
+                        class="form-input"
+                        placeholder="Projektpasswort"
+                        data-i18-placeholder="projectsPasswordPlaceholder"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <button type="submit" class="btn projects-submit" id="projectsSubmitBtn" data-i18="projectsButton">Projekt öffnen</button>
+                </form>
+                <div class="projects-feedback" id="projectsFeedback" aria-live="polite"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section id="cta" class="cta-section">
         <div class="container cta-inner">

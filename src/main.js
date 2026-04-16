@@ -30,8 +30,13 @@ const contactModal = document.getElementById('contactModal');
 const modalOverlay = document.getElementById('modalOverlay');
 const contactForm = document.getElementById('contactForm');
 const formFeedback = document.getElementById('formFeedback');
+const projectsAccessForm = document.getElementById('projectsAccessForm');
+const projectsPasswordInput = document.getElementById('projectsPassword');
+const projectsFeedback = document.getElementById('projectsFeedback');
+const projectsSubmitBtn = document.getElementById('projectsSubmitBtn');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let lastFocusedElement = null;
+const PROJECT_ACCESS_ENDPOINT = '/.netlify/functions/project-access';
 
 // ==================== MODAL FUNCTIONS ====================
 
@@ -151,6 +156,51 @@ if (contactForm) {
     });
 }
 
+if (projectsAccessForm) {
+    projectsAccessForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (!projectsPasswordInput) {
+            return;
+        }
+
+        const password = projectsPasswordInput.value.trim();
+        if (!password) {
+            showProjectsFeedback('Bitte geben Sie ein Passwort ein.', 'error');
+            return;
+        }
+
+        setProjectsBusy(true);
+        showProjectsFeedback('Pruefe Zugang...', 'loading');
+
+        try {
+            const response = await fetch(PROJECT_ACCESS_ENDPOINT, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ password }),
+            });
+
+            const payload = await response.json().catch(() => ({}));
+
+            if (!response.ok || !payload?.success || !payload?.url) {
+                showProjectsFeedback('Passwort ungueltig oder Zugang nicht verfuegbar.', 'error');
+                return;
+            }
+
+            showProjectsFeedback('Zugang bestaetigt. Weiterleitung...', 'success');
+            setTimeout(() => {
+                window.location.assign(payload.url);
+            }, 400);
+        } catch (error) {
+            showProjectsFeedback('Dienst aktuell nicht erreichbar. Bitte spaeter erneut versuchen.', 'error');
+        } finally {
+            setProjectsBusy(false);
+        }
+    });
+}
+
 function showFeedback(message, type) {
     if (!formFeedback) return;
     formFeedback.textContent = message;
@@ -161,6 +211,28 @@ function showFeedback(message, type) {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+}
+
+function setProjectsBusy(isBusy) {
+    if (projectsSubmitBtn) {
+        projectsSubmitBtn.disabled = isBusy;
+    }
+
+    if (projectsPasswordInput) {
+        projectsPasswordInput.disabled = isBusy;
+    }
+}
+
+function showProjectsFeedback(message, type) {
+    if (!projectsFeedback) {
+        return;
+    }
+
+    projectsFeedback.textContent = message;
+    projectsFeedback.classList.remove('success', 'error', 'loading');
+    if (type) {
+        projectsFeedback.classList.add(type);
+    }
 }
 
 // ==================== SCROLL ANIMATIONS ====================
@@ -282,7 +354,12 @@ const translations = {
         emailPlaceholder: 'Your email',
         messagePlaceholder: 'Your message',
         submitButton: 'Send Message',
-        footerText: '© 2026 PRJ1. All rights reserved.'
+        footerText: '© 2026 PRJ1. All rights reserved.',
+        projectsTitle: 'Projects',
+        projectsSubtitle: 'Client access: enter your password to open your project.',
+        projectsPasswordLabel: 'Project password',
+        projectsPasswordPlaceholder: 'Project password',
+        projectsButton: 'Open Project'
     },
     de: {
         heroSubtitle: 'Ihr bester Partner für digitale Transformation.',
@@ -307,7 +384,12 @@ const translations = {
         emailPlaceholder: 'Ihre E-Mail',
         messagePlaceholder: 'Ihre Nachricht',
         submitButton: 'Nachricht senden',
-        footerText: '© 2026 PRJ1. Alle Rechte vorbehalten.'
+        footerText: '© 2026 PRJ1. Alle Rechte vorbehalten.',
+        projectsTitle: 'Projects',
+        projectsSubtitle: 'Kundenzugang: Geben Sie Ihr Passwort ein, um direkt zu Ihrem Projekt zu gelangen.',
+        projectsPasswordLabel: 'Projektpasswort',
+        projectsPasswordPlaceholder: 'Projektpasswort',
+        projectsButton: 'Projekt öffnen'
     },
     fr: {
         heroSubtitle: 'Votre meilleur partenaire pour la transformation numérique.',
@@ -460,6 +542,34 @@ const translations = {
         footerText: '© 2026 PRJ1. Wszelkie prawa zastrzeżone.'
     }
 };
+
+function applyTranslations(languageCode) {
+    const locale = translations[languageCode] || translations.en;
+
+    document.querySelectorAll('[data-i18]').forEach((element) => {
+        const key = element.getAttribute('data-i18');
+        if (!key) {
+            return;
+        }
+
+        const value = locale[key] || translations.en[key];
+        if (value) {
+            element.textContent = value;
+        }
+    });
+
+    document.querySelectorAll('[data-i18-placeholder]').forEach((element) => {
+        const key = element.getAttribute('data-i18-placeholder');
+        if (!key) {
+            return;
+        }
+
+        const value = locale[key] || translations.en[key];
+        if (value) {
+            element.setAttribute('placeholder', value);
+        }
+    });
+}
 
     // Initialize defaults: keep dark theme and set language (no UI controls)
 (function initDefaults() {

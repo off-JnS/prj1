@@ -59,6 +59,23 @@
         height: 35px;
         font-size: 1.5rem;
     }
+
+    .projects {
+        padding: var(--space-6) var(--space-3);
+    }
+
+    .projects-card {
+        padding: 1.2rem;
+    }
+
+    .projects-form {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-submit {
+        width: 100%;
+        min-width: 0;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
