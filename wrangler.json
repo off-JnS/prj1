@@ -1,6 +1,10 @@
 {
   "name": "prj1",
+  "main": "worker.js",
   "compatibility_date": "2026-04-13",
+  "vars": {
+    "SUPABASE_URL": "https://uaterjqsapywhfvhsgiq.supabase.co"
+  },
   "assets": {
     "directory": "./dist"
   }

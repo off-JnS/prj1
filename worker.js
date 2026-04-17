@@ -1,27 +1,26 @@
 import bcrypt from 'bcryptjs'
-import { createClient } from '@supabase/supabase-js'
 
 const MAX_PASSWORD_LENGTH = 128
 const MAX_ATTEMPTS = 7
 const WINDOW_MS = 10 * 60 * 1000
+const PROJECT_ENDPOINT = '/api/project-access'
 
 const attemptStore = new Map()
 
-function json(statusCode, body) {
-    return {
-        statusCode,
+function json(status, payload) {
+    return new Response(JSON.stringify(payload), {
+        status,
         headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'no-store',
         },
-        body: JSON.stringify(body),
-    }
+    })
 }
 
-function getClientIp(event) {
+function getClientIp(request) {
     return (
-        event.headers['x-nf-client-connection-ip'] ||
-        event.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+        request.headers.get('CF-Connecting-IP') ||
+        request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() ||
         'unknown'
     )
 }
@@ -57,7 +56,7 @@ function resetAttempts(ip) {
     attemptStore.delete(ip)
 }
 
-function isAllowedRedirect(urlString) {
+function isAllowedRedirect(urlString, allowedHostsRaw = '') {
     let target
 
     try {
@@ -70,7 +69,6 @@ function isAllowedRedirect(urlString) {
         return false
     }
 
-    const allowedHostsRaw = process.env.ALLOWED_REDIRECT_HOSTS || ''
     if (!allowedHostsRaw.trim()) {
         return true
     }
@@ -87,27 +85,49 @@ function isAllowedRedirect(urlString) {
     return allowedHosts.includes(target.hostname.toLowerCase())
 }
 
-export async function handler(event) {
-    if (event.httpMethod !== 'POST') {
+async function fetchActiveProjectEntries(supabaseUrl, serviceRoleKey) {
+    const endpoint = new URL('/rest/v1/project_access', supabaseUrl)
+    endpoint.searchParams.set('select', 'password_hash,project_url,is_active')
+    endpoint.searchParams.set('is_active', 'eq.true')
+    endpoint.searchParams.set('limit', '200')
+
+    const response = await fetch(endpoint.toString(), {
+        method: 'GET',
+        headers: {
+            apikey: serviceRoleKey,
+            Authorization: `Bearer ${serviceRoleKey}`,
+        },
+    })
+
+    if (!response.ok) {
+        throw new Error('Failed to read project access rows.')
+    }
+
+    const payload = await response.json()
+    return Array.isArray(payload) ? payload : []
+}
+
+async function handleProjectAccess(request, env) {
+    if (request.method !== 'POST') {
         return json(405, { success: false, message: 'Method not allowed.' })
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL
-    const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    const supabaseUrl = env.SUPABASE_URL
+    const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY
 
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
+    if (!supabaseUrl || !serviceRoleKey) {
         return json(500, { success: false, message: 'Service unavailable.' })
     }
 
-    const ip = getClientIp(event)
+    const ip = getClientIp(request)
     if (isRateLimited(ip)) {
         return json(429, { success: false, message: 'Too many attempts. Try again later.' })
     }
 
     let password = ''
     try {
-        const parsedBody = JSON.parse(event.body || '{}')
-        password = String(parsedBody.password || '').trim()
+        const body = await request.json()
+        password = String(body?.password || '').trim()
     } catch {
         recordAttempt(ip)
         return json(400, { success: false, message: 'Invalid request.' })
@@ -118,24 +138,14 @@ export async function handler(event) {
         return json(400, { success: false, message: 'Invalid request.' })
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-        auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-        },
-    })
-
-    const { data, error } = await supabase
-        .from('project_access')
-        .select('password_hash, project_url, is_active')
-        .eq('is_active', true)
-        .limit(200)
-
-    if (error || !Array.isArray(data)) {
+    let rows = []
+    try {
+        rows = await fetchActiveProjectEntries(supabaseUrl, serviceRoleKey)
+    } catch {
         return json(500, { success: false, message: 'Service unavailable.' })
     }
 
-    for (const row of data) {
+    for (const row of rows) {
         if (!row?.password_hash || !row?.project_url) {
             continue
         }
@@ -145,7 +155,7 @@ export async function handler(event) {
             continue
         }
 
-        if (!isAllowedRedirect(row.project_url)) {
+        if (!isAllowedRedirect(row.project_url, env.ALLOWED_REDIRECT_HOSTS || '')) {
             return json(403, { success: false, message: 'Access denied.' })
         }
 
@@ -157,8 +167,21 @@ export async function handler(event) {
     }
 
     recordAttempt(ip)
-    return json(401, {
-        success: false,
-        message: 'Invalid credentials.',
-    })
+    return json(401, { success: false, message: 'Invalid credentials.' })
+}
+
+export default {
+    async fetch(request, env) {
+        const url = new URL(request.url)
+
+        if (url.pathname === PROJECT_ENDPOINT) {
+            return handleProjectAccess(request, env)
+        }
+
+        if (env.ASSETS) {
+            return env.ASSETS.fetch(request)
+        }
+
+        return new Response('Not found', { status: 404 })
+    },
 }

@@ -36,7 +36,7 @@ const projectsFeedback = document.getElementById('projectsFeedback');
 const projectsSubmitBtn = document.getElementById('projectsSubmitBtn');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let lastFocusedElement = null;
-const PROJECT_ACCESS_ENDPOINT = '/.netlify/functions/project-access';
+const PROJECT_ACCESS_ENDPOINT = '/api/project-access';
 
 // ==================== MODAL FUNCTIONS ====================
 
