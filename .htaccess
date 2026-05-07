@@ -1,9 +1,25 @@
-# Deny public access to submissions.csv and sensitive files
+# Block sensitive files
 <Files "submissions.csv">
     Require all denied
 </Files>
+<Files ".env">
+    Require all denied
+</Files>
 
-# Optional: prevent directory listing
+# Prevent directory listing
 Options -Indexes
 
-## version feature removed; version.txt not used
+# Enable rewrite engine
+RewriteEngine On
+
+# Let PHP files through as-is
+RewriteRule ^proxy\.php$ - [L]
+RewriteRule ^form-handler\.php$ - [L]
+
+# /payment or /payment/ -> payment.html
+RewriteRule ^payment/?$ /payment.html [L]
+
+# Everything else that isn't a real file/directory -> index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ /index.html [L]

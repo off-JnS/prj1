@@ -1,0 +1,264 @@
+/* ==================== PAYMENT / PRICING PAGE ==================== */
+
+/* ---------- Status banner ---------- */
+.payment-status {
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 90;
+}
+
+.payment-status.success {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border-bottom: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.payment-status.cancelled {
+    background: rgba(234, 179, 8, 0.1);
+    color: #facc15;
+    border-bottom: 1px solid rgba(234, 179, 8, 0.15);
+}
+
+/* ---------- Page hero ---------- */
+.pricing-hero {
+    padding: var(--space-7) var(--space-4) var(--space-5);
+    text-align: center;
+}
+
+.pricing-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 1rem;
+}
+
+.pricing-subtitle {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* ---------- Pricing section ---------- */
+.pricing-section {
+    padding: 0 var(--space-4) var(--space-7);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+}
+
+/* ---------- Pricing card ---------- */
+.pricing-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.pricing-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-strong);
+}
+
+.pricing-card--highlighted {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* ---------- Popular badge ---------- */
+.pricing-badge {
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    color: #000000;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 0.28rem 0.85rem;
+    border-radius: 99px;
+    white-space: nowrap;
+}
+
+/* ---------- Card header ---------- */
+.pricing-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pricing-plan-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}
+
+.pricing-tagline {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.pricing-price {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+}
+
+.pricing-amount {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.pricing-period {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.pricing-monthly {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+    margin-top: 0.35rem;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.pricing-monthly-amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+    opacity: 0.75;
+}
+
+.pricing-monthly-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+/* ---------- Features list ---------- */
+.pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    flex: 1;
+}
+
+.pricing-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.pricing-check {
+    color: #4ade80;
+    flex-shrink: 0;
+    line-height: 1.5;
+}
+
+/* ---------- CTA button ---------- */
+.pricing-btn {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.pricing-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+.pricing-btn--primary {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+.pricing-btn--primary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(255, 255, 255, 0.88);
+}
+
+.pricing-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ---------- Inline card feedback ---------- */
+.pricing-card-feedback {
+    font-size: 0.85rem;
+    min-height: 1.2em;
+    text-align: center;
+}
+
+.pricing-card-feedback.error {
+    color: #f87171;
+}
+
+/* ---------- Trust note ---------- */
+.pricing-note {
+    padding: 0 var(--space-4) var(--space-7);
+    text-align: center;
+}
+
+.pricing-trust-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem 2.5rem;
+}
+
+.pricing-trust-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--muted-2);
+}
+
+.pricing-trust-list svg {
+    flex-shrink: 0;
+    opacity: 0.6;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 680px) {
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}

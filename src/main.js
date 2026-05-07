@@ -30,13 +30,8 @@ const contactModal = document.getElementById('contactModal');
 const modalOverlay = document.getElementById('modalOverlay');
 const contactForm = document.getElementById('contactForm');
 const formFeedback = document.getElementById('formFeedback');
-const projectsAccessForm = document.getElementById('projectsAccessForm');
-const projectsPasswordInput = document.getElementById('projectsPassword');
-const projectsFeedback = document.getElementById('projectsFeedback');
-const projectsSubmitBtn = document.getElementById('projectsSubmitBtn');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let lastFocusedElement = null;
-const PROJECT_ACCESS_ENDPOINT = '/api/project-access';
 
 // ==================== MODAL FUNCTIONS ====================
 
@@ -156,51 +151,6 @@ if (contactForm) {
     });
 }
 
-if (projectsAccessForm) {
-    projectsAccessForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!projectsPasswordInput) {
-            return;
-        }
-
-        const password = projectsPasswordInput.value.trim();
-        if (!password) {
-            showProjectsFeedback('Bitte geben Sie ein Passwort ein.', 'error');
-            return;
-        }
-
-        setProjectsBusy(true);
-        showProjectsFeedback('Pruefe Zugang...', 'loading');
-
-        try {
-            const response = await fetch(PROJECT_ACCESS_ENDPOINT, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ password }),
-            });
-
-            const payload = await response.json().catch(() => ({}));
-
-            if (!response.ok || !payload?.success || !payload?.url) {
-                showProjectsFeedback('Passwort ungueltig oder Zugang nicht verfuegbar.', 'error');
-                return;
-            }
-
-            showProjectsFeedback('Zugang bestaetigt. Weiterleitung...', 'success');
-            setTimeout(() => {
-                window.location.assign(payload.url);
-            }, 400);
-        } catch (error) {
-            showProjectsFeedback('Dienst aktuell nicht erreichbar. Bitte spaeter erneut versuchen.', 'error');
-        } finally {
-            setProjectsBusy(false);
-        }
-    });
-}
-
 function showFeedback(message, type) {
     if (!formFeedback) return;
     formFeedback.textContent = message;
@@ -211,28 +161,6 @@ function showFeedback(message, type) {
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-function setProjectsBusy(isBusy) {
-    if (projectsSubmitBtn) {
-        projectsSubmitBtn.disabled = isBusy;
-    }
-
-    if (projectsPasswordInput) {
-        projectsPasswordInput.disabled = isBusy;
-    }
-}
-
-function showProjectsFeedback(message, type) {
-    if (!projectsFeedback) {
-        return;
-    }
-
-    projectsFeedback.textContent = message;
-    projectsFeedback.classList.remove('success', 'error', 'loading');
-    if (type) {
-        projectsFeedback.classList.add(type);
-    }
 }
 
 // ==================== SCROLL ANIMATIONS ====================
@@ -576,13 +504,12 @@ function applyTranslations(languageCode) {
     try {
         // enforce dark by default (no theme toggle UI)
         document.body.classList.remove('light');
-
-        // restore saved language or default to English
-        const saved = localStorage.getItem('siteLang');
-        const code = saved || 'en';
+        // set default language to German for the site
+        const code = 'de';
         document.documentElement.lang = code;
+        try { localStorage.setItem('siteLang', code); } catch (e) {}
         applyTranslations(code);
     } catch (e) {
-        applyTranslations('en');
+        applyTranslations('de');
     }
 })();

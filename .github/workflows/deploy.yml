@@ -1,0 +1,50 @@
+name: Build & Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main   # change this if your default branch is named differently
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Set up Node.js (matches .nvmrc)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build with Vite -> output goes to dist/
+      - name: Build
+        run: npm run build
+
+      # 5. Copy PHP + server files into dist/ so they're deployed alongside the built assets
+      - name: Copy server-side files
+        run: |
+          cp proxy.php dist/proxy.php
+          cp form-handler.php dist/form-handler.php
+          cp .htaccess dist/.htaccess
+
+      # 6. Deploy dist/ to Hostinger via FTP
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /public_html/
+          # Removes remote files not present in dist/ — keeps the server clean.
+          # Set to false if you have files on Hostinger you don't want deleted.
+          dangerous-clean-slate: true

@@ -12,6 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 logs/
 *.log
+submissions.csv
 
 # Mac
 .AppleDouble
@@ -20,10 +21,3 @@ logs/
 # lock files
 package-lock.json
 yarn.lock
-
-# public assets/build
-/public/build/
-node_modules/
-dist/
-.DS_Store
-*.log

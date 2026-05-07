@@ -1,9 +1,11 @@
 import bcrypt from 'bcryptjs'
+import { SERVICES } from './shared/paymentCatalog.js'
 
 const MAX_PASSWORD_LENGTH = 128
 const MAX_ATTEMPTS = 7
 const WINDOW_MS = 10 * 60 * 1000
 const PROJECT_ENDPOINT = '/api/project-access'
+const CHECKOUT_ENDPOINT = '/api/create-checkout-session'
 
 const attemptStore = new Map()
 
@@ -170,9 +172,86 @@ async function handleProjectAccess(request, env) {
     return json(401, { success: false, message: 'Invalid credentials.' })
 }
 
+async function handleCreateCheckoutSession(request, env) {
+    if (request.method !== 'POST') {
+        return json(405, { success: false, message: 'Method not allowed.' })
+    }
+
+    const stripeSecretKey = env.STRIPE_SECRET_KEY
+    if (!stripeSecretKey) {
+        return json(500, { success: false, message: 'Payment service unavailable.' })
+    }
+
+    let serviceId = ''
+    try {
+        const body = await request.json()
+        serviceId = String(body?.serviceId || '').trim()
+    } catch {
+        return json(400, { success: false, message: 'Invalid request.' })
+    }
+
+    const service = SERVICES.find((s) => s.id === serviceId)
+    if (!service) {
+        return json(400, { success: false, message: 'Unknown service.' })
+    }
+
+    const siteUrl = env.SITE_URL || new URL(request.url).origin
+
+    // Build form-encoded body for Stripe REST API.
+    // URLSearchParams encodes { } as %7B...%7D – replace back so Stripe
+    // recognises its own {CHECKOUT_SESSION_ID} template variable.
+    const params = new URLSearchParams()
+    params.append('payment_method_types[]', 'card')
+    params.append('line_items[0][price_data][currency]', service.currency)
+    params.append('line_items[0][price_data][unit_amount]', String(service.price))
+    params.append('line_items[0][price_data][product_data][name]', service.name)
+    params.append(
+        'line_items[0][price_data][product_data][description]',
+        service.description
+    )
+    params.append('line_items[0][quantity]', '1')
+    params.append('mode', 'payment')
+    params.append(
+        'success_url',
+        `${siteUrl}/payment.html?success=1&session_id={CHECKOUT_SESSION_ID}`
+    )
+    params.append('cancel_url', `${siteUrl}/payment.html?cancelled=1`)
+
+    const stripeBody = params
+        .toString()
+        .replace('%7BCHECKOUT_SESSION_ID%7D', '{CHECKOUT_SESSION_ID}')
+
+    let stripeRes
+    try {
+        stripeRes = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${stripeSecretKey}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: stripeBody,
+        })
+    } catch {
+        return json(502, { success: false, message: 'Payment gateway unreachable.' })
+    }
+
+    if (!stripeRes.ok) {
+        const errBody = await stripeRes.json().catch(() => ({}))
+        const msg = errBody?.error?.message || 'Failed to create checkout session.'
+        return json(502, { success: false, message: msg })
+    }
+
+    const session = await stripeRes.json()
+    return json(200, { url: session.url })
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url)
+
+        if (url.pathname === CHECKOUT_ENDPOINT) {
+            return handleCreateCheckoutSession(request, env)
+        }
 
         if (url.pathname === PROJECT_ENDPOINT) {
             return handleProjectAccess(request, env)
