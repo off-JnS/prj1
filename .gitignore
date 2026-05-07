@@ -19,5 +19,5 @@ submissions.csv
 ._*
 
 # lock files
-package-lock.json
+# package-lock.json is committed so Hostinger can run npm ci
 yarn.lock
