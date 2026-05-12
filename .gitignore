@@ -2,6 +2,8 @@ node_modules/
 dist/
 build/
 .env
+hostinger_deploy_key
+hostinger_deploy_key.pub
 .DS_Store
 .vscode/
 .idea/
