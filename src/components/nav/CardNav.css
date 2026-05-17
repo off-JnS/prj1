@@ -165,6 +165,13 @@
 .nav-card-link:hover {
   opacity: 0.7;
 }
+.nav-card-link-icon {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.nav-card-link:hover .nav-card-link-icon {
+  transform: rotate(45deg);
+}
 
 @media (max-width: 768px) {
   .card-nav-container {

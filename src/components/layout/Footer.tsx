@@ -34,8 +34,6 @@ export default function Footer() {
           </h4>
           <ul className="space-y-2 text-sm text-[var(--color-muted-foreground)]">
             <li><a className="hover:text-[var(--color-foreground)]" href="mailto:hello@prj1.studio">hello@prj1.studio</a></li>
-            <li><a className="hover:text-[var(--color-foreground)]" href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a></li>
-            <li><a className="hover:text-[var(--color-foreground)]" href="https://behance.net" target="_blank" rel="noreferrer">Behance</a></li>
           </ul>
         </div>
       </div>

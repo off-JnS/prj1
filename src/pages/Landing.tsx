@@ -121,10 +121,17 @@ function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
 }
 
 export default function Landing() {
+  useEffect(() => {
+    if (window.location.hash) {
+      const el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
+    }
+  }, []);
+
   return (
     <main className="relative">
       {/* HERO ------------------------------------------------------------ */}
-      <section className="relative isolate flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-20 pt-24 sm:pb-24 sm:pt-32">
+      <section id="hero" className="relative isolate flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-20 pt-24 sm:pb-24 sm:pt-32">
         <WebGLShader />
 
         <div className="relative mx-auto w-full max-w-5xl text-center">
@@ -201,7 +208,7 @@ export default function Landing() {
       </section>
 
       {/* SERVICES -------------------------------------------------------- */}
-      <section className="section-invert relative z-10 px-6 py-24 sm:py-32">
+      <section id="leistungen" className="section-invert relative z-10 px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -242,7 +249,7 @@ export default function Landing() {
       </section>
 
       {/* FEATURED WORK --------------------------------------------------- */}
-      <section className="relative px-6 py-24 sm:py-32">
+      <section id="arbeiten" className="relative px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -277,7 +284,7 @@ export default function Landing() {
       </section>
 
       {/* PROCESS --------------------------------------------------------- */}
-      <section className="section-invert relative px-6 py-24 sm:py-32">
+      <section id="prozess" className="section-invert relative px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -316,7 +323,7 @@ export default function Landing() {
       </section>
 
       {/* CTA ------------------------------------------------------------- */}
-      <section className="relative overflow-hidden px-6 py-32 sm:py-40">
+      <section id="kontakt" className="relative overflow-hidden px-6 py-32 sm:py-40">
         <div className="mx-auto max-w-5xl text-center">
           <motion.h2
             initial={{ y: 30, opacity: 0 }}

@@ -10,8 +10,8 @@ const desktopItems = [
     bgColor: "#0a0a0a",
     textColor: "#ffffff",
     links: [
-      { label: "Über uns", href: "/", ariaLabel: "Über PRJ1" },
-      { label: "Prozess", href: "/", ariaLabel: "Unser Prozess" },
+      { label: "Über uns", href: "/#leistungen", ariaLabel: "Über PRJ1" },
+      { label: "Prozess", href: "/#prozess", ariaLabel: "Unser Prozess" },
       { label: "Kontakt", href: "mailto:hello@prj1.studio", ariaLabel: "PRJ1 per E-Mail kontaktieren" },
     ],
   },
@@ -21,7 +21,7 @@ const desktopItems = [
     textColor: "#ffffff",
     links: [
       { label: "Portfolio", href: "/portfolio", ariaLabel: "Portfolio ansehen" },
-      { label: "Case Studies", href: "/portfolio", ariaLabel: "Case Studies" },
+      { label: "Ausgewählte Arbeiten", href: "/#arbeiten", ariaLabel: "Ausgewählte Arbeiten" },
     ],
   },
   {
@@ -40,12 +40,6 @@ const mobileItems = [
   { label: "Portfolio", link: "/portfolio", ariaLabel: "Portfolio" },
   { label: "Preise", link: "/pricing", ariaLabel: "Preise" },
   { label: "Kontakt", link: "mailto:hello@prj1.studio", ariaLabel: "Kontakt" },
-];
-
-const socials = [
-  { label: "Instagram", link: "https://instagram.com" },
-  { label: "Behance", link: "https://behance.net" },
-  { label: "LinkedIn", link: "https://linkedin.com" },
 ];
 
 export default function ResponsiveNav() {
@@ -71,8 +65,7 @@ export default function ResponsiveNav() {
     <StaggeredMenu
       position="right"
       items={mobileItems}
-      socialItems={socials}
-      displaySocials
+      displaySocials={false}
       displayItemNumbering
       logoUrl={LOGO}
       menuButtonColor="#ffffff"
