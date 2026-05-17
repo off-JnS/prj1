@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+ * PRJ1 — strictly monochrome theme
+ * Every surface and accent is greyscale. We swap background/foreground
+ * on a per-section basis with `.section-invert`.
+ * ------------------------------------------------------------- */
+@theme {
+  --color-background: oklch(0 0 0);
+  --color-foreground: oklch(1 0 0);
+
+  --color-primary: oklch(1 0 0);
+  --color-primary-foreground: oklch(0 0 0);
+
+  --color-secondary: oklch(0.18 0 0);
+  --color-secondary-foreground: oklch(1 0 0);
+
+  --color-muted: oklch(0.14 0 0);
+  --color-muted-foreground: oklch(0.7 0 0);
+
+  --color-accent: oklch(1 0 0);
+  --color-accent-foreground: oklch(0 0 0);
+
+  --color-destructive: oklch(0.4 0 0);
+  --color-destructive-foreground: oklch(1 0 0);
+
+  --color-border: oklch(0.24 0 0);
+  --color-input: oklch(0.24 0 0);
+  --color-ring: oklch(1 0 0);
+
+  --color-card: oklch(0.04 0 0);
+  --color-card-foreground: oklch(1 0 0);
+  --color-popover: oklch(0.04 0 0);
+  --color-popover-foreground: oklch(1 0 0);
+
+  --radius: 0.75rem;
+
+  --font-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Hide the native cursor + scrollbar on devices that can show our custom one. */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  a,
+  button,
+  label,
+  summary,
+  [role="button"],
+  [data-cursor] {
+    cursor: none !important;
+  }
+
+  html {
+    scrollbar-width: none; /* Firefox */
+  }
+  html::-webkit-scrollbar {
+    display: none; /* Chromium / Safari / Edge */
+  }
+}
+
+/* Inverted section: white background, black text — same tokens stay valid. */
+.section-invert {
+  --color-background: oklch(1 0 0);
+  --color-foreground: oklch(0 0 0);
+  --color-primary: oklch(0 0 0);
+  --color-primary-foreground: oklch(1 0 0);
+  --color-secondary: oklch(0.94 0 0);
+  --color-secondary-foreground: oklch(0 0 0);
+  --color-muted: oklch(0.96 0 0);
+  --color-muted-foreground: oklch(0.35 0 0);
+  --color-border: oklch(0.85 0 0);
+  --color-card: oklch(0.98 0 0);
+  --color-card-foreground: oklch(0 0 0);
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Respect reduced motion globally. Heavy WebGL/GSAP animations are
+ * paused programmatically in their components; this catches everything
+ * driven by CSS transitions and Framer-Motion's reduced-motion checks. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
