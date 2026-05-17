@@ -25,10 +25,10 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "ehsos-burger",
-    name: "EHSOS Burger",
+    name: "Ehso's Burger",
     tagline: "Markenauftritt und Online-Präsenz für einen Burger-Laden mit Charakter.",
     url: "https://ehsos-burger.de",
-    fallbackImage: undefined,
+    fallbackImage: "/previews/ehsos-burger.jpg",
     testimonial: {
       kind: "text",
       quote:
@@ -38,11 +38,11 @@ export const projects: Project[] = [
     },
   },
   {
-    id: "nordwind-studio",
-    name: "Nordwind Studio",
+    id: "beispiel-cafe",
+    name: "Beispiel Projekt - Cafe",
     tagline: "Markenwebsite für ein Architekturbüro mit klarer Handschrift.",
-    url: "https://example.com",
-    fallbackImage: undefined,
+    url: "https://cafeliteraritat.netlify.app/",
+    fallbackImage: "/previews/beispiel-cafe.jpg",
     testimonial: {
       kind: "text",
       quote:
@@ -52,11 +52,11 @@ export const projects: Project[] = [
     },
   },
   {
-    id: "pionier-manufaktur",
-    name: "Pionier Manufaktur",
-    tagline: "Produkt-Microsite mit maßgeschneiderter Motion.",
-    url: "https://example.net",
-    fallbackImage: undefined,
+    id: "prj1",
+    name: "PRJ1",
+    tagline: "Unsere eigene Website — gebaut mit denselben Standards, die wir für unsere Kunden anlegen.",
+    url: "https://prj1.de",
+    fallbackImage: "/previews/prj1.jpg",
     testimonial: {
       kind: "video",
       src: "/testimonials/placeholder.mp4",

@@ -103,7 +103,7 @@ export function WebGLShader() {
 
     let raf = 0;
     const animate = () => {
-      if (!reduceMotion) uniforms.time.value += 0.01;
+      if (!reduceMotion) uniforms.time.value += 0.005;
       renderer.render(scene, camera);
       raf = requestAnimationFrame(animate);
     };

@@ -1,9 +1,10 @@
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Layout, Cpu, Wand2 } from "lucide-react";
+import { ArrowRight, Sparkles, Layout, Globe, Wand2 } from "lucide-react";
 import { WebGLShader } from "@/components/ui/web-gl-shader";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { projects } from "@/data/projects";
+import { projects, type Project } from "@/data/projects";
 
 const services = [
   {
@@ -17,9 +18,9 @@ const services = [
     body: "Maßgeschneiderte Animationen, Scroll-Choreografie und Mikrointeraktionen — nichts von der Stange.",
   },
   {
-    icon: Cpu,
-    title: "WebGL & 3D",
-    body: "Eigene Shader, Echtzeit-Canvas und 3D-Szenen, die auf echten Geräten mit 60 fps laufen.",
+    icon: Globe,
+    title: "Hosting & Domain",
+    body: "Wir kümmern uns um alles: zuverlässiges Hosting, die passende Domain und ein reibungsloser Launch — damit du dich auf dein Business konzentrieren kannst.",
   },
   {
     icon: Sparkles,
@@ -34,6 +35,90 @@ const processSteps = [
   { n: "03", title: "Umsetzung", body: "Handgefertigtes React + WebGL, optimiert für Geschwindigkeit, Barrierefreiheit und SEO." },
   { n: "04", title: "Launch", body: "Wir gehen live und arbeiten danach mit dir an Iterationen, damit deine Website weiter performt." },
 ];
+
+function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
+  const number = String(i + 1).padStart(2, "0");
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [hovered, setHovered] = useState(false);
+
+  // Native load listener + fallback timer (handles iframes already loaded from cache)
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    const markLoaded = () => setTimeout(() => setIframeLoaded(true), 300);
+    iframe.addEventListener("load", markLoaded);
+    // Fallback: declare ready after 2 s regardless (catches cached/fast loads)
+    const fallback = setTimeout(() => setIframeLoaded(true), 2000);
+    return () => {
+      iframe.removeEventListener("load", markLoaded);
+      clearTimeout(fallback);
+    };
+  }, []);
+
+  const showLive = iframeLoaded && hovered;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      className="group flex flex-col"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div
+        ref={containerRef}
+        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,1)]"
+      >
+        {/* Live iframe — pointer events enabled when live so scroll works natively */}
+        <div
+          className={`absolute inset-0 origin-top-left ${showLive ? "" : "pointer-events-none"}`}
+          style={{ transform: "scale(0.42)", width: "240%", height: "240%", zIndex: 0 }}
+        >
+          <iframe
+            ref={iframeRef}
+            src={p.url}
+            title={p.name}
+            className="h-full w-full border-0"
+          />
+        </div>
+
+        {/* Screenshot — sits on top until iframe is ready AND hovered */}
+        <img
+          src={p.fallbackImage}
+          alt={p.name}
+          loading="lazy"
+          className="absolute inset-0 z-10 h-full w-full object-cover object-top pointer-events-none pointer-fine:grayscale group-hover:grayscale-0 transition-all duration-700"
+          style={{ opacity: showLive ? 0 : 1 }}
+        />
+
+        {/* Dim overlay */}
+        <div className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500 pointer-fine:bg-black/30 group-hover:opacity-0" />
+        <span className="pointer-events-none absolute left-4 top-3 z-30 font-mono text-xs tracking-[0.3em] text-white/70">
+          {number}
+        </span>
+        {/* "Live ansehen" button — opens full site in new tab */}
+        <button
+          onClick={(e) => { e.stopPropagation(); window.open(p.url, "_blank", "noreferrer"); }}
+          className="absolute right-4 top-4 z-30 hidden translate-y-[-4px] cursor-pointer items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-black opacity-0 transition-all duration-300 pointer-fine:inline-flex group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          Live ansehen <ArrowRight className="h-3.5 w-3.5" />
+        </button>
+      </div>
+      <div className="mt-5">
+        <h3 className="text-lg font-semibold tracking-tight">{p.name}</h3>
+        {p.tagline && (
+          <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
+            {p.tagline}
+          </p>
+        )}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Landing() {
   return (
@@ -184,53 +269,9 @@ export default function Landing() {
           </motion.div>
 
           <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {projects.slice(0, 3).map((p, i) => {
-              const number = String(i + 1).padStart(2, "0");
-              return (
-                <motion.a
-                  key={p.id}
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  className="group flex flex-col"
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,1)]">
-                    <div
-                      className="absolute inset-0 origin-top-left scale-[0.42] transition-[filter,transform] duration-700 ease-out pointer-fine:grayscale group-hover:scale-[0.44] group-hover:grayscale-0"
-                      style={{ width: "240%", height: "240%" }}
-                    >
-                      <iframe
-                        src={p.url}
-                        title={p.name}
-                        loading="lazy"
-                        sandbox="allow-scripts allow-same-origin"
-                        className="pointer-events-none h-full w-full border-0 bg-white"
-                      />
-                    </div>
-                    {/* dim overlay clears on hover — only on fine pointers */}
-                    <div className="pointer-events-none absolute inset-0 transition-opacity duration-500 pointer-fine:bg-black/30 group-hover:opacity-0" />
-                    <span className="pointer-events-none absolute left-4 top-3 font-mono text-xs tracking-[0.3em] text-white/70">
-                      {number}
-                    </span>
-                    <span className="pointer-events-none absolute right-4 top-4 hidden translate-y-[-4px] items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-black opacity-0 transition-all duration-300 pointer-fine:inline-flex group-hover:translate-y-0 group-hover:opacity-100">
-                      Live ansehen <ArrowRight className="h-3.5 w-3.5" />
-                    </span>
-                  </div>
-                  <div className="mt-5">
-                    <h3 className="text-lg font-semibold tracking-tight">{p.name}</h3>
-                    {p.tagline && (
-                      <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
-                        {p.tagline}
-                      </p>
-                    )}
-                  </div>
-                </motion.a>
-              );
-            })}
+            {projects.slice(0, 3).map((p, i) => (
+              <ProjectPreviewCard key={p.id} p={p} i={i} />
+            ))}
           </div>
         </div>
       </section>

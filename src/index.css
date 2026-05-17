@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Project preview cards: fade screenshot out on hover only after the iframe has loaded */
+.group:hover .preview-screenshot[data-iframe-ready="true"] {
+  opacity: 0;
+}
+
 /* ---------------------------------------------------------------
  * PRJ1 — strictly monochrome theme
  * Every surface and accent is greyscale. We swap background/foreground
