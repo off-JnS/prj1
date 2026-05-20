@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "gsap";
 import { GoArrowUpRight } from "react-icons/go";
 import "./CardNav.css";
@@ -159,17 +160,17 @@ export default function CardNav({
             <span className="hamburger-line" />
           </button>
 
-          <a className="logo-container" href="/" aria-label="PRJ1 Startseite">
+          <Link className="logo-container" to="/" aria-label="PRJ1 Startseite">
             <img src={logo} alt={logoAlt} className="logo" />
-          </a>
+          </Link>
 
-          <a
-            href={ctaHref}
+          <Link
+            to={ctaHref}
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
           >
             {ctaLabel}
-          </a>
+          </Link>
         </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>
@@ -182,17 +183,31 @@ export default function CardNav({
             >
               <div className="nav-card-label">{item.label}</div>
               <div className="nav-card-links">
-                {item.links?.map((lnk, i) => (
-                  <a
-                    key={`${lnk.label}-${i}`}
-                    className="nav-card-link"
-                    href={lnk.href ?? "#"}
-                    aria-label={lnk.ariaLabel}
-                  >
-                    <GoArrowUpRight className="nav-card-link-icon" aria-hidden />
-                    {lnk.label}
-                  </a>
-                ))}
+                {item.links?.map((lnk, i) => {
+                  const href = lnk.href ?? "#";
+                  const isExternal = /^(https?:|mailto:|tel:)/.test(href);
+                  return isExternal ? (
+                    <a
+                      key={`${lnk.label}-${i}`}
+                      className="nav-card-link"
+                      href={href}
+                      aria-label={lnk.ariaLabel}
+                    >
+                      <GoArrowUpRight className="nav-card-link-icon" aria-hidden />
+                      {lnk.label}
+                    </a>
+                  ) : (
+                    <Link
+                      key={`${lnk.label}-${i}`}
+                      className="nav-card-link"
+                      to={href}
+                      aria-label={lnk.ariaLabel}
+                    >
+                      <GoArrowUpRight className="nav-card-link-icon" aria-hidden />
+                      {lnk.label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}
