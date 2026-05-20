@@ -121,6 +121,9 @@ export function PricingSection({
 }: PricingSectionProps) {
   const [isMonthly, setIsMonthly] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Stars react to mouse movement — meaningless on touch devices, so skip
+  // them entirely to avoid mounting 150 framer-motion spring animations.
+  const canHover = useMediaQuery("(hover: hover) and (pointer: fine)");
   const [mousePosition, setMousePosition] = useState<{ x: number | null; y: number | null }>({
     x: null,
     y: null,
@@ -134,11 +137,13 @@ export function PricingSection({
     <PricingContext.Provider value={{ isMonthly, setIsMonthly }}>
       <div
         ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setMousePosition({ x: null, y: null })}
+        onMouseMove={canHover ? handleMouseMove : undefined}
+        onMouseLeave={canHover ? () => setMousePosition({ x: null, y: null }) : undefined}
         className="relative w-full bg-[var(--color-background)] py-24 sm:py-32"
       >
-        <InteractiveStarfield mousePosition={mousePosition} containerRef={containerRef} />
+        {canHover && (
+          <InteractiveStarfield mousePosition={mousePosition} containerRef={containerRef} />
+        )}
         <div className="relative z-10 container mx-auto px-4 md:px-6">
           <div className="mx-auto mb-12 max-w-3xl space-y-4 text-center">
             <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl text-[var(--color-foreground)]">

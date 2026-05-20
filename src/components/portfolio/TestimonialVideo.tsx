@@ -65,8 +65,8 @@ export default function TestimonialVideo({
         playsInline
         muted
         loop
-        autoPlay
-        preload="metadata"
+        autoPlay={canHover}
+        preload={canHover ? "metadata" : "none"}
         className="h-full w-full object-cover transition-[filter] duration-500"
         style={{ filter: showColor ? "none" : "grayscale(1) contrast(1.05)" }}
       />

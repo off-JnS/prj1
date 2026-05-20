@@ -14,32 +14,58 @@ interface IframePeekProps {
  * hasn't fired `load` by then we assume it was blocked and swap to the
  * static fallback screenshot.
  *
+ * The iframe is not created until the card enters the viewport
+ * (IntersectionObserver), so scrolling past portfolio cards doesn't kick
+ * off a dozen simultaneous external-site fetches.
+ *
  * On hover-capable devices the preview is grayscale by default and lifts
  * to color on hover. On touch devices, it always renders in color since
  * there is no hover affordance.
  */
 export default function IframePeek({ url, fallbackImage, title }: IframePeekProps) {
-  const [status, setStatus] = useState<"loading" | "loaded" | "blocked">("loading");
+  const [status, setStatus] = useState<"idle" | "loading" | "loaded" | "blocked">("idle");
+  const [inView, setInView] = useState(false);
+  const containerRef = useRef<HTMLAnchorElement>(null);
   const timerRef = useRef<number | null>(null);
 
+  // Only start loading when the card is near the viewport.
   useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    setStatus("loading");
     timerRef.current = window.setTimeout(() => {
       setStatus((cur) => (cur === "loading" ? "blocked" : cur));
     }, 4000);
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
-  }, [url]);
+  }, [inView, url]);
 
   return (
     <a
+      ref={containerRef}
       href={url}
       target="_blank"
       rel="noreferrer noopener"
       className="group relative block aspect-[16/10] w-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-shadow duration-500 hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,1)]"
     >
-      {/* iframe peek — scaled down so a full desktop view fits the card */}
-      {status !== "blocked" && (
+      {/* iframe peek — only mounted once in viewport */}
+      {inView && status !== "blocked" && (
         <div
           className="absolute inset-0 origin-top-left scale-[0.4] transition-[filter,transform] duration-700 ease-out pointer-fine:grayscale group-hover:scale-[0.42] group-hover:grayscale-0"
           style={{ width: "250%", height: "250%" }}
@@ -60,11 +86,12 @@ export default function IframePeek({ url, fallbackImage, title }: IframePeekProp
       )}
 
       {/* fallback when iframe is blocked / never loads */}
-      {status === "blocked" &&
+      {(status === "blocked" || !inView) &&
         (fallbackImage ? (
           <img
             src={fallbackImage}
             alt={`Vorschau von ${title}`}
+            loading="lazy"
             className="h-full w-full object-cover transition-[filter,transform] duration-700 ease-out pointer-fine:grayscale group-hover:scale-[1.04] group-hover:grayscale-0"
           />
         ) : (

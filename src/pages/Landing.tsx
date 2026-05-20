@@ -40,11 +40,30 @@ function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
   const number = String(i + 1).padStart(2, "0");
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
+  // Only mount the iframe once the card enters the viewport.
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   // Native load listener + fallback timer (handles iframes already loaded from cache)
   useEffect(() => {
+    if (!inView) return;
     const iframe = iframeRef.current;
     if (!iframe) return;
     const markLoaded = () => setTimeout(() => setIframeLoaded(true), 300);
@@ -55,7 +74,7 @@ function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
       iframe.removeEventListener("load", markLoaded);
       clearTimeout(fallback);
     };
-  }, []);
+  }, [inView]);
 
   const showLive = iframeLoaded && hovered;
 
@@ -73,18 +92,20 @@ function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
         ref={containerRef}
         className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,1)]"
       >
-        {/* Live iframe — pointer events enabled when live so scroll works natively */}
-        <div
-          className={`absolute inset-0 origin-top-left ${showLive ? "" : "pointer-events-none"}`}
-          style={{ transform: "scale(0.42)", width: "240%", height: "240%", zIndex: 0 }}
-        >
-          <iframe
-            ref={iframeRef}
-            src={p.url}
-            title={p.name}
-            className="h-full w-full border-0"
-          />
-        </div>
+        {/* Live iframe — only mounted once the card enters the viewport */}
+        {inView && (
+          <div
+            className={`absolute inset-0 origin-top-left ${showLive ? "" : "pointer-events-none"}`}
+            style={{ transform: "scale(0.42)", width: "240%", height: "240%", zIndex: 0 }}
+          >
+            <iframe
+              ref={iframeRef}
+              src={p.url}
+              title={p.name}
+              className="h-full w-full border-0"
+            />
+          </div>
+        )}
 
         {/* Screenshot — sits on top until iframe is ready AND hovered */}
         <img

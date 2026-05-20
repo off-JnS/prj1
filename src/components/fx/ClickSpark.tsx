@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, type ReactNode, type MutableRefObject } from "react";
 
 type Spark = { x: number; y: number; angle: number; startTime: number };
 
@@ -69,7 +69,9 @@ export default function ClickSpark({
     if (!ctx) return;
 
     let raf = 0;
+
     const draw = (now: number) => {
+      raf = 0; // allow rescheduling
       const dpr = dprRef.current;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
@@ -93,18 +95,31 @@ export default function ClickSpark({
         ctx.stroke();
         return true;
       });
-      raf = requestAnimationFrame(draw);
+      // Only keep the loop alive while sparks are visible.
+      if (sparksRef.current.length > 0) {
+        raf = requestAnimationFrame(draw);
+      }
     };
-    raf = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(raf);
+
+    // Kick off a draw pass when new sparks are added.
+    const scheduleIfNeeded = () => {
+      if (!raf && sparksRef.current.length > 0) {
+        raf = requestAnimationFrame(draw);
+      }
+    };
+
+    // Expose the scheduler so the pointerdown handler can trigger it.
+    (canvasRef as MutableRefObject<HTMLCanvasElement & { _scheduleIfNeeded?: () => void }>).current._scheduleIfNeeded = scheduleIfNeeded;
+
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [sparkColor, sparkSize, sparkRadius, duration, ease, extraScale]);
 
   // Listen on window so clicks on any element register, even ones with their
   // own onClick handlers (we read the event in the capture phase).
   useEffect(() => {
     const onClick = (e: PointerEvent) => {
-      // canvas is fixed to the viewport — clientX/Y already match its
-      // coordinate space (no rect.left/top offset needed).
       const x = e.clientX;
       const y = e.clientY;
       const now = performance.now();
@@ -115,6 +130,9 @@ export default function ClickSpark({
         startTime: now,
       }));
       sparksRef.current.push(...fresh);
+      // Wake the draw loop if it went idle between clicks.
+      const canvas = canvasRef.current as HTMLCanvasElement & { _scheduleIfNeeded?: () => void };
+      canvas?._scheduleIfNeeded?.();
     };
     window.addEventListener("pointerdown", onClick);
     return () => window.removeEventListener("pointerdown", onClick);
