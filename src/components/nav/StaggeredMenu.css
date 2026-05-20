@@ -128,6 +128,15 @@
   opacity: 0;
 }
 
+@media (max-width: 767px) {
+  .staggered-menu-panel {
+    width: 100%;
+  }
+  .sm-prelayers {
+    width: 100%;
+  }
+}
+
 [data-position="left"] .staggered-menu-panel {
   right: auto;
   left: 0;

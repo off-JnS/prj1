@@ -249,7 +249,7 @@ export default function Landing() {
       </section>
 
       {/* FEATURED WORK --------------------------------------------------- */}
-      <section id="arbeiten" className="relative px-6 py-24 sm:py-32">
+      <section id="arbeiten" className="relative px-6 py-24 sm:py-32 bg-[var(--color-background)] text-[var(--color-foreground)]">
         <div className="mx-auto max-w-7xl">
           <motion.div
             initial={{ y: 30, opacity: 0 }}
@@ -323,7 +323,7 @@ export default function Landing() {
       </section>
 
       {/* CTA ------------------------------------------------------------- */}
-      <section id="kontakt" className="relative overflow-hidden px-6 py-32 sm:py-40">
+      <section id="kontakt" className="relative overflow-hidden px-6 py-32 sm:py-40 bg-[var(--color-background)] text-[var(--color-foreground)]">
         <div className="mx-auto max-w-5xl text-center">
           <motion.h2
             initial={{ y: 30, opacity: 0 }}

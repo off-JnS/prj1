@@ -63,8 +63,8 @@ export function WebGLShader() {
       resolution: { value: new THREE.Vector2(1, 1) },
       time: { value: 0 },
       xScale: { value: 1.0 },
-      yScale: { value: 0.5 },
-      distortion: { value: 0.12 },
+      yScale: { value: 0.9 },
+      distortion: { value: 0.18 },
       tint: { value: 0.55 },
     };
 
