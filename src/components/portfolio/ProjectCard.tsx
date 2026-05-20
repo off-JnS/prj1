@@ -22,8 +22,8 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.05 }}
       className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16"
     >
-      {/* Peek window */}
-      <div className={`relative lg:col-span-7 ${reversed ? "lg:order-2" : ""}`}>
+      {/* Peek window — desktop only */}
+      <div className={`relative hidden lg:block lg:col-span-7 ${reversed ? "lg:order-2" : ""}`}>
         {/* gigantic background numeral */}
         <span
           aria-hidden
