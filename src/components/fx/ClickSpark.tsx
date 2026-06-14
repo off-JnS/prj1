@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, type ReactNode, type MutableRefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode, type MutableRefObject } from "react";
 
 type Spark = { x: number; y: number; angle: number; startTime: number };
 
@@ -26,8 +26,18 @@ export default function ClickSpark({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const sparksRef = useRef<Spark[]>([]);
   const dprRef = useRef(1);
+  const [enabled, setEnabled] = useState(false);
+
+  // Sparks are pointer feedback — only meaningful on hover-capable, fine-pointer
+  // devices. Touch screens skip the canvas and listeners entirely, matching
+  // CustomCursor so the whole cursor layer is desktop-only.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setEnabled(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -44,7 +54,7 @@ export default function ClickSpark({
     resize();
     window.addEventListener("resize", resize);
     return () => window.removeEventListener("resize", resize);
-  }, []);
+  }, [enabled]);
 
   const ease = useCallback(
     (t: number) => {
@@ -63,6 +73,7 @@ export default function ClickSpark({
   );
 
   useEffect(() => {
+    if (!enabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -114,11 +125,12 @@ export default function ClickSpark({
     return () => {
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [sparkColor, sparkSize, sparkRadius, duration, ease, extraScale]);
+  }, [enabled, sparkColor, sparkSize, sparkRadius, duration, ease, extraScale]);
 
   // Listen on window so clicks on any element register, even ones with their
   // own onClick handlers (we read the event in the capture phase).
   useEffect(() => {
+    if (!enabled) return;
     const onClick = (e: PointerEvent) => {
       const x = e.clientX;
       const y = e.clientY;
@@ -136,23 +148,25 @@ export default function ClickSpark({
     };
     window.addEventListener("pointerdown", onClick);
     return () => window.removeEventListener("pointerdown", onClick);
-  }, [sparkCount]);
+  }, [enabled, sparkCount]);
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        style={{
-          display: "block",
-          userSelect: "none",
-          position: "fixed",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 100,
-          mixBlendMode: "difference",
-        }}
-      />
+      {enabled && (
+        <canvas
+          ref={canvasRef}
+          aria-hidden
+          style={{
+            display: "block",
+            userSelect: "none",
+            position: "fixed",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 100,
+            mixBlendMode: "difference",
+          }}
+        />
+      )}
       {children}
     </>
   );
