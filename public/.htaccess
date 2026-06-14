@@ -1,0 +1,43 @@
+# PRJ1 — Hostinger (Apache/LiteSpeed) configuration
+Options -MultiViews
+
+# ------------------------------------------------------------------
+# SPA fallback: route every non-file request to index.html so
+# react-router paths (/portfolio, /preise, …) work on direct load.
+# ------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Uncomment to force HTTPS at the server level (Hostinger's
+  # "Force HTTPS" hPanel toggle does the same — don't enable both):
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# ------------------------------------------------------------------
+# Caching: hashed build assets are immutable, HTML never cached.
+# ------------------------------------------------------------------
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2|woff|png|jpg|jpeg|webp|avif|svg|mp4)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ------------------------------------------------------------------
+# Compression
+# ------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/manifest+json
+</IfModule>
+
+AddType application/manifest+json .webmanifest

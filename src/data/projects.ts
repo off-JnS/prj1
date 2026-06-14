@@ -18,7 +18,6 @@ export interface Project {
   name: string;
   tagline?: string;
   url: string;
-  fallbackImage?: string;
   testimonial: Testimonial;
 }
 
@@ -28,7 +27,6 @@ export const projects: Project[] = [
     name: "Ehso's Burger",
     tagline: "Markenauftritt und Online-Präsenz für einen Burger-Laden mit Charakter.",
     url: "https://ehsos-burger.de",
-    fallbackImage: "/previews/ehsos-burger.jpg",
     testimonial: {
       kind: "text",
       quote:
@@ -39,16 +37,15 @@ export const projects: Project[] = [
   },
   {
     id: "beispiel-cafe",
-    name: "Beispiel Projekt - Cafe",
-    tagline: "Markenwebsite für ein Architekturbüro mit klarer Handschrift.",
+    name: "Café Literarität",
+    tagline: "Markenwebsite für ein Literatur-Café mit warmer, einladender Handschrift.",
     url: "https://cafeliteraritat.netlify.app/",
-    fallbackImage: "/previews/beispiel-cafe.jpg",
     testimonial: {
       kind: "text",
       quote:
-        "Endlich fühlt sich unsere Website so an wie unsere Entwürfe — ruhig, präzise und unverwechselbar. Anfragen für neue Projekte haben sich innerhalb eines Monats verdoppelt.",
+        "Unsere Website fühlt sich jetzt genauso gemütlich an wie das Café selbst — ruhig, einladend und unverwechselbar. Seit dem Launch kommen spürbar mehr Gäste über die Seite zu uns.",
       authorName: "Mara Iversen",
-      authorRole: "Gründerin, Nordwind Studio",
+      authorRole: "Inhaberin, Café Literarität",
     },
   },
   {
@@ -56,11 +53,11 @@ export const projects: Project[] = [
     name: "PRJ1",
     tagline: "Unsere eigene Website — gebaut mit denselben Standards, die wir für unsere Kunden anlegen.",
     url: "https://prj1.de",
-    fallbackImage: "/previews/prj1.jpg",
     testimonial: {
       kind: "video",
-      src: "/testimonials/placeholder.mp4",
-      poster: undefined,
+      // Add the video file at public/testimonials/prj1.mp4.
+      src: "/testimonials/prj1.mp4",
+      poster: "/og-image.jpg",
       authorName: "Elena Costa",
       authorRole: "Kreativdirektorin, Pionier Manufaktur",
     },

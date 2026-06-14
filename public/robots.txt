@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://prj1.de/sitemap.xml

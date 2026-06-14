@@ -1,29 +1,38 @@
-import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Sparkles, Layout, Globe, Wand2 } from "lucide-react";
-import { WebGLShader } from "@/components/ui/web-gl-shader";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import HeroCanvas from "@/components/fx/HeroCanvas";
+import ScrubText from "@/components/fx/ScrubText";
+import Marquee from "@/components/ui/Marquee";
+import Magnetic from "@/components/ui/Magnetic";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
-import { projects, type Project } from "@/data/projects";
+import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
+import { projects } from "@/data/projects";
+import { useIntro } from "@/lib/intro";
+import { scrollToElement } from "@/lib/smooth-scroll";
+import Seo from "@/lib/seo";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
 
 const services = [
   {
-    icon: Layout,
+    n: "01",
     title: "Markenwebsites",
     body: "One-Page- oder Multi-Page-Websites, die deine Marke in ein selbstbewusstes, fokussiertes Erlebnis verwandeln.",
   },
   {
-    icon: Wand2,
+    n: "02",
     title: "Motion & Interaktion",
     body: "Maßgeschneiderte Animationen, Scroll-Choreografie und Mikrointeraktionen — nichts von der Stange.",
   },
   {
-    icon: Globe,
+    n: "03",
     title: "Hosting & Domain",
-    body: "Wir kümmern uns um alles: zuverlässiges Hosting, die passende Domain und ein reibungsloser Launch — damit du dich auf dein Business konzentrieren kannst.",
+    body: "Wir kümmern uns um alles: zuverlässiges Hosting, die passende Domain und ein reibungsloser Launch.",
   },
   {
-    icon: Sparkles,
+    n: "04",
     title: "Kreativdirektion",
     body: "Typografie, Layout und Tonalität — mit derselben Sorgfalt wie der Code, der sie rendert.",
   },
@@ -32,112 +41,135 @@ const services = [
 const processSteps = [
   { n: "01", title: "Entdeckung", body: "Wir tauchen ein in die Marke, die Zielgruppe und das, was Erfolg wirklich bedeutet." },
   { n: "02", title: "Richtung", body: "Stimmung, Typografie, Layout, Motion — wir definieren die visuelle Welt, bevor eine Zeile Code geschrieben wird." },
-  { n: "03", title: "Umsetzung", body: "Handgefertigtes React + WebGL, optimiert für Geschwindigkeit, Barrierefreiheit und SEO." },
+  { n: "03", title: "Umsetzung", body: "Handgefertigter Code, optimiert für Geschwindigkeit, Barrierefreiheit und SEO." },
   { n: "04", title: "Launch", body: "Wir gehen live und arbeiten danach mit dir an Iterationen, damit deine Website weiter performt." },
 ];
 
-function ProjectPreviewCard({ p, i }: { p: Project; i: number }) {
-  const number = String(i + 1).padStart(2, "0");
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const [hovered, setHovered] = useState(false);
+const marqueeWords = ["Webdesign", "Motion", "Branding", "SEO", "Hosting", "Kreativdirektion"];
 
-  // Only mount the iframe once the card enters the viewport.
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+/* Hero lines rise out of their masks once the preloader curtain lifts. */
+const heroLine: Variants = {
+  hidden: { y: "110%" },
+  show: (delay: number) => ({
+    y: "0%",
+    transition: { duration: 1, delay, ease: EASE },
+  }),
+};
 
-  // Native load listener + fallback timer (handles iframes already loaded from cache)
-  useEffect(() => {
-    if (!inView) return;
-    const iframe = iframeRef.current;
-    if (!iframe) return;
-    const markLoaded = () => setTimeout(() => setIframeLoaded(true), 300);
-    iframe.addEventListener("load", markLoaded);
-    // Fallback: declare ready after 2 s regardless (catches cached/fast loads)
-    const fallback = setTimeout(() => setIframeLoaded(true), 2000);
-    return () => {
-      iframe.removeEventListener("load", markLoaded);
-      clearTimeout(fallback);
-    };
-  }, [inView]);
+const heroFade: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  show: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, delay, ease: EASE },
+  }),
+};
 
-  const showLive = iframeLoaded && hovered;
+function Hero() {
+  const { done } = useIntro();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const state = done ? "show" : "hidden";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-      className="group flex flex-col"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <section
+      ref={ref}
+      id="hero"
+      className="relative isolate flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-24 pt-28"
     >
+      <HeroCanvas />
+      {/* Scrim: keeps white copy legible where the light threads cross it. */}
       <div
-        ref={containerRef}
-        className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black shadow-[0_20px_60px_-30px_rgba(0,0,0,0.9)] transition-shadow duration-500 group-hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,1)]"
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,rgba(0,0,0,0.62),rgba(0,0,0,0)_72%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black"
+      />
+
+      <motion.div
+        style={{ y: contentY, opacity: contentOpacity }}
+        className="relative mx-auto w-full max-w-6xl text-center text-white"
       >
-        {/* Live iframe — only mounted once the card enters the viewport */}
-        {inView && (
-          <div
-            className={`absolute inset-0 origin-top-left ${showLive ? "" : "pointer-events-none"}`}
-            style={{ transform: "scale(0.42)", width: "240%", height: "240%", zIndex: 0 }}
-          >
-            <iframe
-              ref={iframeRef}
-              src={p.url}
-              title={p.name}
-              className="h-full w-full border-0"
-            />
-          </div>
-        )}
+        <motion.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker justify-center text-white/60">
+          PRJ1 — Webdesign Studio, Hamburg
+        </motion.p>
 
-        {/* Screenshot — sits on top until iframe is ready AND hovered */}
-        <img
-          src={p.fallbackImage}
-          alt={p.name}
-          loading="lazy"
-          className="absolute inset-0 z-10 h-full w-full object-cover object-top pointer-events-none pointer-fine:grayscale group-hover:grayscale-0 transition-all duration-700"
-          style={{ opacity: showLive ? 0 : 1 }}
-        />
+        <h1 className="u-display mt-6 text-[clamp(3.4rem,14vw,11.5rem)]">
+          <span className="block overflow-hidden">
+            <motion.span variants={heroLine} initial="hidden" animate={state} custom={0.15} className="block">
+              Design ist
+            </motion.span>
+          </span>
+          <span className="block overflow-hidden pb-[0.08em]">
+            <motion.span variants={heroLine} initial="hidden" animate={state} custom={0.27} className="block">
+              <em className="u-serif not-italic">alles.</em>
+            </motion.span>
+          </span>
+        </h1>
 
-        {/* Dim overlay */}
-        <div className="pointer-events-none absolute inset-0 z-20 transition-opacity duration-500 pointer-fine:bg-black/30 group-hover:opacity-0" />
-        <span className="pointer-events-none absolute left-4 top-3 z-30 font-mono text-xs tracking-[0.3em] text-white/70">
-          {number}
-        </span>
-        {/* "Live ansehen" button — opens full site in new tab */}
-        <button
-          onClick={(e) => { e.stopPropagation(); window.open(p.url, "_blank", "noreferrer"); }}
-          className="absolute right-4 top-4 z-30 hidden translate-y-[-4px] cursor-pointer items-center gap-1 rounded-full bg-white px-3 py-1.5 text-xs font-medium text-black opacity-0 transition-all duration-300 pointer-fine:inline-flex group-hover:translate-y-0 group-hover:opacity-100"
+        <motion.p
+          variants={heroFade}
+          initial="hidden"
+          animate={state}
+          custom={0.5}
+          className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/75 sm:max-w-2xl sm:text-lg"
         >
-          Live ansehen <ArrowRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
-      <div className="mt-5">
-        <h3 className="text-lg font-semibold tracking-tight">{p.name}</h3>
-        {p.tagline && (
-          <p className="mt-1 text-sm text-[var(--color-muted-foreground)]">
-            {p.tagline}
-          </p>
-        )}
-      </div>
-    </motion.div>
+          Websites, die sich bewegen, atmen und überzeugen. Strikt schwarz, strikt weiß,
+          kompromisslos durchdacht — für Marken, die nicht aussehen wollen wie alle anderen.
+        </motion.p>
+
+        <motion.div
+          variants={heroFade}
+          initial="hidden"
+          animate={state}
+          custom={0.62}
+          className="mt-6 flex items-center justify-center gap-2"
+        >
+          <span className="relative inline-flex h-3 w-3 items-center justify-center">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/70 opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]" />
+          </span>
+          <p className="u-kicker text-white/70">Verfügbar für neue Projekte</p>
+        </motion.div>
+
+        <motion.div
+          variants={heroFade}
+          initial="hidden"
+          animate={state}
+          custom={0.74}
+          className="mt-8 flex flex-col items-center justify-center gap-4 sm:mt-10 sm:flex-row"
+        >
+          <Magnetic className="w-full max-w-xs sm:w-auto sm:max-w-none">
+            <Link to="/portfolio" className="block">
+              <LiquidButton size="xl" className="w-full border border-white/30 text-white sm:w-auto">
+                Arbeiten ansehen
+              </LiquidButton>
+            </Link>
+          </Magnetic>
+          <Link
+            to="/kontakt"
+            className="group inline-flex min-h-11 items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+          >
+            Oder direkt anfragen
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        variants={heroFade}
+        initial="hidden"
+        animate={state}
+        custom={1}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-8"
+      >
+        <span className="u-kicker text-white/70">Scrollen</span>
+      </motion.div>
+    </section>
   );
 }
 
@@ -145,238 +177,154 @@ export default function Landing() {
   useEffect(() => {
     if (window.location.hash) {
       const el = document.getElementById(window.location.hash.slice(1));
-      if (el) setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
+      if (el) setTimeout(() => scrollToElement(el), 150);
     }
   }, []);
 
   return (
     <main className="relative">
-      {/* HERO ------------------------------------------------------------ */}
-      <section id="hero" className="relative isolate flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-20 pt-24 sm:pb-24 sm:pt-32">
-        <WebGLShader />
+      <Seo
+        title="PRJ1 — Webdesign Studio aus Hamburg"
+        description="PRJ1 gestaltet schwarz-weiße, animationsreiche Websites auf Award-Niveau — Markenwebsites, Motion und Kreativdirektion für Marken, die auffallen wollen."
+        path="/"
+      />
 
-        <div className="relative mx-auto w-full max-w-5xl text-center">
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[11px] uppercase tracking-[0.3em] text-white mix-blend-difference sm:text-xs sm:tracking-[0.4em]"
-          >
-            PRJ1 — Webdesign Studio
-          </motion.p>
+      <Hero />
 
-          <motion.h1
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-4 text-white mix-blend-difference text-[clamp(2.5rem,12vw,9rem)] font-black leading-[0.95] tracking-[-0.04em] sm:mt-6 sm:leading-[0.92]"
-          >
-            Design ist
-            <br />
-            alles.
-          </motion.h1>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white mix-blend-difference sm:mt-6 sm:max-w-2xl sm:text-lg"
-          >
-            Websites, die sich bewegen, atmen und überzeugen. Strikt schwarz, strikt weiß,
-            kompromisslos durchdacht — für Marken, die nicht aussehen wollen wie alle anderen.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="mt-5 flex items-center justify-center gap-2 sm:mt-8"
-          >
-            <span className="relative inline-flex h-3 w-3 items-center justify-center">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/80 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.85)]" />
+      {/* MARQUEE ---------------------------------------------------------- */}
+      <section aria-hidden="true" className="relative z-10 border-y border-[var(--color-border)] bg-black py-5 sm:py-7">
+        <Marquee duration={26}>
+          {marqueeWords.map((word) => (
+            <span key={word} className="u-display flex items-center text-3xl uppercase text-white sm:text-5xl">
+              <span className="px-6">{word}</span>
+              <span className="u-serif text-2xl text-white/40 sm:text-4xl">✺</span>
             </span>
-            <p className="text-[10px] uppercase tracking-widest text-white mix-blend-difference sm:text-xs">
-              Verfügbar für neue Projekte
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="mt-6 flex flex-col items-center justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4"
-          >
-            <Link to="/portfolio" className="w-full max-w-xs sm:w-auto sm:max-w-none">
-              <LiquidButton size="xl" className="w-full border border-white/30 text-white sm:w-auto">
-                Arbeiten ansehen
-              </LiquidButton>
-            </Link>
-            <Link
-              to="/pricing"
-              className="group inline-flex items-center gap-2 text-sm text-white mix-blend-difference transition-colors"
-            >
-              Oder direkt zu den Preisen
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* scroll affordance */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-white mix-blend-difference sm:bottom-8 sm:text-xs">
-          Scrollen
-        </div>
+          ))}
+        </Marquee>
       </section>
 
-      {/* SERVICES -------------------------------------------------------- */}
-      <section id="leistungen" className="section-invert relative z-10 px-6 py-24 sm:py-32">
+      {/* SERVICES --------------------------------------------------------- */}
+      <section id="leistungen" className="section-invert relative z-10 px-6 py-28 sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
-            className="max-w-3xl"
-          >
-            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-muted-foreground)]">
-              Was wir tun
-            </span>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-6xl">
-              Vier Disziplinen.
-              <br className="hidden sm:block" /> Ein Studio.
-            </h2>
-          </motion.div>
+          <Kicker index="01">Leistungen</Kicker>
+          <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
+            <Reveal>Vier Disziplinen.</Reveal>
+            <Reveal delay={0.08}>
+              <em className="u-serif not-italic">Ein</em> Studio.
+            </Reveal>
+          </h2>
 
-          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2">
-            {services.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.div
-                  key={s.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.6, delay: i * 0.08 }}
-                  className="group relative bg-[var(--color-background)] p-8 transition-colors hover:bg-[var(--color-muted)] sm:p-12"
-                >
-                  <Icon className="h-7 w-7 text-[var(--color-foreground)]" />
-                  <h3 className="mt-6 text-2xl font-semibold tracking-tight">{s.title}</h3>
-                  <p className="mt-3 max-w-md text-[var(--color-muted-foreground)]">{s.body}</p>
-                </motion.div>
-              );
-            })}
+          <div className="mt-16 sm:mt-24">
+            {services.map((s, i) => (
+              <FadeIn key={s.n} delay={i * 0.05} y={36}>
+                <div className="group relative grid grid-cols-1 gap-3 border-t border-[var(--color-border)] py-8 transition-colors duration-300 last:border-b sm:grid-cols-[5rem_1fr_1fr_3rem] sm:items-center sm:gap-8 sm:py-10 sm:hover:bg-black sm:hover:text-white">
+                  <span className="font-mono text-xs tracking-[0.3em] text-[var(--color-muted-foreground)] transition-colors duration-300 sm:group-hover:text-white/50 sm:pl-4">
+                    ({s.n})
+                  </span>
+                  <h3 className="u-display text-2xl sm:text-4xl">{s.title}</h3>
+                  <p className="max-w-md text-sm leading-relaxed text-[var(--color-muted-foreground)] transition-colors duration-300 sm:text-base sm:group-hover:text-white/70">
+                    {s.body}
+                  </p>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="hidden h-6 w-6 -translate-x-2 opacity-0 transition-all duration-300 sm:block sm:group-hover:translate-x-0 sm:group-hover:opacity-100 sm:mr-4"
+                  />
+                </div>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* FEATURED WORK --------------------------------------------------- */}
-      <section id="arbeiten" className="relative px-6 py-24 sm:py-32 bg-[var(--color-background)] text-[var(--color-foreground)]">
+      {/* SELECTED WORK ----------------------------------------------------- */}
+      <section id="arbeiten" className="relative z-10 bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end"
-          >
-            <div className="max-w-2xl">
-              <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-muted-foreground)]">
-                Ausgewählte Arbeiten
-              </span>
-              <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-                Ein paar Websites, die wir gelauncht haben.
+          <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <Kicker index="02">Ausgewählte Arbeiten</Kicker>
+              <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
+                <Reveal>Websites, die wir</Reveal>
+                <Reveal delay={0.08}>
+                  <em className="u-serif not-italic">gelauncht</em> haben.
+                </Reveal>
               </h2>
             </div>
-            <Link
-              to="/portfolio"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-[var(--color-foreground)]"
-            >
-              Komplettes Portfolio ansehen
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </motion.div>
-
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {projects.slice(0, 3).map((p, i) => (
-              <ProjectPreviewCard key={p.id} p={p} i={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROCESS --------------------------------------------------------- */}
-      <section id="prozess" className="section-invert relative px-6 py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl">
-          <motion.div
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7 }}
-            className="max-w-3xl"
-          >
-            <span className="text-xs uppercase tracking-[0.3em] text-[var(--color-muted-foreground)]">
-              Prozess
-            </span>
-            <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-              Vom Briefing zum Launch in vier Zügen.
-            </h2>
-          </motion.div>
-
-          <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] sm:grid-cols-2 lg:grid-cols-4">
-            {processSteps.map((step, i) => (
-              <motion.div
-                key={step.n}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: i * 0.08 }}
-                className="bg-[var(--color-background)] p-8"
+            <FadeIn delay={0.2}>
+              <Link
+                to="/portfolio"
+                className="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white/80 transition-colors hover:text-white"
               >
-                <div className="text-sm font-mono tracking-widest text-[var(--color-muted-foreground)]">
-                  {step.n}
-                </div>
-                <h3 className="mt-4 text-xl font-semibold">{step.title}</h3>
-                <p className="mt-2 text-sm text-[var(--color-muted-foreground)]">{step.body}</p>
-              </motion.div>
+                Komplettes Portfolio
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </FadeIn>
+          </div>
+
+          <div className="mt-16 sm:mt-24">
+            {projects.slice(0, 3).map((p, i) => (
+              <FadeIn key={p.id} delay={i * 0.06} y={36}>
+                <a
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group grid grid-cols-[2.5rem_1fr_2rem] items-center gap-4 border-t border-white/15 py-10 last:border-b sm:grid-cols-[6rem_1fr_1fr_3rem] sm:gap-8 sm:py-14"
+                >
+                  <span className="font-mono text-xs tracking-[0.3em] text-white/60">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="sm:contents">
+                    <h3 className="u-display text-[clamp(1.8rem,5vw,4rem)] transition-transform duration-500 ease-out group-hover:translate-x-3">
+                      {p.name}
+                    </h3>
+                    {p.tagline && (
+                      <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65 sm:mt-0 sm:text-base">
+                        {p.tagline}
+                      </p>
+                    )}
+                  </div>
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="h-6 w-6 text-white/40 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white sm:h-8 sm:w-8"
+                  />
+                </a>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA ------------------------------------------------------------- */}
-      <section id="kontakt" className="relative overflow-hidden px-6 py-32 sm:py-40 bg-[var(--color-background)] text-[var(--color-foreground)]">
-        <div className="mx-auto max-w-5xl text-center">
-          <motion.h2
-            initial={{ y: 30, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8 }}
-            className="text-5xl font-black leading-[0.95] tracking-tight sm:text-7xl"
-          >
-            Bereit, etwas zu bauen,
-            <br />
-            das man auch zeigen will?
-          </motion.h2>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row"
-          >
-            <Link to="/pricing">
-              <LiquidButton size="xl" className="border border-white/30 text-white">
-                Preise ansehen
-              </LiquidButton>
-            </Link>
-            <a
-              href="mailto:hello@prj1.studio"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--color-foreground)] underline-offset-4 hover:underline"
-            >
-              Oder schreib dem Studio
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </motion.div>
+      {/* MANIFESTO ---------------------------------------------------------- */}
+      <section id="manifest" className="section-invert relative z-10 px-6 py-32 sm:px-10 sm:py-48">
+        <div className="mx-auto max-w-5xl">
+          <Kicker index="03">Haltung</Kicker>
+          <ScrubText
+            className="u-display mt-10 text-[clamp(1.9rem,4.6vw,3.9rem)] leading-[1.12]"
+            text="Wir glauben nicht an Templates. Wir glauben an *Typografie,* an Rhythmus und an Reduktion. Schwarz und Weiß sind keine Einschränkung — sie sind eine *Haltung.* Jede Website, die unser Studio verlässt, ist von Hand gebaut. Pixel für Pixel."
+          />
+        </div>
+      </section>
+
+      {/* PROCESS ------------------------------------------------------------ */}
+      <section id="prozess" className="relative z-10 bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
+        <div className="mx-auto max-w-7xl">
+          <Kicker index="04">Prozess</Kicker>
+          <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
+            <Reveal>
+              Vom Briefing zum Launch — <em className="u-serif not-italic">in vier Zügen.</em>
+            </Reveal>
+          </h2>
+
+          <div className="mt-16 grid grid-cols-1 gap-x-10 gap-y-12 sm:mt-24 sm:grid-cols-2 lg:grid-cols-4">
+            {processSteps.map((step, i) => (
+              <FadeIn key={step.n} delay={i * 0.08} y={36}>
+                <div className="border-t-2 border-white pt-6">
+                  <span className="font-mono text-xs tracking-[0.3em] text-white/60">({step.n})</span>
+                  <h3 className="u-display mt-4 text-2xl">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white/60">{step.body}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
     </main>

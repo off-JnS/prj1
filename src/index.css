@@ -1,14 +1,18 @@
 @import "tailwindcss";
 
-/* Project preview cards: fade screenshot out on hover only after the iframe has loaded */
-.group:hover .preview-screenshot[data-iframe-ready="true"] {
-  opacity: 0;
-}
+/* Self-hosted fonts (DSGVO-safe — no Google CDN requests).
+ * Archivo Variable carries a width axis: wide + heavy for display setting.
+ * Instrument Serif italic is the editorial accent voice.
+ * JetBrains Mono is the technical label voice. */
+@import "@fontsource-variable/archivo/wdth.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource-variable/jetbrains-mono/index.css";
 
 /* ---------------------------------------------------------------
  * PRJ1 — strictly monochrome theme
- * Every surface and accent is greyscale. We swap background/foreground
- * on a per-section basis with `.section-invert`.
+ * Every surface and accent is greyscale. Sections swap
+ * background/foreground with `.section-invert`.
  * ------------------------------------------------------------- */
 @theme {
   --color-background: oklch(0 0 0);
@@ -21,27 +25,40 @@
   --color-secondary-foreground: oklch(1 0 0);
 
   --color-muted: oklch(0.14 0 0);
-  --color-muted-foreground: oklch(0.7 0 0);
+  --color-muted-foreground: oklch(0.72 0 0);
 
   --color-accent: oklch(1 0 0);
   --color-accent-foreground: oklch(0 0 0);
 
-  --color-destructive: oklch(0.4 0 0);
+  --color-destructive: oklch(0.5 0 0);
   --color-destructive-foreground: oklch(1 0 0);
 
-  --color-border: oklch(0.24 0 0);
-  --color-input: oklch(0.24 0 0);
+  --color-border: oklch(0.26 0 0);
+  --color-input: oklch(0.26 0 0);
   --color-ring: oklch(1 0 0);
 
-  --color-card: oklch(0.04 0 0);
+  --color-card: oklch(0.05 0 0);
   --color-card-foreground: oklch(1 0 0);
-  --color-popover: oklch(0.04 0 0);
+  --color-popover: oklch(0.05 0 0);
   --color-popover-foreground: oklch(1 0 0);
 
   --radius: 0.75rem;
 
-  --font-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Archivo Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Shared motion vocabulary — one rhythm across CSS, GSAP and Framer. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --animate-marquee: marquee var(--marquee-duration, 28s) linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 @layer base {
@@ -54,13 +71,21 @@
   html,
   body,
   #root {
-    height: 100%;
+    min-height: 100%;
     background: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    /* Guard against accidental horizontal scroll from full-bleed sections. */
+    overflow-x: clip;
   }
 
   ::selection {
@@ -68,12 +93,81 @@
     color: var(--color-background);
   }
 
-  html {
-    scroll-behavior: smooth;
+  /* Lenis drives smooth scrolling — native smooth would fight it. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-/* Hide the native cursor + scrollbar on devices that can show our custom one. */
+@layer components {
+  /* Editorial display setting: wide, heavy, tight. */
+  .u-display {
+    font-family: var(--font-sans);
+    font-stretch: 115%;
+    font-weight: 740;
+    letter-spacing: -0.035em;
+    line-height: 0.94;
+  }
+
+  /* Accent voice for single emphasised words inside display headlines. */
+  .u-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: 100%;
+    letter-spacing: -0.01em;
+  }
+
+  /* Technical label: mono, uppercase, generously tracked. */
+  .u-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--color-muted-foreground);
+  }
+
+  /* Hairline rule that adapts to the section's palette. */
+  .u-rule {
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Keyboard-accessible "skip to content" — hidden until focused. */
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 110;
+    transform: translateY(-300%);
+    background: var(--color-foreground);
+    color: var(--color-background);
+    border-radius: 999px;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* Hide the native cursor + scrollbar on devices that show our custom one. */
 @media (hover: hover) and (pointer: fine) {
   html,
   body,
@@ -81,6 +175,9 @@
   button,
   label,
   summary,
+  input,
+  textarea,
+  select,
   [role="button"],
   [data-cursor] {
     cursor: none !important;
@@ -103,12 +200,27 @@
   --color-secondary: oklch(0.94 0 0);
   --color-secondary-foreground: oklch(0 0 0);
   --color-muted: oklch(0.96 0 0);
-  --color-muted-foreground: oklch(0.35 0 0);
-  --color-border: oklch(0.85 0 0);
+  --color-muted-foreground: oklch(0.38 0 0);
+  --color-border: oklch(0.86 0 0);
+  --color-input: oklch(0.86 0 0);
+  --color-ring: oklch(0 0 0);
   --color-card: oklch(0.98 0 0);
   --color-card-foreground: oklch(0 0 0);
   background: var(--color-background);
   color: var(--color-foreground);
+}
+
+/* Film grain — one fixed SVG-noise layer above everything paintable. */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  width: 200%;
+  height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
 /* Respect reduced motion globally. Heavy WebGL/GSAP animations are

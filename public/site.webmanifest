@@ -1,0 +1,17 @@
+{
+  "name": "PRJ1 — Webdesign Studio",
+  "short_name": "PRJ1",
+  "description": "Webdesign auf Award-Niveau. Schwarz-weiße, animationsreiche Websites für Marken, die auffallen wollen.",
+  "lang": "de",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/logo/PRJ-favicon-White.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}

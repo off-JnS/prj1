@@ -1,5 +1,3 @@
-import { Quote } from "lucide-react";
-
 interface TestimonialTextProps {
   quote: string;
   authorName: string;
@@ -8,15 +6,17 @@ interface TestimonialTextProps {
 
 export default function TestimonialText({ quote, authorName, authorRole }: TestimonialTextProps) {
   return (
-    <figure className="flex h-full flex-col justify-between rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-6 sm:p-8">
-      <Quote className="h-7 w-7 text-[var(--color-foreground)] opacity-50" aria-hidden />
-      <blockquote className="mt-4 text-base leading-relaxed text-[var(--color-foreground)] sm:text-lg">
-        “{quote}”
+    <figure className="flex h-full flex-col justify-between rounded-2xl border border-[var(--color-border)] bg-[var(--color-card)] p-7 sm:p-10">
+      <span aria-hidden="true" className="u-serif text-5xl leading-none text-[var(--color-muted-foreground)]">
+        “
+      </span>
+      <blockquote className="u-serif mt-2 text-xl leading-snug text-[var(--color-foreground)] sm:text-2xl">
+        {quote}
       </blockquote>
-      <figcaption className="mt-6 border-t border-[var(--color-border)] pt-4">
+      <figcaption className="mt-8 flex items-baseline gap-3 border-t border-[var(--color-border)] pt-5">
         <div className="text-sm font-semibold text-[var(--color-foreground)]">{authorName}</div>
         {authorRole && (
-          <div className="text-xs text-[var(--color-muted-foreground)]">{authorRole}</div>
+          <div className="u-kicker !tracking-[0.15em]">{authorRole}</div>
         )}
       </figcaption>
     </figure>

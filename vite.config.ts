@@ -17,8 +17,7 @@ export default defineConfig({
           // Split large vendors into separate cacheable chunks.
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-motion': ['framer-motion'],
-          'vendor-gsap': ['gsap'],
-          'vendor-three': ['three'],
+          'vendor-gsap': ['gsap', 'lenis'],
         },
       },
     },
