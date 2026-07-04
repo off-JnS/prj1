@@ -19,7 +19,7 @@ const services = [
   {
     n: "01",
     title: "Markenwebsites",
-    body: "One-Page- oder Multi-Page-Websites, die deine Marke in ein selbstbewusstes, fokussiertes Erlebnis verwandeln.",
+    body: "One-Page- oder Multi-Page-Websites, die deine Marke in ein fokussiertes Erlebnis verwandeln.",
   },
   {
     n: "02",
@@ -28,8 +28,8 @@ const services = [
   },
   {
     n: "03",
-    title: "Hosting & Domain",
-    body: "Wir kümmern uns um alles: zuverlässiges Hosting, die passende Domain und ein reibungsloser Launch.",
+    title: "Hosting & Wartung",
+    body: "Hosting, Domain, Updates und Monitoring — ab 59 € im Monat komplett abgedeckt.",
   },
   {
     n: "04",
@@ -118,8 +118,8 @@ function Hero() {
           custom={0.5}
           className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/75 sm:max-w-2xl sm:text-lg"
         >
-          Websites, die sich bewegen, atmen und überzeugen. Strikt schwarz, strikt weiß,
-          kompromisslos durchdacht — für Marken, die nicht aussehen wollen wie alle anderen.
+          Websites, die sich bewegen und überzeugen — strikt schwarz-weiß,
+          für Marken, die nicht aussehen wollen wie alle anderen.
         </motion.p>
 
         <motion.div

@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
-import PricingCards from "@/components/pricing/PricingCards";
+import { BuildCards, CareCards } from "@/components/pricing/PricingCards";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
-import { plans, pricingFaq } from "@/data/plans";
+import { buildPlans, carePlans, pricingFaq } from "@/data/plans";
+import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
 export default function Pricing() {
@@ -10,7 +11,7 @@ export default function Pricing() {
     <main className="relative px-6 pb-32 pt-36 sm:px-10 sm:pt-44">
       <Seo
         title="Preise & Pakete — PRJ1"
-        description="Transparente Webdesign-Pakete von PRJ1: Essenz, Signatur und Atelier — handgemachte Websites ohne Themes und ohne Templates."
+        description="Webdesign zum Festpreis: Websites ab 1.000 €, Wartung ab 59 €/Monat. Handgemacht in Hamburg — ohne Themes, ohne Templates."
         path="/preise"
       />
       <JsonLd
@@ -20,6 +21,20 @@ export default function Pricing() {
             "@type": "Question",
             name: item.q,
             acceptedAnswer: { "@type": "Answer", text: item.a },
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@type": "Service",
+          name: "Webdesign — PRJ1",
+          provider: { "@type": "ProfessionalService", name: SITE.name, url: SITE.url },
+          areaServed: "DE",
+          offers: [...buildPlans, ...carePlans].map((plan) => ({
+            "@type": "Offer",
+            name: plan.name,
+            price: plan.price,
+            priceCurrency: "EUR",
           })),
         }}
       />
@@ -34,14 +49,33 @@ export default function Pricing() {
         </h1>
         <FadeIn delay={0.25}>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
-            Drei Pakete, ein Versprechen: alles handgemacht — keine Themes, keine
-            Templates. Hosting, Domain und Pflege sind immer enthalten.
+            Einmal zahlen, launchen, fertig — alles handgemacht, keine Templates.
+            Um den Betrieb kümmert sich danach ein Wartungspaket.
           </p>
         </FadeIn>
       </header>
 
-      <section className="mx-auto mt-20 max-w-7xl sm:mt-28" aria-label="Pakete">
-        <PricingCards plans={plans} />
+      {/* Website builds ------------------------------------------------------ */}
+      <section className="mx-auto mt-20 max-w-7xl sm:mt-28" aria-label="Website-Pakete">
+        <BuildCards plans={buildPlans} />
+      </section>
+
+      {/* Maintenance retainers ----------------------------------------------- */}
+      <section className="mx-auto mt-28 max-w-7xl sm:mt-40" aria-label="Wartung und Betrieb">
+        <Kicker>Wartung & Betrieb</Kicker>
+        <h2 className="u-display mt-6 text-[clamp(2rem,5vw,3.8rem)]">
+          <Reveal>
+            Wir halten sie <em className="u-serif not-italic">am Laufen.</em>
+          </Reveal>
+        </h2>
+        <FadeIn delay={0.15}>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)]">
+            Monatlich kündbar. Hosting und Domain immer inklusive.
+          </p>
+        </FadeIn>
+        <div className="mt-12">
+          <CareCards plans={carePlans} />
+        </div>
       </section>
 
       {/* FAQ ---------------------------------------------------------------- */}

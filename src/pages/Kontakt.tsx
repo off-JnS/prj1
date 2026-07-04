@@ -8,9 +8,9 @@ import Seo, { JsonLd } from "@/lib/seo";
 type Status = "idle" | "sending" | "success" | "error";
 
 const budgets = [
-  "Essenz — ab 1.200 € / Monat",
-  "Signatur — ab 2.800 € / Monat",
-  "Atelier — ab 6.000 € / Monat",
+  "Starter — 1.000 €",
+  "Professional — 1.750 €",
+  "Premium — 2.750 €",
   "Individuell / noch unklar",
 ];
 
@@ -122,8 +122,8 @@ export default function Kontakt() {
         </h1>
         <FadeIn delay={0.2}>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
-            Erzähl uns kurz, was du vorhast — wir melden uns innerhalb von
-            24 Stunden mit einer ehrlichen Einschätzung. Unverbindlich.
+            Erzähl uns kurz, was du vorhast — Antwort innerhalb von 24 Stunden.
+            Unverbindlich.
           </p>
         </FadeIn>
       </header>

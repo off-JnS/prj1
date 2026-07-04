@@ -9,22 +9,22 @@ const principles = [
   {
     n: "01",
     title: "Reduktion",
-    body: "Alles, was nicht trägt, fliegt raus. Was bleibt, bekommt Raum, Rhythmus und Gewicht — Schwarz und Weiß zwingen uns zu Entscheidungen.",
+    body: "Alles, was nicht trägt, fliegt raus. Was bleibt, bekommt Raum und Gewicht.",
   },
   {
     n: "02",
     title: "Handarbeit",
-    body: "Kein Theme, kein Baukasten, kein Plugin-Friedhof. Jede Zeile Code und jede Kurve einer Animation entsteht für genau ein Projekt: deins.",
+    body: "Kein Theme, kein Baukasten. Jede Zeile Code entsteht für genau ein Projekt: deins.",
   },
   {
     n: "03",
     title: "Tempo",
-    body: "Schöne Websites, die langsam laden, sind kaputte Websites. Performance ist bei uns kein Nachtrag, sondern Teil des Designs.",
+    body: "Schöne Websites, die langsam laden, sind kaputte Websites. Performance ist Teil des Designs.",
   },
   {
     n: "04",
     title: "Verantwortung",
-    body: "Ein Ansprechpartner, klare Aussagen, ehrliche Einschätzungen. Wenn etwas nicht sinnvoll ist, sagen wir es — bevor es Geld kostet.",
+    body: "Ein Ansprechpartner, klare Aussagen. Wenn etwas nicht sinnvoll ist, sagen wir es — bevor es Geld kostet.",
   },
 ];
 
@@ -137,14 +137,9 @@ export default function Studio() {
             </h2>
             <FadeIn delay={0.15}>
               <p className="mt-8 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
-                Designer und Entwickler in einer Person — deshalb gibt es bei
-                PRJ1 keine Übergabeverluste zwischen Entwurf und Code. Was im
-                Design entschieden wird, kommt genau so im Browser an: jede
-                Animation, jeder Abstand, jedes Detail.
-              </p>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
-                Gearbeitet wird aus {SITE.address.city} — für Kunden, denen ihre
-                digitale Präsenz nicht egal ist.
+                Designer und Entwickler in einer Person — was im Design
+                entschieden wird, kommt genau so im Browser an. Gearbeitet wird
+                aus {SITE.address.city}.
               </p>
             </FadeIn>
             <FadeIn delay={0.25} className="mt-10 flex flex-wrap items-center gap-6">

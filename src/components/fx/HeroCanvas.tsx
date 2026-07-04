@@ -82,7 +82,10 @@ export default function HeroCanvas() {
     const start = performance.now();
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Cap resolution harder on small screens — the shader is fill-rate
+      // bound and the soft threads hide the difference on mobile.
+      const cap = window.innerWidth < 768 ? 1.5 : 2;
+      const dpr = Math.min(window.devicePixelRatio || 1, cap);
       const w = Math.round(canvas.clientWidth * dpr);
       const h = Math.round(canvas.clientHeight * dpr);
       if (w === 0 || h === 0) return;

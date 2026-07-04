@@ -223,6 +223,14 @@
   mix-blend-mode: overlay;
 }
 
+/* The full-viewport blend layer is expensive on mobile GPUs and barely
+ * visible at small sizes — skip it there. */
+@media (max-width: 767px) {
+  .grain-overlay {
+    display: none;
+  }
+}
+
 /* Respect reduced motion globally. Heavy WebGL/GSAP animations are
  * paused programmatically in their components; this catches everything
  * driven by CSS transitions and Framer-Motion's reduced-motion checks. */

@@ -1,108 +1,126 @@
 import { SITE } from "@/config/site";
 
-export interface PricingPlan {
+export interface BuildPlan {
   name: string;
-  price: string;
-  yearlyPrice: string;
-  period: string;
+  /** One-time price in EUR, no decimals. */
+  price: number;
   features: string[];
   description: string;
   buttonText: string;
   isPopular?: boolean;
   /**
-   * Stripe Payment Links — create them in the Stripe dashboard and paste the
-   * URLs here. While empty, buttons fall back to a pre-filled e-mail.
+   * Stripe Payment Link — create it in the Stripe dashboard and paste the
+   * URL here. While empty, buttons fall back to a pre-filled e-mail.
    */
-  paymentLinkMonthly: string;
-  paymentLinkYearly: string;
+  paymentLink: string;
+}
+
+export interface CarePlan {
+  name: string;
+  /** Monthly price in EUR, no decimals. */
+  price: number;
+  features: string[];
+  isPopular?: boolean;
+  paymentLink: string;
 }
 
 /** Resolves a plan's checkout target: Stripe Payment Link or mailto fallback. */
-export function planHref(plan: PricingPlan, yearly: boolean): string {
-  const link = yearly ? plan.paymentLinkYearly : plan.paymentLinkMonthly;
+export function planHref(plan: BuildPlan | CarePlan): string {
   return (
-    link ||
-    `mailto:${SITE.email}?subject=${encodeURIComponent(`${plan.name}-Paket (${yearly ? "jährlich" : "monatlich"})`)}`
+    plan.paymentLink ||
+    `mailto:${SITE.email}?subject=${encodeURIComponent(`${plan.name}-Paket anfragen`)}`
   );
 }
 
-export const plans: PricingPlan[] = [
+/** Website builds — one-time, fixed price. */
+export const buildPlans: BuildPlan[] = [
   {
-    name: "Essenz",
-    price: "1200",
-    yearlyPrice: "960",
-    period: "Monat",
-    description:
-      "Eine durchdachte One-Page-Website für junge Gründer und kleine Unternehmen.",
+    name: "Starter",
+    price: 1000,
+    description: "Eine fokussierte One-Page-Website — der schnellste Weg zu einem starken Auftritt.",
     features: [
-      "Bis zu 5 Sektionen, vollständig individuell",
-      "Pixelgenau responsive auf jedem Gerät",
+      "One-Page-Website, komplett individuell",
+      "Responsive auf jedem Gerät",
       "Kontaktformular & Analytics",
+      "Basis-SEO & schnelle Ladezeiten",
       "2 Korrekturschleifen",
-      "Support per E-Mail",
     ],
-    buttonText: "Mit Essenz starten",
-    paymentLinkMonthly: "",
-    paymentLinkYearly: "",
+    buttonText: "Mit Starter loslegen",
+    paymentLink: "",
   },
   {
-    name: "Signatur",
-    price: "2800",
-    yearlyPrice: "2240",
-    period: "Monat",
-    description:
-      "Mehrseitige Websites mit eigener Motion, Animationen und Texten mit Haltung.",
+    name: "Professional",
+    price: 1750,
+    description: "Mehrseitige Website mit eigener Motion — für Marken, die auffallen wollen.",
     features: [
-      "Bis zu 8 individuell gestaltete Seiten",
+      "Bis zu 5 individuell gestaltete Seiten",
       "Maßgeschneiderte Motion & Mikrointeraktionen",
-      "CMS-Anbindung (Sanity / Contentful)",
+      "Erweiterte SEO-Optimierung",
+      "Google Business Profil-Einrichtung",
       "Unbegrenzte Korrekturschleifen",
-      "Priority-Support & laufende Iterationen",
     ],
-    buttonText: "Signatur wählen",
+    buttonText: "Professional wählen",
     isPopular: true,
-    paymentLinkMonthly: "",
-    paymentLinkYearly: "",
+    paymentLink: "",
   },
   {
-    name: "Atelier",
-    price: "6000",
-    yearlyPrice: "4800",
-    period: "Monat",
-    description:
-      "Flaggschiff-Websites mit Art Direction, Texten und langfristiger Begleitung.",
+    name: "Premium",
+    price: 2750,
+    description: "Das Flaggschiff: Art Direction, Motion und Technik ohne Kompromisse.",
     features: [
-      "Alles aus Signatur",
+      "Alles aus Professional",
       "Volle Art Direction & Kreativstrategie",
       "Eigene WebGL- oder 3D-Erlebnisse",
-      "Performance-Budget & SEO-Retainer",
-      "Vierteljährliche Kreativ-Reviews",
+      "Copywriting inklusive",
+      "Priority-Support beim Launch",
     ],
-    buttonText: "Studio kontaktieren",
-    paymentLinkMonthly: "",
-    paymentLinkYearly: "",
+    buttonText: "Premium anfragen",
+    paymentLink: "",
+  },
+];
+
+/** Maintenance retainers — monthly, cancellable. */
+export const carePlans: CarePlan[] = [
+  {
+    name: "Basic",
+    price: 59,
+    features: ["Hosting & Domain", "Uptime-Monitoring", "Sicherheits-Updates"],
+    paymentLink: "",
+  },
+  {
+    name: "Standard",
+    price: 99,
+    features: ["Alles aus Basic", "Monatlicher Report", "Kleinere Inhalts-Updates"],
+    isPopular: true,
+    paymentLink: "",
+  },
+  {
+    name: "Premium",
+    price: 149,
+    features: ["Alles aus Standard", "Google Business Profil-Pflege", "Laufende SEO-Updates"],
+    paymentLink: "",
   },
 ];
 
 export const pricingFaq = [
   {
     q: "Wie lange dauert ein Projekt?",
-    a: "Eine One-Page-Website (Essenz) launcht in der Regel innerhalb von 2–3 Wochen. Mehrseitige Projekte (Signatur) brauchen 4–8 Wochen, Atelier-Projekte planen wir individuell.",
+    a: "Starter launcht in 2–3 Wochen, Professional in 4–6 Wochen. Premium-Projekte planen wir individuell.",
   },
   {
-    q: "Warum monatliche Zahlung?",
-    a: "Statt einer großen Einmalsumme zahlst du planbar pro Monat — Design, Entwicklung, Hosting, Domain und laufende Pflege sind enthalten. Bei jährlicher Zahlung sparst du 20 %.",
+    q: "Was ist im Festpreis enthalten?",
+    a: "Design, Entwicklung und Launch — einmal zahlen, fertig. Hosting und Pflege übernimmt danach ein Wartungspaket ab 59 € im Monat.",
   },
   {
-    q: "Kann ich später das Paket wechseln?",
-    a: "Ja. Ein Upgrade ist jederzeit möglich — wir rechnen den laufenden Monat einfach anteilig an. Sprich uns an, wir finden die passende Lösung.",
+    q: "Brauche ich ein Wartungspaket?",
+    a: "Empfohlen, aber keine Pflicht. Ohne Wartungspaket übergeben wir dir die Website zum Selbst-Hosten — inklusive kurzer Einweisung.",
   },
   {
     q: "Wem gehört die Website?",
-    a: "Dir. Design und Inhalte gehören nach Vertragsende dir; auf Wunsch übergeben wir den Code und unterstützen beim Umzug zu einem eigenen Hosting.",
+    a: "Dir. Design, Code und Inhalte gehören nach Zahlung vollständig dir.",
   },
   {
     q: "Was, wenn ich etwas ganz Eigenes brauche?",
-    a: "Dann bauen wir es. Schreib uns kurz, worum es geht — wir melden uns innerhalb von 24 Stunden mit einer ehrlichen Einschätzung und einem Angebot.",
+    a: "Dann bauen wir es. Schreib uns kurz, worum es geht — wir antworten innerhalb von 24 Stunden mit einer ehrlichen Einschätzung.",
   },
 ];

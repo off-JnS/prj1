@@ -30,9 +30,18 @@ function ScrollToTop() {
 }
 
 export default function App() {
-  // The intro curtain only plays for full loads of the start page —
-  // deep links go straight to their content.
-  const [showIntro] = useState(() => window.location.pathname === "/");
+  // The intro curtain only plays for full loads of the start page — deep
+  // links and repeat visits within the same session go straight to content.
+  const [showIntro] = useState(() => {
+    if (window.location.pathname !== "/") return false;
+    try {
+      if (sessionStorage.getItem("prj1-intro-seen")) return false;
+      sessionStorage.setItem("prj1-intro-seen", "1");
+    } catch {
+      /* storage blocked — play the intro anyway */
+    }
+    return true;
+  });
 
   return (
     <IntroProvider initialDone={!showIntro}>
