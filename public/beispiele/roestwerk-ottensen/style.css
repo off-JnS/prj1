@@ -1,0 +1,326 @@
+/* ==========================================================================
+   Röstwerk Ottensen — Basic tier demo
+   Warm, cozy café aesthetic: cream paper, roast brown, terracotta accent.
+   Vanilla CSS, no framework.
+   ========================================================================== */
+
+:root {
+  --clr-cream: #FBF6EE;      /* page background */
+  --clr-tint: #F3EADC;       /* tinted sections */
+  --clr-ink: #2E2118;        /* primary text (espresso) */
+  --clr-ink-soft: #5C4B3C;   /* secondary text */
+  --clr-accent: #C4692F;     /* terracotta CTA */
+  --clr-accent-deep: #8A4B24;
+  --clr-border: #E4D5BE;
+  --clr-error: #B3261E;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius: 14px;
+  --shadow: 0 18px 40px -22px rgba(46, 33, 24, 0.35);
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--clr-ink);
+  background: var(--clr-cream);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* decorative offsets (hero stamp) must never cause page scroll */
+}
+
+img { max-width: 100%; height: auto; display: block; border-radius: var(--radius); }
+
+a { color: var(--clr-accent-deep); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--clr-accent); }
+
+:focus-visible { outline: 3px solid var(--clr-accent); outline-offset: 3px; border-radius: 4px; }
+
+.container { width: min(1120px, 100% - 2.5rem); margin-inline: auto; }
+
+/* ---------- Typography ---------- */
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; hyphens: auto; }
+h1 { font-size: clamp(2.1rem, 5.5vw, 3.9rem); }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+h3 { font-size: 1.25rem; }
+
+h1 span { color: var(--clr-accent); font-style: italic; }
+
+.eyebrow {
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--clr-accent-deep); margin-bottom: 0.9rem;
+}
+.eyebrow--center { text-align: center; }
+.section-title { text-align: center; margin-bottom: 2.75rem; }
+.lead { font-size: 1.15rem; color: var(--clr-ink-soft); margin-top: 1.1rem; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block; padding: 0.85rem 1.7rem; border-radius: 999px;
+  font-weight: 700; font-size: 1rem; text-decoration: none; cursor: pointer;
+  border: 2px solid transparent; transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.btn--primary { background: var(--clr-accent); color: #fff; box-shadow: var(--shadow); }
+.btn--primary:hover { background: var(--clr-accent-deep); color: #fff; transform: translateY(-2px); }
+.btn--ghost { border-color: var(--clr-ink); color: var(--clr-ink); }
+.btn--ghost:hover { background: var(--clr-ink); color: var(--clr-cream); }
+
+/* ---------- Tier badge ---------- */
+.tier-badge {
+  position: fixed; left: 1rem; bottom: 1rem; z-index: 70;
+  background: var(--clr-ink); color: var(--clr-cream);
+  border-radius: 12px; padding: 0.5rem 0.9rem; line-height: 1.3;
+  box-shadow: var(--shadow); pointer-events: none;
+}
+.tier-badge__tier {
+  display: block; font-weight: 700; font-size: 0.78rem;
+  letter-spacing: 0.28em; text-transform: uppercase; color: #E8B98F;
+}
+.tier-badge__note { display: block; font-size: 0.72rem; opacity: 0.85; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(251, 246, 238, 0.92); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--clr-border);
+}
+.site-header__inner { display: flex; align-items: center; justify-content: space-between; padding-block: 0.85rem; }
+
+.logo {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-display); font-size: 1.25rem; font-weight: 600;
+  color: var(--clr-ink); text-decoration: none;
+}
+.logo em { color: var(--clr-accent); font-style: italic; }
+
+.main-nav { display: flex; align-items: center; gap: 1.6rem; }
+.main-nav a { font-weight: 700; font-size: 0.95rem; text-decoration: none; color: var(--clr-ink); }
+.main-nav a:hover { color: var(--clr-accent); }
+.main-nav__cta {
+  background: var(--clr-ink); color: var(--clr-cream) !important;
+  padding: 0.5rem 1.1rem; border-radius: 999px; transition: background 0.2s ease;
+}
+.main-nav__cta:hover { background: var(--clr-accent); }
+
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 0.5rem; min-width: 44px; min-height: 44px; }
+.nav-toggle span { display: block; width: 24px; height: 2.5px; background: var(--clr-ink); margin: 5px 0; border-radius: 2px; transition: transform 0.25s ease, opacity 0.25s ease; }
+
+/* ---------- Hero ---------- */
+.hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 6vw, 5rem); }
+.hero__inner { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.hero__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+
+.hero__media { position: relative; }
+.hero__media img { box-shadow: var(--shadow); aspect-ratio: 860 / 1040; object-fit: cover; }
+.hero__stamp {
+  position: absolute; top: -1.4rem; right: -0.9rem;
+  width: 108px; height: 108px; border-radius: 50%;
+  background: var(--clr-accent); color: #fff;
+  display: grid; place-content: center; text-align: center;
+  font-family: var(--font-display); font-size: 0.82rem; line-height: 1.3;
+  transform: rotate(8deg); box-shadow: var(--shadow);
+}
+
+/* ---------- Info ribbon ---------- */
+.ribbon { background: var(--clr-ink); color: var(--clr-cream); }
+.ribbon__inner { display: grid; grid-template-columns: repeat(3, 1fr); }
+.ribbon__item { padding: 1.2rem 1rem; text-align: center; display: grid; gap: 0.15rem; }
+.ribbon__item + .ribbon__item { border-left: 1px solid rgba(251, 246, 238, 0.18); }
+.ribbon__item strong { font-family: var(--font-display); font-size: 1.05rem; color: #E8B98F; }
+.ribbon__item span { font-size: 0.92rem; opacity: 0.9; }
+
+/* ---------- Sections ---------- */
+.section { padding-block: clamp(3.5rem, 8vw, 6rem); }
+.section--tinted { background: var(--clr-tint); }
+
+/* About */
+.about__inner { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.about__media img { box-shadow: var(--shadow); aspect-ratio: 720 / 560; object-fit: cover; }
+.about__copy p + p { margin-top: 1rem; }
+.about__facts { list-style: none; display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; margin-top: 1.8rem; }
+.about__facts li { font-size: 0.92rem; color: var(--clr-ink-soft); }
+.about__facts strong { display: block; font-family: var(--font-display); font-size: 1.7rem; color: var(--clr-accent-deep); }
+
+/* Menu */
+.menu__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 4vw, 3rem); }
+.menu__group { background: var(--clr-cream); border: 1px solid var(--clr-border); border-radius: var(--radius); padding: clamp(1.4rem, 3vw, 2.2rem); }
+.menu__group--wide { grid-column: 1 / -1; }
+.menu__group h3 { margin-bottom: 1.2rem; color: var(--clr-accent-deep); }
+.menu__group ul { list-style: none; }
+.menu__group li { display: flex; align-items: baseline; gap: 0.6rem; padding-block: 0.55rem; }
+.menu__item small { display: block; font-size: 0.85rem; color: var(--clr-ink-soft); }
+.menu__dots { flex: 1; border-bottom: 2px dotted var(--clr-border); transform: translateY(-4px); }
+.menu__price { font-weight: 700; white-space: nowrap; }
+
+/* Gallery */
+.gallery__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; align-items: start; }
+.gallery__grid img { box-shadow: var(--shadow); transition: transform 0.25s ease; }
+.gallery__grid img:hover { transform: scale(1.02) rotate(-0.5deg); }
+.gallery__grid img:nth-child(2), .gallery__grid img:nth-child(3) { margin-top: 2.2rem; }
+
+/* ---------- Contact ---------- */
+.contact__inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.contact__info h2 { margin-bottom: 1rem; }
+.contact__info address { font-style: normal; margin-top: 1.6rem; display: grid; gap: 0.8rem; }
+
+.form { background: var(--clr-cream); border: 1px solid var(--clr-border); border-radius: var(--radius); padding: clamp(1.4rem, 3vw, 2.2rem); box-shadow: var(--shadow); }
+.form__field { margin-bottom: 1.2rem; }
+.form__field label { display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 0.35rem; }
+.form__field label span { color: var(--clr-error); }
+
+.form__field input,
+.form__field textarea {
+  width: 100%; padding: 0.75rem 0.9rem; font: inherit; color: var(--clr-ink);
+  background: #fff; border: 1.5px solid var(--clr-border); border-radius: 10px;
+  transition: border-color 0.2s ease;
+}
+.form__field input:focus,
+.form__field textarea:focus { border-color: var(--clr-accent); outline: none; }
+.form__field.has-error input,
+.form__field.has-error textarea { border-color: var(--clr-error); }
+
+.form__error { font-size: 0.85rem; color: var(--clr-error); margin-top: 0.3rem; min-height: 1.1em; }
+.form__submit { width: 100%; border: 0; }
+
+.form__success {
+  display: flex; gap: 0.8rem; align-items: flex-start;
+  background: #EFE5D2; border-radius: 10px; padding: 1rem 1.1rem; margin-top: 1.2rem;
+}
+.form__success svg { flex-shrink: 0; margin-top: 0.15rem; }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--clr-ink); color: var(--clr-cream); padding-block: 2.5rem; }
+.site-footer a { color: #E8B98F; }
+.site-footer__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; font-size: 0.92rem; }
+.site-footer__brand { font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 0.5rem; }
+.site-footer__brand em { color: #E8B98F; font-style: italic; }
+.site-footer__meta { text-align: right; opacity: 0.9; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .hero__inner, .about__inner, .contact__inner { grid-template-columns: 1fr; }
+  .hero__media { order: -1; max-width: 460px; }
+  .hero__stamp { right: 0.6rem; top: -1rem; width: 92px; height: 92px; font-size: 0.74rem; }
+  .menu__grid { grid-template-columns: 1fr; }
+  .gallery__grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery__grid img:nth-child(3) { margin-top: 0; }
+  .ribbon__inner { grid-template-columns: 1fr; }
+  .ribbon__item + .ribbon__item { border-left: 0; border-top: 1px solid rgba(251, 246, 238, 0.18); }
+  .site-footer__meta { text-align: left; }
+}
+
+@media (max-width: 700px) {
+  .nav-toggle { display: block; position: relative; z-index: 90; }
+
+  /* "Tageskarte" menu: the navigation is set like the café's menu card —
+     serif dishes with dotted leaders, hours & address as the card footer. */
+  .main-nav {
+    position: fixed; inset: 0; z-index: 80;
+    flex-direction: column; align-items: stretch; justify-content: center;
+    gap: 0; padding: 5.5rem 2rem 2.2rem;
+    background:
+      radial-gradient(120% 55% at 50% 0%, var(--clr-tint) 0%, transparent 60%),
+      var(--clr-cream);
+    visibility: hidden; opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  .main-nav.is-open { visibility: visible; opacity: 1; }
+
+  .main-nav::before {
+    content: "— Wohin darf es gehen? —";
+    font-family: var(--font-display);
+    font-style: italic;
+    text-align: center;
+    color: var(--clr-accent);
+    margin-bottom: 1.4rem;
+    font-size: 1.02rem;
+  }
+
+  .main-nav a {
+    display: flex; align-items: baseline; gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 600;
+    padding: 0.85rem 0.15rem;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.35s ease, transform 0.35s ease, color 0.2s ease;
+  }
+  /* dotted leader, exactly like the price rows on the Karte */
+  .main-nav a:not(.main-nav__cta)::after {
+    content: "";
+    flex: 1;
+    border-bottom: 2px dotted var(--clr-border);
+    transform: translateY(-7px);
+  }
+  .main-nav.is-open a { opacity: 1; transform: none; }
+  .main-nav.is-open a:nth-child(1) { transition-delay: 0.08s; }
+  .main-nav.is-open a:nth-child(2) { transition-delay: 0.15s; }
+  .main-nav.is-open a:nth-child(3) { transition-delay: 0.22s; }
+  .main-nav.is-open a:nth-child(4) { transition-delay: 0.29s; }
+
+  .main-nav__cta {
+    margin-top: 1.5rem; justify-content: center; text-align: center;
+    font-family: var(--font-body); font-size: 1.02rem;
+  }
+
+  /* injected card footer: hours + address (see script.js) */
+  .main-nav__meta {
+    margin-top: auto;
+    padding-top: 1.3rem;
+    border-top: 1px solid var(--clr-border);
+    text-align: center;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--clr-ink-soft);
+    opacity: 0;
+    transition: opacity 0.4s ease 0.36s;
+  }
+  .main-nav.is-open .main-nav__meta { opacity: 1; }
+  .main-nav__meta strong { color: var(--clr-accent-deep); }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+}
+
+@media (min-width: 701px) {
+  .main-nav__meta { display: none; }
+}
+
+/* ---------- Page entry: the hero settles in like a fresh pour.
+   No loader overlay — instant load *is* the Basic selling point.
+   (Globally disabled by the prefers-reduced-motion block above.) ---------- */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.hero__copy > * { animation: rise-in 0.6s ease backwards; }
+.hero__copy > *:nth-child(2) { animation-delay: 0.08s; }
+.hero__copy > *:nth-child(3) { animation-delay: 0.16s; }
+.hero__copy > *:nth-child(4) { animation-delay: 0.24s; }
+.hero__media { animation: rise-in 0.7s ease 0.12s backwards; }
+
+/* Mobile: a filtered header would become the containing block for the
+   fixed-position menu (backdrop-filter side effect) - disable it here. */
+@media (max-width: 700px) {
+  .site-header, .site-header.is-scrolled {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* While the menu is open the header (the menu's stacking context) must sit
+   above scrims and the tier badge. Class toggled by the nav script. */
+.site-header.nav-open { z-index: 75; }
