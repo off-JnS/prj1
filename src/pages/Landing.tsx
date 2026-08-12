@@ -6,9 +6,10 @@ import HeroCanvas from "@/components/fx/HeroCanvas";
 import ScrubText from "@/components/fx/ScrubText";
 import Marquee from "@/components/ui/Marquee";
 import Magnetic from "@/components/ui/Magnetic";
+import ProjectRow from "@/components/portfolio/ProjectRow";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
-import { projects } from "@/data/projects";
+import { featuredProjects } from "@/data/projects";
 import { useIntro } from "@/lib/intro";
 import { scrollToElement } from "@/lib/smooth-scroll";
 import Seo from "@/lib/seo";
@@ -241,53 +242,35 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <Kicker index="02">Ausgewählte Arbeiten</Kicker>
+              <Kicker index="02">Beispielprojekte</Kicker>
               <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
-                <Reveal>Websites, die wir</Reveal>
+                <Reveal>Was jedes Paket</Reveal>
                 <Reveal delay={0.08}>
-                  <em className="u-serif not-italic">gelauncht</em> haben.
+                  wirklich <em className="u-serif not-italic">liefert.</em>
                 </Reveal>
               </h2>
+              <FadeIn delay={0.16}>
+                <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
+                  Drei fiktive Hamburger Betriebe, von uns gebaut — je einer pro
+                  Paket. Vollständige Websites zum Öffnen und Durchklicken,
+                  keine Mockups.
+                </p>
+              </FadeIn>
             </div>
             <FadeIn delay={0.2}>
               <Link
                 to="/portfolio"
                 className="group inline-flex min-h-11 items-center gap-2 text-sm font-medium text-white/80 transition-colors hover:text-white"
               >
-                Komplettes Portfolio
+                Alle neun Beispiele
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </FadeIn>
           </div>
 
           <div className="mt-16 sm:mt-24">
-            {projects.slice(0, 3).map((p, i) => (
-              <FadeIn key={p.id} delay={i * 0.06} y={36}>
-                <a
-                  href={p.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="group grid grid-cols-[2.5rem_1fr_2rem] items-center gap-4 border-t border-white/15 py-10 last:border-b sm:grid-cols-[6rem_1fr_1fr_3rem] sm:gap-8 sm:py-14"
-                >
-                  <span className="font-mono text-xs tracking-[0.3em] text-white/60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="sm:contents">
-                    <h3 className="u-display text-[clamp(1.8rem,5vw,4rem)] transition-transform duration-500 ease-out group-hover:translate-x-3">
-                      {p.name}
-                    </h3>
-                    {p.tagline && (
-                      <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65 sm:mt-0 sm:text-base">
-                        {p.tagline}
-                      </p>
-                    )}
-                  </div>
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="h-6 w-6 text-white/40 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white sm:h-8 sm:w-8"
-                  />
-                </a>
-              </FadeIn>
+            {featuredProjects.map((p, i) => (
+              <ProjectRow key={p.id} project={p} index={i} showTier />
             ))}
           </div>
         </div>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ===== Basic SEO meta tags (Basic tier) ===== -->
+  <title>Röstwerk Ottensen – Spezialitätenkaffee &amp; Rösterei in Hamburg-Ottensen</title>
+  <meta name="description" content="Handgerösteter Spezialitätenkaffee, Franzbrötchen und hausgemachte Kuchen im Herzen von Hamburg-Ottensen. Mo–So geöffnet, Bahrenfelder Straße 87.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.roestwerk-ottensen.de/">
+  <meta name="theme-color" content="#2E2118">
+
+  <!-- ===== Google Analytics (placeholder) — uncomment and insert your Measurement ID =====
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  ===== -->
+
+  <!-- Fonts: Fraunces (display) + Karla (body), swap to avoid FOIT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23C4692F'/%3E%3Cpath d='M16 7c-3 3.5-3 8 0 11.5 3-3.5 3-8 0-11.5z' fill='%23FBF6EE'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- Tier badge: identifies the demo package level -->
+  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Basic, inklusive 2 Revisionsrunden">
+    <span class="tier-badge__tier">Basic</span>
+    <span class="tier-badge__note">Demo · 2 Revisionsrunden inkl.</span>
+  </div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="logo" href="#top" aria-label="Röstwerk Ottensen – zur Startseite">
+        <!-- Inline SVG coffee-bean mark -->
+        <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="14" fill="var(--clr-accent)"/>
+          <path d="M16 7c-3 3.5-3 8 0 11.5 3-3.5 3-8 0-11.5z" fill="var(--clr-cream)"/>
+        </svg>
+        <span>Röstwerk <em>Ottensen</em></span>
+      </a>
+
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="main-nav" class="main-nav" aria-label="Hauptnavigation">
+        <a href="#roesterei">Rösterei</a>
+        <a href="#karte">Karte</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#kontakt" class="main-nav__cta">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===== Hero ===== -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Rösterei &amp; Café · seit 2014</p>
+          <h1>Handgeröstet im Herzen von <span>Ottensen</span>.</h1>
+          <p class="lead">
+            Kleine Chargen, große Sorgfalt: Wir rösten unsere Bohnen zweimal pro Woche
+            direkt hinter der Theke – und servieren dazu Franzbrötchen, die noch warm
+            aus dem Ofen kommen.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#karte">Karte ansehen</a>
+            <a class="btn btn--ghost" href="#kontakt">Tisch anfragen</a>
+          </div>
+        </div>
+        <figure class="hero__media">
+          <img src="https://picsum.photos/seed/roastwerk-hero/860/1040" alt="Frisch gebrühter Kaffee im Röstwerk Ottensen" width="860" height="1040" fetchpriority="high">
+          <figcaption class="hero__stamp" aria-hidden="true">100&nbsp;% Arabica<br>fair gehandelt</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Quick info ribbon ===== -->
+    <section class="ribbon" aria-label="Öffnungszeiten und Adresse">
+      <div class="container ribbon__inner">
+        <div class="ribbon__item">
+          <strong>Mo–Fr</strong>
+          <span>8:00 – 18:00 Uhr</span>
+        </div>
+        <div class="ribbon__item">
+          <strong>Sa / So</strong>
+          <span>9:00 – 18:00 / 10:00 – 17:00 Uhr</span>
+        </div>
+        <div class="ribbon__item">
+          <strong>Bahrenfelder Straße 87</strong>
+          <span>22765 Hamburg-Ottensen</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="roesterei" class="section about">
+      <div class="container about__inner">
+        <div class="about__media">
+          <img src="https://picsum.photos/seed/roastwerk-about/720/560" alt="Röstmaschine und Kaffeesäcke in der Rösterei" width="720" height="560" loading="lazy">
+        </div>
+        <div class="about__copy">
+          <p class="eyebrow">Unsere Rösterei</p>
+          <h2>Vom Hafen in die Tasse – ein kurzer Weg.</h2>
+          <p>
+            Unsere Rohbohnen kommen über den Hamburger Hafen zu uns – so, wie es sich
+            für eine Rösterei zwischen Elbe und Zeise-Hallen gehört. Geröstet wird im
+            Trommelröster, langsam und in kleinen Chargen von zwölf Kilo. So bleibt
+            jede Bohne das, was sie sein soll: ehrlich, aromatisch, norddeutsch unaufgeregt.
+          </p>
+          <p>
+            Ob Sie auf dem Weg zum Altonaer Balkon einen Flat White mitnehmen oder
+            sonntags mit der Zeitung bei uns versacken – bei uns gibt es keine
+            Warteschlangen-Hektik. Nur guten Kaffee und Zeit, ihn zu trinken.
+          </p>
+          <ul class="about__facts">
+            <li><strong>12&nbsp;kg</strong> pro Röstcharge</li>
+            <li><strong>2×</strong> pro Woche frisch geröstet</li>
+            <li><strong>4</strong> Ursprungsländer, direkt gehandelt</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Menu ===== -->
+    <section id="karte" class="section section--tinted menu">
+      <div class="container">
+        <p class="eyebrow eyebrow--center">Unsere Karte</p>
+        <h2 class="section-title">Kaffee, Kuchen &amp; ein bisschen Hamburg.</h2>
+
+        <div class="menu__grid">
+          <div class="menu__group">
+            <h3>Kaffee &amp; Espresso</h3>
+            <ul>
+              <li><span class="menu__item">Filterkaffee <small>Hafenmischung, handaufgegossen</small></span><span class="menu__dots"></span><span class="menu__price">3,20&nbsp;€</span></li>
+              <li><span class="menu__item">Espresso <small>kräftig, schokoladig</small></span><span class="menu__dots"></span><span class="menu__price">2,60&nbsp;€</span></li>
+              <li><span class="menu__item">Cappuccino <small>mit Hafermilch +0,40&nbsp;€</small></span><span class="menu__dots"></span><span class="menu__price">3,80&nbsp;€</span></li>
+              <li><span class="menu__item">Flat White <small>doppelter Espresso, samtige Milch</small></span><span class="menu__dots"></span><span class="menu__price">4,10&nbsp;€</span></li>
+            </ul>
+          </div>
+
+          <div class="menu__group">
+            <h3>Süßes aus dem Ofen</h3>
+            <ul>
+              <li><span class="menu__item">Franzbrötchen <small>der Klassiker, täglich frisch</small></span><span class="menu__dots"></span><span class="menu__price">2,80&nbsp;€</span></li>
+              <li><span class="menu__item">Zimtschnecke <small>mit Frischkäse-Glasur</small></span><span class="menu__dots"></span><span class="menu__price">3,40&nbsp;€</span></li>
+              <li><span class="menu__item">Bananenbrot <small>mit Walnüssen, vegan</small></span><span class="menu__dots"></span><span class="menu__price">3,50&nbsp;€</span></li>
+              <li><span class="menu__item">Käsekuchen <small>nach Omas Rezept</small></span><span class="menu__dots"></span><span class="menu__price">3,90&nbsp;€</span></li>
+            </ul>
+          </div>
+
+          <div class="menu__group menu__group--wide">
+            <h3>Bohnen für Zuhause</h3>
+            <ul>
+              <li><span class="menu__item">„Hafenmischung“ <small>250&nbsp;g, Filter – Noten von Nuss &amp; Karamell</small></span><span class="menu__dots"></span><span class="menu__price">9,90&nbsp;€</span></li>
+              <li><span class="menu__item">„Ottensen Espresso“ <small>250&nbsp;g – dunkle Schokolade, Orange</small></span><span class="menu__dots"></span><span class="menu__price">10,50&nbsp;€</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Gallery ===== -->
+    <section id="galerie" class="section gallery">
+      <div class="container">
+        <p class="eyebrow eyebrow--center">Einblicke</p>
+        <h2 class="section-title">Ein Nachmittag bei uns.</h2>
+        <div class="gallery__grid">
+          <img src="https://picsum.photos/seed/roastwerk-g1/640/760" alt="Gastraum mit Holztischen und warmem Licht" width="640" height="760" loading="lazy">
+          <img src="https://picsum.photos/seed/roastwerk-g2/640/560" alt="Barista bereitet einen Cappuccino zu" width="640" height="560" loading="lazy">
+          <img src="https://picsum.photos/seed/roastwerk-g3/640/560" alt="Frische Franzbrötchen auf der Theke" width="640" height="560" loading="lazy">
+          <img src="https://picsum.photos/seed/roastwerk-g4/640/760" alt="Kaffeebohnen beim Abkühlen im Röster" width="640" height="760" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="kontakt" class="section section--tinted contact">
+      <div class="container contact__inner">
+        <div class="contact__info">
+          <p class="eyebrow">Kontakt</p>
+          <h2>Schreiben Sie uns – wir antworten schneller, als der Espresso durchläuft.</h2>
+          <p>
+            Reservierungen, Fragen zu unseren Bohnen oder eine private Röstungs-Führung
+            für Ihre Kolleg:innen? Melden Sie sich gern.
+          </p>
+          <address>
+            <p><strong>Röstwerk Ottensen GmbH</strong><br>
+            Bahrenfelder Straße 87<br>
+            22765 Hamburg-Ottensen</p>
+            <p>
+              <a href="tel:+494055512340">+49 40 555 123 40</a><br>
+              <a href="mailto:hallo@roestwerk-ottensen.de">hallo@roestwerk-ottensen.de</a>
+            </p>
+          </address>
+        </div>
+
+        <!--
+          Contact form: client-side validation only (demo).
+          To go live, uncomment the action attribute and point it at your
+          Formspree endpoint, e.g. action="https://formspree.io/f/your-id" method="POST"
+        -->
+        <form id="contact-form" class="form" novalidate>
+          <div class="form__field">
+            <label for="name">Name <span aria-hidden="true">*</span></label>
+            <input type="text" id="name" name="name" autocomplete="name" required>
+            <p class="form__error" id="name-error" aria-live="polite"></p>
+          </div>
+          <div class="form__field">
+            <label for="email">E-Mail <span aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <p class="form__error" id="email-error" aria-live="polite"></p>
+          </div>
+          <div class="form__field">
+            <label for="message">Nachricht <span aria-hidden="true">*</span></label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+            <p class="form__error" id="message-error" aria-live="polite"></p>
+          </div>
+          <button type="submit" class="btn btn--primary form__submit">Nachricht senden</button>
+
+          <!-- Success message, revealed by script.js after valid submit -->
+          <div class="form__success" id="form-success" role="status" hidden>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="11" fill="var(--clr-accent)"/>
+              <path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p><strong>Vielen Dank!</strong> Ihre Nachricht ist bei uns gelandet.
+            Wir melden uns innerhalb eines Werktags – versprochen.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div>
+        <p class="site-footer__brand">Röstwerk <em>Ottensen</em></p>
+        <p>Bahrenfelder Straße 87 · 22765 Hamburg-Ottensen<br>
+        <a href="tel:+494055512340">+49 40 555 123 40</a> · <a href="mailto:hallo@roestwerk-ottensen.de">hallo@roestwerk-ottensen.de</a></p>
+      </div>
+      <div class="site-footer__meta">
+        <p><a href="#top">Nach oben</a> · <a href="#" aria-disabled="true">Impressum</a> · <a href="#" aria-disabled="true">Datenschutz</a></p>
+        <p>© <span id="year">2026</span> Röstwerk Ottensen GmbH. Demo-Website.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+
+<!-- Hinweis: Beispielprojekt von PRJ1. Von prj1.de eingefügt, nicht Teil der Vorlage. -->
+<style>
+  body { padding-bottom: 5rem; }
+  .prj1-demo-note {
+    position: fixed; inset: auto 0 0 0; z-index: 2147483647;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 0.25rem 1rem; box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    background: #000; color: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.14em;
+    border-top: 1px solid rgba(255,255,255,0.25);
+  }
+  .prj1-demo-note b { font-weight: 600; letter-spacing: 0.14em; }
+  .prj1-demo-note a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .prj1-demo-note a:hover { opacity: 0.7; }
+  @media (max-width: 480px) {
+    body { padding-bottom: 6rem; }
+    .prj1-demo-note { font-size: 10px; letter-spacing: 0.1em; }
+  }
+</style>
+<div class="prj1-demo-note" role="note">
+  <span><b>Beispielprojekt</b> &mdash; fiktives Unternehmen, gestaltet und gebaut von PRJ1</span>
+  <a href="https://prj1.de/" target="_blank" rel="noopener">prj1.de</a>
+</div>
+</body>
+</html>

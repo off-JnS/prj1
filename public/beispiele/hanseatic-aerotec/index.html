@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ===== Advanced SEO (Premium tier) ===== -->
+  <title>Hanseatic Aerotec – Luftfahrt-Zulieferer &amp; MRO aus Hamburg-Finkenwerder</title>
+  <meta name="description" content="Kabinenausstattung, Komponentenfertigung und MRO für die zivile Luftfahrt: Hanseatic Aerotec liefert seit 2001 aus Finkenwerder – EN 9100 zertifiziert, 98,7 % On-Time-Delivery.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.hanseatic-aerotec.de/">
+  <meta name="theme-color" content="#0E2A47">
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hanseatic Aerotec">
+  <meta property="og:title" content="Hanseatic Aerotec – Luftfahrt-Zulieferer &amp; MRO aus Hamburg">
+  <meta property="og:description" content="Kabinenausstattung, Komponentenfertigung und MRO – seit 2001 aus Finkenwerder, EN 9100 zertifiziert.">
+  <meta property="og:url" content="https://www.hanseatic-aerotec.de/">
+  <meta property="og:image" content="https://picsum.photos/seed/aerotec-og/1200/630">
+  <meta property="og:locale" content="de_DE">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Structured data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Hanseatic Aerotec GmbH",
+    "description": "Zulieferer und MRO-Betrieb für die zivile Luftfahrt: Kabinenausstattung, Komponentenfertigung, Instandhaltung und Engineering.",
+    "url": "https://www.hanseatic-aerotec.de/",
+    "telephone": "+49 40 555 623 80",
+    "email": "kontakt@hanseatic-aerotec.de",
+    "foundingDate": "2001",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Neßpriel 5",
+      "addressLocality": "Hamburg",
+      "postalCode": "21129",
+      "addressCountry": "DE"
+    },
+    "areaServed": "Worldwide"
+  }
+  </script>
+
+  <!-- ===== Google Analytics (placeholder) — uncomment and insert your Measurement ID =====
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+  ===== -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Albert+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23F7F9FB'/%3E%3Cpath d='M4 20l24-9-6 9 6 2-24 4 8-6z' fill='%231B4F8A'/%3E%3Ccircle cx='26' cy='7' r='3' fill='%23E8611C'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- Page loader: plane crosses the dashed runway line, auto-dismisses (pure CSS) -->
+  <div class="page-loader" aria-hidden="true">
+    <div class="page-loader__strip">
+      <svg width="26" height="26" viewBox="0 0 32 32">
+        <path d="M4 20l24-9-6 9 6 2-24 4 8-6z" fill="#1B4F8A"/>
+      </svg>
+    </div>
+    <p class="page-loader__word">HANSEATIC <em>AEROTEC</em></p>
+  </div>
+
+  <!-- Tier badge -->
+  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Premium, Priority Support und Launch">
+    <span class="tier-badge__tier">Premium</span>
+    <span class="tier-badge__note">Demo · Priority Support &amp; Launch</span>
+  </div>
+
+  <header class="site-header" data-header>
+    <div class="container site-header__inner">
+      <a class="logo" href="index.html" aria-label="Hanseatic Aerotec – zur Startseite">
+        <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M4 20l24-9-6 9 6 2-24 4 8-6z" fill="var(--clr-blue)"/>
+          <circle cx="26" cy="7" r="3" fill="var(--clr-orange)"/>
+        </svg>
+        <span>HANSEATIC <em>AEROTEC</em></span>
+      </a>
+
+      <button class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Menü öffnen">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="main-nav" class="main-nav" aria-label="Hauptnavigation">
+        <a href="index.html" aria-current="page">Start</a>
+        <a href="leistungen.html">Leistungen</a>
+        <a href="qualitaet.html">Qualität</a>
+        <a href="ueber-uns.html">Über uns</a>
+        <a href="kontakt.html" class="main-nav__cta">Anfrage stellen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== Immersive hero: blueprint flight-route canvas (Premium experience) ===== -->
+    <section class="hero" data-hero>
+      <!-- Canvas mounts here; CSS blueprint grid serves as no-canvas fallback -->
+      <canvas id="flight-canvas" class="hero__canvas" aria-hidden="true"></canvas>
+
+      <div class="container hero__content">
+        <!-- Title block, set like the corner stamp of a technical drawing -->
+        <div class="titleblock reveal">
+          <p class="titleblock__coords mono">53,5320° N · 9,8355° O — Hamburg-Finkenwerder · XFW</p>
+          <h1>Präzision ist kein Versprechen.<br><em>Sie ist ein Toleranzfeld.</em></h1>
+          <p class="hero__sub">
+            Hanseatic Aerotec fertigt, rüstet aus und hält instand – Kabinen, Komponenten
+            und Baugruppen für die zivile Luftfahrt. Seit 2001, in Sichtweite des Werks,
+            das unsere Teile verbaut.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--blue" href="kontakt.html">Anfrage stellen</a>
+            <a class="btn btn--outline" href="leistungen.html">Leistungen ansehen</a>
+          </div>
+          <dl class="titleblock__meta mono" aria-hidden="true">
+            <div><dt>Zeichn.-Nr.</dt><dd>HA-2026-001</dd></div>
+            <div><dt>Rev.</dt><dd>F</dd></div>
+            <div><dt>Maßstab</dt><dd>1:1</dd></div>
+            <div><dt>Status</dt><dd class="titleblock__ok">Freigegeben</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="hero__hint mono" aria-hidden="true">Scrollen ▾</div>
+    </section>
+
+    <!-- ===== Data plate (riveted type plate instead of a dark stats band) ===== -->
+    <section class="section section--flush" aria-label="Hanseatic Aerotec in Zahlen">
+      <div class="container">
+        <div class="dataplate reveal">
+          <span class="dataplate__rivet dataplate__rivet--tl" aria-hidden="true"></span>
+          <span class="dataplate__rivet dataplate__rivet--tr" aria-hidden="true"></span>
+          <span class="dataplate__rivet dataplate__rivet--bl" aria-hidden="true"></span>
+          <span class="dataplate__rivet dataplate__rivet--br" aria-hidden="true"></span>
+          <p class="dataplate__title mono">Typenschild · Hanseatic Aerotec GmbH · Werk Finkenwerder</p>
+          <div class="dataplate__grid">
+            <div class="dataplate__cell">
+              <span class="dataplate__num"><span data-count="25">0</span></span>
+              <span class="dataplate__label mono">Jahre in Finkenwerder</span>
+            </div>
+            <div class="dataplate__cell">
+              <span class="dataplate__num"><span data-count="240">0</span></span>
+              <span class="dataplate__label mono">Mitarbeitende</span>
+            </div>
+            <div class="dataplate__cell">
+              <span class="dataplate__num"><span data-count="987" data-decimal="true">0</span>&nbsp;%</span>
+              <span class="dataplate__label mono">On-Time-Delivery 2025</span>
+            </div>
+            <div class="dataplate__cell">
+              <span class="dataplate__num"><span data-count="14500" data-group="true">0</span></span>
+              <span class="dataplate__label mono">Komponenten / Jahr</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Spec ticker (decorative) ===== -->
+    <div class="spec-ticker" aria-hidden="true">
+      <div class="spec-ticker__track">
+        <span>AL 7075-T6</span><span>TOLERANZ ±0,05 MM</span><span>EN 9100:2018</span><span>AUTOKLAV 180 °C</span><span>CATIA V5</span><span>FAI NACH EN 9102</span><span>OTD 98,7 %</span>
+        <span>AL 7075-T6</span><span>TOLERANZ ±0,05 MM</span><span>EN 9100:2018</span><span>AUTOKLAV 180 °C</span><span>CATIA V5</span><span>FAI NACH EN 9102</span><span>OTD 98,7 %</span>
+      </div>
+    </div>
+
+    <!-- ===== Services preview ===== -->
+    <section class="section">
+      <div class="container">
+        <p class="kicker mono reveal">// Leistungen</p>
+        <h2 class="section-title-left reveal" data-reveal-delay="1">Vom Halbzeug bis zur Zulassung.</h2>
+
+        <!-- Bento layout: one lead panel with photo, two stacked, one wide -->
+        <div class="bento">
+          <a class="bento__item bento__item--lead reveal" href="leistungen.html">
+            <img src="https://picsum.photos/seed/aerotec-kabine/900/700" alt="Galley-Monument in der Endmontage" width="900" height="700" loading="lazy">
+            <div class="bento__body">
+              <span class="bento__code mono">POS 01</span>
+              <h3>Kabinenausstattung</h3>
+              <p>Monumente, Trennwände, Stauraumlösungen – vom Engineering über die Musterfertigung bis zur Serienlieferung ans Band.</p>
+              <span class="bento__link mono">Mehr →</span>
+            </div>
+          </a>
+          <a class="bento__item reveal" data-reveal-delay="1" href="leistungen.html">
+            <span class="bento__code mono">POS 02</span>
+            <h3>Komponentenfertigung</h3>
+            <p>Zerspanung, Blechumformung und Composite in Luftfahrtqualität – dokumentiert bis zur Materialcharge.</p>
+            <span class="bento__link mono">Mehr →</span>
+          </a>
+          <a class="bento__item reveal" data-reveal-delay="2" href="leistungen.html">
+            <span class="bento__code mono">POS 03</span>
+            <h3>MRO &amp; Instandhaltung</h3>
+            <p>Reparaturen nach CMM, Tauschpool, AOG-Desk mit 2-h-Rückmeldung – rund um die Uhr.</p>
+            <span class="bento__link mono">Mehr →</span>
+          </a>
+          <a class="bento__item bento__item--wide reveal" data-reveal-delay="3" href="leistungen.html">
+            <span class="bento__code mono">POS 04</span>
+            <h3>Engineering &amp; Zulassung</h3>
+            <p>Eigene Entwicklungsabteilung mit Zulassungserfahrung: Konstruktion, Stress-Analyse, Brandschutzqualifikation, Nachweisdokumentation.</p>
+            <span class="bento__spec mono" aria-hidden="true">CATIA V5 · EN 9102 · EASA-Nachweisführung</span>
+            <span class="bento__link mono">Mehr →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Program board ===== -->
+    <section class="section section--panel">
+      <div class="container">
+        <p class="kicker mono reveal">// Laufende Programme</p>
+        <h2 class="section-title-left reveal" data-reveal-delay="1">Was gerade durch unsere Hallen geht.</h2>
+
+        <div class="board-wrap reveal" data-reveal-delay="2">
+          <table class="board">
+            <caption class="visually-hidden">Aktuelle Fertigungs- und Ausstattungsprogramme von Hanseatic Aerotec</caption>
+            <thead>
+              <tr>
+                <th scope="col">Programm</th>
+                <th scope="col">Umfang</th>
+                <th scope="col">Taktrate</th>
+                <th scope="col">Läuft seit</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody class="mono">
+              <tr>
+                <td>Galley-Monumente Single-Aisle</td>
+                <td>Serienfertigung + FAL-Anlieferung</td>
+                <td>38 / Monat</td>
+                <td>2019</td>
+                <td><span class="chip chip--active">in Serie</span></td>
+              </tr>
+              <tr>
+                <td>Klimakanal-Baugruppen</td>
+                <td>Composite-Fertigung</td>
+                <td>120 Sets / Monat</td>
+                <td>2021</td>
+                <td><span class="chip chip--active">in Serie</span></td>
+              </tr>
+              <tr>
+                <td>Business-Class-Trennwände</td>
+                <td>Entwicklung + Musterbau</td>
+                <td>—</td>
+                <td>2025</td>
+                <td><span class="chip chip--plan">Qualifikation</span></td>
+              </tr>
+              <tr>
+                <td>Sitzschienen-Reparatur</td>
+                <td>MRO nach CMM</td>
+                <td>nach Bedarf</td>
+                <td>2017</td>
+                <td><span class="chip chip--active">laufend</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="board-note mono reveal" data-reveal-delay="3">Auszug · kundenspezifische Programme auf Anfrage · Stand Q3/2026</p>
+      </div>
+    </section>
+
+    <!-- ===== Founder statement ===== -->
+    <section class="section">
+      <div class="container split">
+        <figure class="split__media split__media--annotated reveal">
+          <img src="https://picsum.photos/seed/aerotec-halle/860/660" alt="Fertigungshalle mit CNC-Maschinen und Prüfstationen" width="860" height="660" loading="lazy">
+          <span class="anno anno--tl mono" aria-hidden="true">HALLE 2 · ZERSPANUNG</span>
+          <span class="anno anno--br mono" aria-hidden="true">CNC-5A · 5-ACHS</span>
+          <figcaption class="mono">Halle 2, Neßpriel · Zerspanung &amp; Endmontage</figcaption>
+        </figure>
+        <div class="split__copy">
+          <p class="kicker mono reveal">// Warum Aerotec</p>
+          <h2 class="reveal" data-reveal-delay="1">Ein fehlendes Teil stoppt kein Regal. Es stoppt eine Endlinie.</h2>
+          <p class="reveal" data-reveal-delay="2">
+            „In der Luftfahrt gibt es keine kleinen Lieferverzögerungen – jede
+            fehlende Baugruppe steht am Ende vor einem halbfertigen Flugzeug.
+            Deshalb messen wir uns an einer Zahl: 98,7 Prozent unserer Lieferungen
+            waren letztes Jahr pünktlich und beanstandungsfrei. An den restlichen
+            1,3 Prozent arbeiten wir mit demselben Ernst wie an einem Erstmuster.“
+          </p>
+          <p class="split__sig reveal" data-reveal-delay="3">
+            <strong>Dr. Henrik Wieland</strong><br>
+            <span class="mono">Geschäftsführer · Luft- und Raumfahrtingenieur</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA band ===== -->
+    <section class="cta-band">
+      <div class="container cta-band__inner">
+        <div>
+          <p class="kicker mono reveal">// Nächster Schritt</p>
+          <h2 class="reveal" data-reveal-delay="1">Zeichnung vorhanden? Dann fehlt nur noch ein Angebot.</h2>
+          <p class="reveal" data-reveal-delay="2">RFQ mit Zeichnungssatz senden – Erstbewertung binnen fünf Werktagen.</p>
+        </div>
+        <a class="btn btn--blue reveal" data-reveal-delay="3" href="kontakt.html">Anfrage stellen</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__grid">
+      <div>
+        <p class="site-footer__brand">HANSEATIC <em>AEROTEC</em></p>
+        <p>Hanseatic Aerotec GmbH<br>Zulieferer &amp; MRO für die zivile Luftfahrt</p>
+        <p class="mono site-footer__coords">53,5320° N · 9,8355° O · XFW</p>
+      </div>
+      <div>
+        <p class="site-footer__title">Kontakt</p>
+        <p>Neßpriel 5<br>21129 Hamburg-Finkenwerder<br>
+        <a href="tel:+494055562380">+49 40 555 623 80</a><br>
+        <a href="mailto:kontakt@hanseatic-aerotec.de">kontakt@hanseatic-aerotec.de</a></p>
+      </div>
+      <div>
+        <p class="site-footer__title">AOG-Desk (24/7)</p>
+        <p><a href="tel:+494055562399">+49 40 555 623 99</a><br><span class="chip chip--active">Priority Support</span></p>
+      </div>
+      <div>
+        <p class="site-footer__title">Seiten</p>
+        <p><a href="leistungen.html">Leistungen</a><br><a href="qualitaet.html">Qualität</a><br><a href="ueber-uns.html">Über uns</a><br><a href="kontakt.html">Kontakt</a></p>
+      </div>
+    </div>
+    <div class="container site-footer__legal">
+      <p>© <span data-year>2026</span> Hanseatic Aerotec GmbH. Demo-Website.</p>
+      <p><a href="#" aria-disabled="true">Impressum</a> · <a href="#" aria-disabled="true">Datenschutz</a> · <a href="sitemap.xml">Sitemap</a></p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <!-- Flight-route hero loads only on the home page -->
+  <script src="js/hero-flight.js" defer></script>
+
+<!-- Hinweis: Beispielprojekt von PRJ1. Von prj1.de eingefügt, nicht Teil der Vorlage. -->
+<style>
+  body { padding-bottom: 5rem; }
+  .prj1-demo-note {
+    position: fixed; inset: auto 0 0 0; z-index: 2147483647;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 0.25rem 1rem; box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    background: #000; color: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px; line-height: 1.5; text-transform: uppercase; letter-spacing: 0.14em;
+    border-top: 1px solid rgba(255,255,255,0.25);
+  }
+  .prj1-demo-note b { font-weight: 600; letter-spacing: 0.14em; }
+  .prj1-demo-note a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .prj1-demo-note a:hover { opacity: 0.7; }
+  @media (max-width: 480px) {
+    body { padding-bottom: 6rem; }
+    .prj1-demo-note { font-size: 10px; letter-spacing: 0.1em; }
+  }
+</style>
+<div class="prj1-demo-note" role="note">
+  <span><b>Beispielprojekt</b> &mdash; fiktives Unternehmen, gestaltet und gebaut von PRJ1</span>
+  <a href="https://prj1.de/" target="_blank" rel="noopener">prj1.de</a>
+</div>
+</body>
+</html>
