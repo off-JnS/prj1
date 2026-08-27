@@ -49,7 +49,7 @@ export default function App() {
         <CustomCursor />
         <SmoothScroll />
         {showIntro && <Preloader />}
-        <div className="grain-overlay" aria-hidden="true" />
+        <div className="paper-texture" aria-hidden="true" />
         <a href="#main" className="skip-link">
           Zum Inhalt springen
         </a>

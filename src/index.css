@@ -167,8 +167,13 @@
   }
 }
 
-/* Hide the native cursor + scrollbar on devices that show our custom one. */
-@media (hover: hover) and (pointer: fine) {
+/* Hide the native cursor + scrollbar on devices that show our custom one.
+ *
+ * `not (pointer: coarse)` excludes phones and tablets that also advertise a
+ * fine pointer. On a browser too old to parse it the whole query is invalid
+ * and the block never applies — which fails in the safe direction (the
+ * native cursor stays visible). */
+@media (hover: hover) and (pointer: fine) and (not (pointer: coarse)) {
   html,
   body,
   a,
@@ -191,6 +196,24 @@
   }
 }
 
+/* Escape hatch for hybrids (touch laptops, tablets with a trackpad): the
+ * first real touch sets `data-touch` from @/lib/pointer and the native
+ * cursor comes back for good. Higher specificity than the block above, so
+ * it wins regardless of source order. */
+html[data-touch],
+html[data-touch] body,
+html[data-touch] a,
+html[data-touch] button,
+html[data-touch] label,
+html[data-touch] summary,
+html[data-touch] input,
+html[data-touch] textarea,
+html[data-touch] select,
+html[data-touch] [role="button"],
+html[data-touch] [data-cursor] {
+  cursor: auto !important;
+}
+
 /* Inverted section: white background, black text — same tokens stay valid. */
 .section-invert {
   --color-background: oklch(1 0 0);
@@ -210,23 +233,146 @@
   color: var(--color-foreground);
 }
 
-/* Film grain — one fixed SVG-noise layer above everything paintable. */
-.grain-overlay {
-  position: fixed;
-  inset: -50%;
-  z-index: 90;
-  pointer-events: none;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.05;
-  mix-blend-mode: overlay;
+/* ---------------------------------------------------------------
+ * Editorial paper texture
+ *
+ * Two stacked layers, all generated in CSS/SVG — no image requests:
+ *   1. ink fibre  — two feTurbulence passes at different frequencies, the
+ *                   finer one stretched horizontally so it reads as paper
+ *                   fibre rather than uniform digital grain;
+ *   2. halftone   — a 3px dot lattice, offset on a second pass to make a
+ *                   rosette, giving large type a printed-dot impression.
+ *
+ * Tune the whole system from the variables below.
+ * ------------------------------------------------------------- */
+:root {
+  --texture-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.45' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --texture-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+
+  --texture-opacity: 0.075;
+  --texture-mottle-opacity: 0.05;
+  --texture-halftone-opacity: 0.022;
+  --texture-blend: overlay;
 }
 
-/* The full-viewport blend layer is expensive on mobile GPUs and barely
- * visible at small sizes — skip it there. */
+.paper-texture {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  contain: layout paint style;
+}
+
+/* Fibre + mottle. Oversized and offset so the fixed layer never reveals an
+ * edge, and so the two noise fields don't tile in lockstep. */
+.paper-texture::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: var(--texture-fibre), var(--texture-mottle);
+  background-size: 200px 200px, 620px 620px;
+  opacity: var(--texture-opacity);
+  mix-blend-mode: var(--texture-blend);
+}
+
+/* Halftone rosette. The two dot lattices share a 3px grid but the second is
+ * offset by half a cell, which is what turns a flat screen into a rosette.
+ *
+ * No vignette: one fixed full-viewport falloff cannot serve both the black
+ * page and the white `.section-invert` blocks — on white it reads as grime
+ * rather than paper. Printed matter doesn't vignette anyway. */
+.paper-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(255 255 255 / var(--texture-halftone-opacity)) 0.5px,
+      transparent 0.75px
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(255 255 255 / var(--texture-halftone-opacity)) 0.5px,
+      transparent 0.75px
+    );
+  background-size:
+    3px 3px,
+    3px 3px;
+  background-position:
+    0 0,
+    1.5px 1.5px;
+}
+
+/* Inverted (white) sections need their own tooth: the global layer blends
+ * toward light, which all but vanishes on white. A multiply pass puts real
+ * ink grain back on the paper. Sits above the type on purpose — that
+ * overprint is what makes it read as printed rather than rendered. */
+.section-invert {
+  position: relative;
+  isolation: isolate;
+}
+
+.section-invert::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(0 0 0 / calc(var(--texture-halftone-opacity) * 1.6)) 0.5px,
+      transparent 0.75px
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgb(0 0 0 / calc(var(--texture-halftone-opacity) * 1.6)) 0.5px,
+      transparent 0.75px
+    ),
+    var(--texture-fibre);
+  background-size:
+    3px 3px,
+    3px 3px,
+    200px 200px;
+  background-position:
+    0 0,
+    1.5px 1.5px,
+    0 0;
+  opacity: calc(var(--texture-opacity) * 0.9);
+  mix-blend-mode: multiply;
+}
+
+/* Mobile: keep the texture, drop the compositing cost. Full-viewport
+ * mix-blend-mode is the expensive part on phone GPUs, not the noise itself,
+ * so small screens get plain alpha at a slightly lower strength. */
 @media (max-width: 767px) {
-  .grain-overlay {
+  :root {
+    --texture-opacity: 0.055;
+    --texture-halftone-opacity: 0.016;
+    --texture-blend: normal;
+  }
+
+  .paper-texture::before {
+    /* Without a blend mode the raw noise reads as a grey wash, so lean on
+     * the mottle layer and keep the fibre very light. */
+    background-image: var(--texture-fibre);
+    background-size: 200px 200px;
+  }
+
+  .section-invert::after {
+    mix-blend-mode: normal;
+    opacity: calc(var(--texture-opacity) * 0.55);
+  }
+}
+
+/* Texture is decoration — it goes when the reader has asked for maximum
+ * contrast. */
+@media (prefers-contrast: more) {
+  .paper-texture,
+  .section-invert::after {
     display: none;
   }
 }
@@ -242,5 +388,116 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------
+ * Receipt printer
+ *
+ * The paper feeds out of the slot in discrete jumps rather than sliding
+ * smoothly — `steps()` on the height animation is what sells "machine". The
+ * step count is set per receipt from the component so one step is roughly one
+ * printed line. A tiny stepped jitter runs alongside, like paper catching on
+ * the rollers.
+ * ------------------------------------------------------------- */
+.receipt-paper {
+  --receipt-paper: oklch(0.96 0 0);
+  --receipt-ink: oklch(0.17 0 0);
+}
+
+/* Slot: clips the strip so it appears to be pushed out from under the head. */
+.receipt-feed {
+  height: 0;
+  overflow: hidden;
+}
+
+/* The animation is a separate class because it can only start once the strip
+ * has been measured: `height: 0 -> auto` is not interpolable, so animating
+ * before `--receipt-height` holds a real pixel value snaps straight to the
+ * finished receipt instead of feeding. */
+.receipt-feed--run {
+  animation-name: receipt-feed;
+  animation-duration: var(--receipt-duration, 2.1s);
+  animation-fill-mode: forwards;
+  /* animation-timing-function is set inline — steps(N) where N = line count. */
+}
+
+@keyframes receipt-feed {
+  to {
+    height: var(--receipt-height, auto);
+  }
+}
+
+.receipt-strip {
+  background: var(--receipt-paper);
+  color: var(--receipt-ink);
+  font-family: var(--font-mono);
+  animation: receipt-jitter var(--receipt-duration, 2.1s) steps(1, end) forwards;
+}
+
+@keyframes receipt-jitter {
+  0% {
+    transform: translateX(-0.9px);
+  }
+  12% {
+    transform: translateX(0.7px);
+  }
+  26% {
+    transform: translateX(-0.6px);
+  }
+  41% {
+    transform: translateX(0.5px);
+  }
+  58% {
+    transform: translateX(-0.35px);
+  }
+  74% {
+    transform: translateX(0.25px);
+  }
+  88% {
+    transform: translateX(-0.1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Tear-off edge. The zigzag is a repeating conic mask, so it scales with the
+ * strip and needs no image. */
+.receipt-tear {
+  height: 9px;
+  background: var(--receipt-paper);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% /
+    14px 100% repeat-x;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 14px 100%
+    repeat-x;
+}
+
+/* Printed lines fade up as they clear the slot. */
+.receipt-line {
+  animation: receipt-ink 0.28s var(--ease-out-expo) both;
+}
+
+@keyframes receipt-ink {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: the receipt is already printed. No feed, no jitter, no
+ * per-line fade — just the finished document. */
+@media (prefers-reduced-motion: reduce) {
+  .receipt-feed,
+  .receipt-feed--run {
+    height: auto;
+    animation: none;
+  }
+  .receipt-strip,
+  .receipt-line {
+    animation: none;
+    transform: none;
   }
 }

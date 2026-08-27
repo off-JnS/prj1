@@ -1,12 +1,39 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
 import { BuildCards, CareCards } from "@/components/pricing/PricingCards";
+import DiscountGame from "@/components/pricing/DiscountGame";
+import Receipt from "@/components/pricing/Receipt";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
-import { buildPlans, carePlans, pricingFaq } from "@/data/plans";
+import { useDiscount } from "@/hooks/useDiscount";
+import { buildPlans, carePlans, findPlan, isDiscountTier, pricingFaq } from "@/data/plans";
 import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
 export default function Pricing() {
+  const [params, setParams] = useSearchParams();
+  const { tier } = useDiscount();
+
+  // Stripe returns here after checkout — the Buy Button's success URL carries
+  // the plan slug and the tier it was bought at (see DEPLOY.md).
+  const receiptPlan = findPlan(params.get("beleg"));
+  const rabattParam = Number(params.get("rabatt"));
+  const receiptTier = isDiscountTier(rabattParam) ? rabattParam : 0;
+
+  const [receiptOpen, setReceiptOpen] = useState(Boolean(receiptPlan));
+  useEffect(() => {
+    if (receiptPlan) setReceiptOpen(true);
+  }, [receiptPlan]);
+
+  const closeReceipt = () => {
+    setReceiptOpen(false);
+    // Drop the params so a reload doesn't reprint a receipt already dismissed.
+    const next = new URLSearchParams(params);
+    next.delete("beleg");
+    next.delete("rabatt");
+    setParams(next, { replace: true });
+  };
+
   return (
     <main className="relative px-6 pb-32 pt-36 sm:px-10 sm:pt-44">
       <Seo
@@ -52,12 +79,18 @@ export default function Pricing() {
             Einmal zahlen, launchen, fertig — alles handgemacht, keine Templates.
             Um den Betrieb kümmert sich danach ein Wartungspaket.
           </p>
+          {tier > 0 && (
+            <p className="mt-6 inline-flex items-center rounded-full border border-[var(--color-foreground)]/40 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.25em]">
+              {tier} % Rabatt aktiv
+            </p>
+          )}
         </FadeIn>
       </header>
 
       {/* Website builds ------------------------------------------------------ */}
       <section className="mx-auto mt-20 max-w-7xl sm:mt-28" aria-label="Website-Pakete">
         <BuildCards plans={buildPlans} />
+        <DiscountGame />
       </section>
 
       {/* Maintenance retainers ----------------------------------------------- */}
@@ -117,6 +150,13 @@ export default function Pricing() {
           </Link>
         </FadeIn>
       </section>
+
+      <Receipt
+        plan={receiptPlan}
+        tier={receiptTier}
+        open={receiptOpen && Boolean(receiptPlan)}
+        onClose={closeReceipt}
+      />
     </main>
   );
 }

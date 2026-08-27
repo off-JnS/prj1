@@ -1,9 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useFinePointer } from "@/lib/pointer";
 
 /**
  * Small white dot that follows the pointer. Renders only on hover-capable,
- * fine-pointer devices — touch screens skip it entirely. The click feedback
- * is handled by ClickSpark, so this stays still on press.
+ * fine-pointer devices — touch screens skip it entirely, including hybrids
+ * that advertise a fine pointer but are actually being tapped (see
+ * `@/lib/pointer`). The click feedback is handled by ClickSpark, so this
+ * stays still on press.
  *
  * Scroll animation: the dot stretches into a vertical capsule while the page
  * is scrolling, with stretch proportional to scroll velocity. Area-preserving
@@ -12,12 +15,10 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
+  const enabled = useFinePointer();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    setEnabled(true);
+    if (!enabled) return;
 
     let mx = -100;
     let my = -100;
@@ -76,7 +77,7 @@ export default function CustomCursor() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [enabled]);
 
   if (!enabled) return null;
 
