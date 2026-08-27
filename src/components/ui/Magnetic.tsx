@@ -1,9 +1,12 @@
 import { useRef, type ReactNode, type PointerEvent } from "react";
 import { motion, useSpring } from "framer-motion";
+import { hasTouched } from "@/lib/pointer";
 
 /**
  * Magnetic hover wrapper: the child gently follows the pointer while hovered
- * and springs back on leave. No-ops on touch devices (no hover events fire).
+ * and springs back on leave. No-ops on touch devices — mouse-only pointer
+ * events, plus the global touch latch so hybrids that emit synthetic mouse
+ * events after a tap stay still too.
  */
 export default function Magnetic({
   children,
@@ -21,7 +24,7 @@ export default function Magnetic({
   const y = useSpring(0, spring);
 
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== "mouse" || !ref.current) return;
+    if (e.pointerType !== "mouse" || hasTouched() || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     x.set((e.clientX - (rect.left + rect.width / 2)) * strength);
     y.set((e.clientY - (rect.top + rect.height / 2)) * strength);

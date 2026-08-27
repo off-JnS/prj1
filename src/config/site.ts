@@ -21,10 +21,18 @@ export const SITE = {
   gaId: "G-XSV6Q5784J",
 
   /**
-   * Web3Forms access key for the contact form (https://web3forms.com — free).
-   * While empty, the form falls back to a mailto: link.
+   * Web3Forms access key for the contact form and the receipt's
+   * "send to e-mail" (https://web3forms.com — free).
+   * While empty, both fall back to a mailto: link.
    */
   web3formsKey: "",
+
+  /**
+   * Stripe publishable key (`pk_live_…`). Required for the Buy Button embeds
+   * in the pricing cards; the per-plan button IDs live in src/data/plans.ts.
+   * While empty, the cards keep their plain link/mailto buttons.
+   */
+  stripePublishableKey: "",
 } as const;
 
 export const NAV_LINKS = [

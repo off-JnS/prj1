@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, type ReactNode, type MutableRefObject } from "react";
+import { isFinePointer, useFinePointer } from "@/lib/pointer";
 
 type Spark = { x: number; y: number; angle: number; startTime: number };
 
@@ -26,6 +27,9 @@ export default function ClickSpark({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const sparksRef = useRef<Spark[]>([]);
   const dprRef = useRef(1);
+  // Touch devices get no sparks at all — the canvas is never mounted, so the
+  // full-viewport blend layer costs them nothing either.
+  const enabled = useFinePointer();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -120,6 +124,9 @@ export default function ClickSpark({
   // own onClick handlers (we read the event in the capture phase).
   useEffect(() => {
     const onClick = (e: PointerEvent) => {
+      // Taps and stylus presses must not spark, even on a device whose media
+      // queries claim a fine pointer.
+      if (e.pointerType !== "mouse" || !isFinePointer()) return;
       const x = e.clientX;
       const y = e.clientY;
       const now = performance.now();
@@ -134,9 +141,12 @@ export default function ClickSpark({
       const canvas = canvasRef.current as HTMLCanvasElement & { _scheduleIfNeeded?: () => void };
       canvas?._scheduleIfNeeded?.();
     };
+    if (!enabled) return;
     window.addEventListener("pointerdown", onClick);
     return () => window.removeEventListener("pointerdown", onClick);
-  }, [sparkCount]);
+  }, [sparkCount, enabled]);
+
+  if (!enabled) return <>{children}</>;
 
   return (
     <>
