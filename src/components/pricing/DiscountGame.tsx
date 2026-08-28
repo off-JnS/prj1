@@ -13,12 +13,8 @@ import {
   type Card,
   type Round,
 } from "@/lib/blackjack";
-import {
-  hasPlayedThisSession,
-  markPlayedThisSession,
-  useDiscount,
-  writeDiscount,
-} from "@/hooks/useDiscount";
+import { bankDiscount, useDiscount } from "@/hooks/useDiscount";
+import type { DiscountTier } from "@/data/plans";
 
 const PROMPTED_KEY = "prj1-discount-prompted";
 const AUTO_OPEN_DELAY = 20_000;
@@ -113,15 +109,17 @@ function handLabel(round: Round): string | null {
 }
 
 function GameBody({ onClose }: { onClose: () => void }) {
+  const { tier: heldTier } = useDiscount();
   const [phase, setPhase] = useState<Phase>("intro");
   const [round, setRound] = useState<Round | null>(null);
   const [doubling, setDoubling] = useState(false);
-  const [result, setResult] = useState<"won10" | "won20" | "lost" | null>(null);
+  const [result, setResult] = useState<"won" | "lost" | null>(null);
+  /** The tier actually in force after the last settle — floor included. */
+  const [inForce, setInForce] = useState<DiscountTier>(heldTier);
 
   const stake = doubling ? 20 : 10;
 
   const deal = useCallback(() => {
-    markPlayedThisSession();
     setRound(startRound());
     setPhase("playing");
   }, []);
@@ -138,17 +136,19 @@ function GameBody({ onClose }: { onClose: () => void }) {
       }
       if (round.outcome === "player") {
         if (doubling) {
-          writeDiscount(20);
-          setResult("won20");
+          setInForce(bankDiscount(20));
+          setResult("won");
           setPhase("final");
         } else {
-          // Banked immediately: closing the dialog now keeps the 10%.
-          writeDiscount(10);
+          // Banked immediately: closing the dialog now keeps the discount.
+          setInForce(bankDiscount(10));
           setPhase("offer");
         }
         return;
       }
-      writeDiscount(0);
+      // A loss yields nothing from *this* game, but any tier won earlier
+      // survives — bankDiscount returns whichever is higher.
+      setInForce(bankDiscount(0));
       setResult("lost");
       setPhase("final");
     }, 900);
@@ -249,11 +249,20 @@ function GameBody({ onClose }: { onClose: () => void }) {
           >
             <p className="flex items-center gap-2 font-mono text-sm uppercase tracking-[0.2em] text-white">
               <Sparkles className="h-4 w-4" aria-hidden="true" />
-              10 % gesichert
+              {inForce} % gesichert
             </p>
             <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-              Double or nothing: noch eine Hand für <strong className="text-white">20 %</strong> —
-              verlierst du, ist der Rabatt weg.
+              {inForce >= 20 ? (
+                <>
+                  Mehr als 20 % gibt es nicht — du kannst trotzdem noch eine Hand spielen.
+                  Verlieren kannst du dabei nichts.
+                </>
+              ) : (
+                <>
+                  Double or nothing: noch eine Hand für <strong className="text-white">20 %</strong>{" "}
+                  — verlierst du, bleibt es bei {inForce} %.
+                </>
+              )}
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <button
@@ -270,12 +279,12 @@ function GameBody({ onClose }: { onClose: () => void }) {
               <button
                 type="button"
                 onClick={() => {
-                  setResult("won10");
+                  setResult("won");
                   setPhase("final");
                 }}
                 className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-[var(--color-foreground)]/40 px-6 text-sm font-semibold text-[var(--color-foreground)] transition-colors hover:border-[var(--color-foreground)]"
               >
-                10 % behalten
+                {inForce} % behalten
               </button>
             </div>
           </motion.div>
@@ -289,20 +298,30 @@ function GameBody({ onClose }: { onClose: () => void }) {
             exit={{ opacity: 0 }}
             className="mt-6"
           >
-            {result === "lost" ? (
+            {result === "lost" && inForce === 0 ? (
               <>
                 <p className="font-mono text-sm uppercase tracking-[0.2em] text-white">
                   Dealer gewinnt
                 </p>
                 <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-                  Kein Rabatt diesmal. Die Preise bleiben, wie sie sind — fair sind sie trotzdem.
+                  Kein Rabatt diesmal. Lade die Seite neu und versuch es wieder — die Preise
+                  bleiben so lange, wie sie sind.
+                </p>
+              </>
+            ) : result === "lost" ? (
+              <>
+                <p className="font-mono text-sm uppercase tracking-[0.2em] text-white">
+                  Dealer gewinnt
+                </p>
+                <p className="u-display mt-4 text-5xl sm:text-6xl">{inForce} %</p>
+                <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+                  Diese Hand geht an den Dealer — dein bereits gewonnener Rabatt bleibt dir
+                  trotzdem erhalten.
                 </p>
               </>
             ) : (
               <>
-                <p className="u-display text-5xl sm:text-6xl">
-                  {result === "won20" ? "20 %" : "10 %"}
-                </p>
+                <p className="u-display text-5xl sm:text-6xl">{inForce} %</p>
                 <p className="mt-4 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
                   Rabatt auf jedes Website-Paket, sieben Tage gültig. Er ist bereits in den Preisen
                   unten eingerechnet und wird beim Checkout übernommen.
@@ -326,24 +345,22 @@ function GameBody({ onClose }: { onClose: () => void }) {
 /* ---------------------------------------------------------------- entry --- */
 
 /**
- * Discount game entry point: a teaser strip on the pricing page plus one
- * unprompted opening per session.
+ * Discount game entry point: an always-live teaser strip on the pricing page,
+ * plus one unprompted opening per session.
  *
- * Both the "already played" and "already prompted" guards are session-scoped,
- * while the won discount itself is not — see @/hooks/useDiscount for why.
+ * The table is open on every reload — there is no per-visit play limit. The
+ * only session-scoped guard left is the auto-open, because a modal that
+ * throws itself at you on every single page load is hostile. The button is
+ * always there for anyone who wants another hand.
  */
 export default function DiscountGame() {
   const { tier } = useDiscount();
   const [open, setOpen] = useState(false);
-  const [played, setPlayed] = useState(() => hasPlayedThisSession());
 
-  const close = useCallback(() => {
-    setOpen(false);
-    setPlayed(hasPlayedThisSession());
-  }, []);
+  const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
-    if (played || tier > 0) return;
+    if (tier > 0) return;
 
     try {
       if (sessionStorage.getItem(PROMPTED_KEY)) return;
@@ -357,11 +374,11 @@ export default function DiscountGame() {
       } catch {
         /* ignore */
       }
-      if (!hasPlayedThisSession()) setOpen(true);
+      setOpen(true);
     }, AUTO_OPEN_DELAY);
 
     return () => window.clearTimeout(timer);
-  }, [played, tier]);
+  }, [tier]);
 
   return (
     <>
@@ -371,21 +388,21 @@ export default function DiscountGame() {
             {tier > 0 ? `${tier} % Rabatt aktiv` : "Spiel um den Preis"}
           </p>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--color-muted-foreground)]">
-            {tier > 0
-              ? "Dein Rabatt ist in den Preisen oben eingerechnet und sieben Tage gültig."
-              : played
-                ? "Für diesen Besuch ist die Hand gespielt. Schau beim nächsten Mal wieder vorbei."
+            {tier >= 20
+              ? "Höchster Rabatt gesichert, sieben Tage gültig und in den Preisen oben eingerechnet."
+              : tier > 0
+                ? `${tier} % sind dir sicher und in den Preisen oben eingerechnet. Noch eine Hand auf 20 %? Verlieren kannst du deinen Rabatt nicht.`
                 : "Eine Hand Blackjack gegen den Dealer: 10 % auf jedes Website-Paket, verdoppelbar auf 20 %."}
           </p>
         </div>
-        {tier === 0 && !played && (
+        {tier < 20 && (
           <button
             type="button"
             onClick={() => setOpen(true)}
             className="inline-flex min-h-12 flex-none items-center justify-center gap-2 rounded-full border border-[var(--color-foreground)]/40 px-6 text-sm font-semibold transition-colors hover:border-[var(--color-foreground)]"
           >
             <Sparkles className="h-4 w-4" aria-hidden="true" />
-            Karten geben
+            {tier > 0 ? "Nochmal geben" : "Karten geben"}
           </button>
         )}
       </div>

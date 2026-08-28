@@ -167,51 +167,35 @@
   }
 }
 
-/* Hide the native cursor + scrollbar on devices that show our custom one.
+/* ---------------------------------------------------------------
+ * Custom cursor visibility
  *
- * `not (pointer: coarse)` excludes phones and tablets that also advertise a
- * fine pointer. On a browser too old to parse it the whole query is invalid
- * and the block never applies — which fails in the safe direction (the
- * native cursor stays visible). */
-@media (hover: hover) and (pointer: fine) and (not (pointer: coarse)) {
-  html,
-  body,
-  a,
-  button,
-  label,
-  summary,
-  input,
-  textarea,
-  select,
-  [role="button"],
-  [data-cursor] {
-    cursor: none !important;
-  }
-
-  html {
-    scrollbar-width: none; /* Firefox */
-  }
-  html::-webkit-scrollbar {
-    display: none; /* Chromium / Safari / Edge */
-  }
+ * Driven entirely by `html[data-cursor]`, which @/lib/pointer sets from the
+ * *currently active* input device. One rule covering every element, rather
+ * than an enumerated selector list that let unlisted elements flash a native
+ * arrow. It toggles both ways, so a hybrid device that gets touched can go
+ * back to a real cursor as soon as the mouse moves.
+ * ------------------------------------------------------------- */
+html[data-cursor="custom"],
+html[data-cursor="custom"] * {
+  cursor: none !important;
 }
 
-/* Escape hatch for hybrids (touch laptops, tablets with a trackpad): the
- * first real touch sets `data-touch` from @/lib/pointer and the native
- * cursor comes back for good. Higher specificity than the block above, so
- * it wins regardless of source order. */
-html[data-touch],
-html[data-touch] body,
-html[data-touch] a,
-html[data-touch] button,
-html[data-touch] label,
-html[data-touch] summary,
-html[data-touch] input,
-html[data-touch] textarea,
-html[data-touch] select,
-html[data-touch] [role="button"],
-html[data-touch] [data-cursor] {
-  cursor: auto !important;
+/* Text entry keeps its I-beam. Design Guideline — Pointing Devices: "Prefer
+ * the system-provided pointer appearances for standard buttons and text-entry
+ * areas." Caret position genuinely matters here and an 8px dot cannot
+ * express it. */
+html[data-cursor="custom"] input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+html[data-cursor="custom"] textarea,
+html[data-cursor="custom"] [contenteditable="true"] {
+  cursor: text !important;
+}
+
+html[data-cursor="custom"] {
+  scrollbar-width: none; /* Firefox */
+}
+html[data-cursor="custom"]::-webkit-scrollbar {
+  display: none; /* Chromium / Safari / Edge */
 }
 
 /* Inverted section: white background, black text — same tokens stay valid. */
@@ -223,7 +207,7 @@ html[data-touch] [data-cursor] {
   --color-secondary: oklch(0.94 0 0);
   --color-secondary-foreground: oklch(0 0 0);
   --color-muted: oklch(0.96 0 0);
-  --color-muted-foreground: oklch(0.38 0 0);
+  --color-muted-foreground: oklch(0.34 0 0);
   --color-border: oklch(0.86 0 0);
   --color-input: oklch(0.86 0 0);
   --color-ring: oklch(0 0 0);
@@ -231,163 +215,216 @@ html[data-touch] [data-cursor] {
   --color-card-foreground: oklch(0 0 0);
   background: var(--color-background);
   color: var(--color-foreground);
-}
-
-/* ---------------------------------------------------------------
- * Editorial paper texture
- *
- * Two stacked layers, all generated in CSS/SVG — no image requests:
- *   1. ink fibre  — two feTurbulence passes at different frequencies, the
- *                   finer one stretched horizontally so it reads as paper
- *                   fibre rather than uniform digital grain;
- *   2. halftone   — a 3px dot lattice, offset on a second pass to make a
- *                   rosette, giving large type a printed-dot impression.
- *
- * Tune the whole system from the variables below.
- * ------------------------------------------------------------- */
-:root {
-  --texture-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.45' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-  --texture-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
-
-  --texture-opacity: 0.075;
-  --texture-mottle-opacity: 0.05;
-  --texture-halftone-opacity: 0.022;
-  --texture-blend: overlay;
-}
-
-.paper-texture {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  pointer-events: none;
-  contain: layout paint style;
-}
-
-/* Fibre + mottle. Oversized and offset so the fixed layer never reveals an
- * edge, and so the two noise fields don't tile in lockstep. */
-.paper-texture::before {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  background-image: var(--texture-fibre), var(--texture-mottle);
-  background-size: 200px 200px, 620px 620px;
-  opacity: var(--texture-opacity);
-  mix-blend-mode: var(--texture-blend);
-}
-
-/* Halftone rosette. The two dot lattices share a 3px grid but the second is
- * offset by half a cell, which is what turns a flat screen into a rosette.
- *
- * No vignette: one fixed full-viewport falloff cannot serve both the black
- * page and the white `.section-invert` blocks — on white it reads as grime
- * rather than paper. Printed matter doesn't vignette anyway. */
-.paper-texture::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(
-      circle at 50% 50%,
-      rgb(255 255 255 / var(--texture-halftone-opacity)) 0.5px,
-      transparent 0.75px
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      rgb(255 255 255 / var(--texture-halftone-opacity)) 0.5px,
-      transparent 0.75px
-    );
-  background-size:
-    3px 3px,
-    3px 3px;
-  background-position:
-    0 0,
-    1.5px 1.5px;
-}
-
-/* Inverted (white) sections need their own tooth: the global layer blends
- * toward light, which all but vanishes on white. A multiply pass puts real
- * ink grain back on the paper. Sits above the type on purpose — that
- * overprint is what makes it read as printed rather than rendered. */
-.section-invert {
   position: relative;
   isolation: isolate;
 }
 
+/* ---------------------------------------------------------------
+ * Worn newsprint
+ *
+ * Two ideas make this work where the first attempt didn't:
+ *
+ * 1. THE INK IS A TOKEN. One fixed overlay cannot serve a black page and a
+ *    white `.section-invert` block — a dark wash that reads as age on white
+ *    reads as grime on black. So every layer draws with
+ *    `rgb(var(--texture-ink) / …)` and `--texture-blend`, and the inverted
+ *    sections flip both. Same rules, opposite ink.
+ *
+ * 2. HEAVY WEAR SITS BEHIND THE TYPE. `.paper-base` (z-0, under content)
+ *    carries the loud stuff — uneven ink, foxing, a fold crease, edge wear —
+ *    so it can be genuinely obvious without touching text contrast.
+ *    `.paper-texture` (z-90, over content) carries only fine grain, halftone
+ *    and dust, light enough to read as ink on paper rather than fog.
+ *
+ * Tune the whole system from the tokens below.
+ * ------------------------------------------------------------- */
+:root {
+  /* Fine, horizontally stretched — reads as paper fibre, not digital noise.
+   * `saturate 0` matters: raw feTurbulence emits independent RGB channels, so
+   * without it the "greyscale" texture carries a visible colour cast. */
+  --texture-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.45' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  /* Coarse cloud — uneven ink density across the sheet. */
+  --texture-mottle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+  /* Thresholded through feColorMatrix into discrete dust specks. */
+  --texture-speck: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.62' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 9 0 0 0 -5.1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+
+  --texture-ink: 255 255 255;
+  --texture-blend: overlay;
+
+  --texture-strength: 0.24; /* heavy wear, behind content */
+  --texture-grain: 0.16; /* fine grain, above content */
+  --texture-halftone: 0.22; /* in-layer alpha; effective = × grain */
+
+  /* Randomised once per page load by @/lib/wear. */
+  --wear-x: 0%;
+  --wear-y: 0%;
+  --wear-rot: 0deg;
+  --wear-scale: 1;
+}
+
+/* White paper: dark ink, multiplied. */
+.section-invert {
+  --texture-ink: 0 0 0;
+  --texture-blend: multiply;
+  --texture-strength: 0.34;
+  --texture-grain: 0.2;
+  --texture-halftone: 0.24;
+}
+
+.paper-base,
+.paper-texture {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  contain: layout paint style;
+}
+
+.paper-base {
+  z-index: 0;
+}
+.paper-texture {
+  z-index: 90;
+}
+
+/* The wear field: foxing spots, a fold crease and uneven ink. Oversized and
+ * transformed by the per-load random values so no two visits print alike. */
+.paper-base::before,
+.section-invert::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  width: 160%;
+  height: 160%;
+  pointer-events: none;
+  transform: translate3d(var(--wear-x), var(--wear-y), 0) rotate(var(--wear-rot))
+    scale(var(--wear-scale));
+  transform-origin: center;
+  opacity: var(--texture-strength);
+  mix-blend-mode: var(--texture-blend);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat,
+    no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgb(var(--texture-ink) / 0.5) 0, transparent 3.5%),
+    radial-gradient(circle at 78% 9%, rgb(var(--texture-ink) / 0.38) 0, transparent 2.4%),
+    radial-gradient(circle at 34% 62%, rgb(var(--texture-ink) / 0.44) 0, transparent 4.2%),
+    radial-gradient(circle at 91% 47%, rgb(var(--texture-ink) / 0.32) 0, transparent 2.8%),
+    radial-gradient(circle at 6% 74%, rgb(var(--texture-ink) / 0.42) 0, transparent 3.1%),
+    radial-gradient(circle at 57% 88%, rgb(var(--texture-ink) / 0.36) 0, transparent 3.8%),
+    radial-gradient(circle at 68% 33%, rgb(var(--texture-ink) / 0.3) 0, transparent 2.2%),
+    radial-gradient(circle at 23% 41%, rgb(var(--texture-ink) / 0.34) 0, transparent 2.6%),
+    radial-gradient(circle at 45% 14%, rgb(var(--texture-ink) / 0.28) 0, transparent 1.9%),
+    radial-gradient(circle at 85% 78%, rgb(var(--texture-ink) / 0.4) 0, transparent 3.3%),
+    radial-gradient(circle at 15% 92%, rgb(var(--texture-ink) / 0.3) 0, transparent 2.5%),
+    radial-gradient(circle at 62% 55%, rgb(var(--texture-ink) / 0.26) 0, transparent 4.6%),
+    linear-gradient(
+      90deg,
+      transparent 49.2%,
+      rgb(var(--texture-ink) / 0.34) 49.85%,
+      rgb(var(--texture-ink) / 0.1) 50.1%,
+      transparent 50.8%
+    ),
+    var(--texture-mottle);
+  background-size:
+    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+    100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 900px 900px;
+}
+
+/* Edge wear and the horizontal third-fold. Not transformed with the field —
+ * the sheet's own edges stay put. */
+.paper-base::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: calc(var(--texture-strength) * 0.85);
+  mix-blend-mode: var(--texture-blend);
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(var(--texture-ink) / 0.3) 0,
+      transparent 10%,
+      transparent 90%,
+      rgb(var(--texture-ink) / 0.3) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgb(var(--texture-ink) / 0.2) 0,
+      transparent 7%,
+      transparent 93%,
+      rgb(var(--texture-ink) / 0.2) 100%
+    ),
+    linear-gradient(0deg, transparent 32.4%, rgb(var(--texture-ink) / 0.16) 33.2%, transparent 34%);
+}
+
+/* Fine grain, halftone rosette and dust — the only layer above the type, so
+ * one opacity knob (`--texture-grain`) governs the whole thing. The two dot
+ * lattices share a 3px grid with the second offset half a cell; that offset
+ * is what makes a rosette rather than a flat screen.
+ *
+ * Halftone alpha is expressed *within* the layer, so the effective value is
+ * `--texture-halftone × --texture-grain`. */
+.paper-texture::after,
 .section-invert::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 1;
   pointer-events: none;
+  opacity: var(--texture-grain);
+  mix-blend-mode: var(--texture-blend);
   background-image:
     radial-gradient(
       circle at 50% 50%,
-      rgb(0 0 0 / calc(var(--texture-halftone-opacity) * 1.6)) 0.5px,
-      transparent 0.75px
+      rgb(var(--texture-ink) / var(--texture-halftone)) 0.5px,
+      transparent 0.8px
     ),
     radial-gradient(
       circle at 50% 50%,
-      rgb(0 0 0 / calc(var(--texture-halftone-opacity) * 1.6)) 0.5px,
-      transparent 0.75px
+      rgb(var(--texture-ink) / var(--texture-halftone)) 0.5px,
+      transparent 0.8px
     ),
+    var(--texture-speck),
     var(--texture-fibre);
   background-size:
     3px 3px,
     3px 3px,
-    200px 200px;
+    300px 300px,
+    190px 190px;
   background-position:
     0 0,
     1.5px 1.5px,
+    0 0,
     0 0;
-  opacity: calc(var(--texture-opacity) * 0.9);
-  mix-blend-mode: multiply;
 }
 
-/* Mobile: keep the texture, drop the compositing cost. Full-viewport
- * mix-blend-mode is the expensive part on phone GPUs, not the noise itself,
- * so small screens get plain alpha at a slightly lower strength. */
+.section-invert::before {
+  z-index: -1;
+}
+
+/* Mobile: keep the wear, drop the compositing. Full-viewport mix-blend-mode is
+ * the expensive part on phone GPUs — and because the heavy layer now sits
+ * behind the type, plain alpha still carries it. */
 @media (max-width: 767px) {
   :root {
-    --texture-opacity: 0.055;
-    --texture-halftone-opacity: 0.016;
     --texture-blend: normal;
+    --texture-strength: 0.15;
+    --texture-grain: 0.1;
+    --texture-halftone: 0.2;
   }
-
-  .paper-texture::before {
-    /* Without a blend mode the raw noise reads as a grey wash, so lean on
-     * the mottle layer and keep the fibre very light. */
-    background-image: var(--texture-fibre);
-    background-size: 200px 200px;
-  }
-
-  .section-invert::after {
-    mix-blend-mode: normal;
-    opacity: calc(var(--texture-opacity) * 0.55);
+  .section-invert {
+    --texture-blend: normal;
+    --texture-strength: 0.2;
+    --texture-grain: 0.12;
+    --texture-halftone: 0.2;
   }
 }
 
 /* Texture is decoration — it goes when the reader has asked for maximum
  * contrast. */
 @media (prefers-contrast: more) {
+  .paper-base,
   .paper-texture,
+  .section-invert::before,
   .section-invert::after {
     display: none;
-  }
-}
-
-/* Respect reduced motion globally. Heavy WebGL/GSAP animations are
- * paused programmatically in their components; this catches everything
- * driven by CSS transitions and Framer-Motion's reduced-motion checks. */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
 }
 

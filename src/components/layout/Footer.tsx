@@ -38,8 +38,11 @@ export default function Footer() {
         </h2>
         <FadeIn delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <Magnetic>
-            <Link to="/kontakt">
-              <LiquidButton size="xl" className="border border-white/30 text-white">
+            {/* inline-flex so the anchor's own box matches the button it wraps
+                (it collapsed to 17px tall otherwise), and min-h-11 to clear the
+                44pt touch-target minimum. */}
+            <Link to="/kontakt" className="inline-flex">
+              <LiquidButton size="xl" className="min-h-11 border border-white/30 text-white">
                 Projekt starten
               </LiquidButton>
             </Link>
@@ -61,7 +64,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-1 text-sm text-white/70">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
-                <Link className="inline-block py-1.5 transition-colors hover:text-white" to={link.href}>
+                <Link className="inline-block py-3 transition-colors hover:text-white sm:py-1.5" to={link.href}>
                   {link.label}
                 </Link>
               </li>
@@ -74,7 +77,7 @@ export default function Footer() {
           <ul className="mt-4 space-y-1 text-sm text-white/70">
             {LEGAL_LINKS.map((link) => (
               <li key={link.href}>
-                <Link className="inline-block py-1.5 transition-colors hover:text-white" to={link.href}>
+                <Link className="inline-block py-3 transition-colors hover:text-white sm:py-1.5" to={link.href}>
                   {link.label}
                 </Link>
               </li>
@@ -86,13 +89,8 @@ export default function Footer() {
           <h3 className="u-kicker">Kontakt</h3>
           <ul className="mt-4 space-y-1 text-sm text-white/70">
             <li>
-              <a className="inline-block py-1.5 transition-colors hover:text-white" href={`mailto:${SITE.email}`}>
+              <a className="inline-block py-3 transition-colors hover:text-white sm:py-1.5" href={`mailto:${SITE.email}`}>
                 {SITE.email}
-              </a>
-            </li>
-            <li>
-              <a className="inline-block py-1.5 transition-colors hover:text-white" href={SITE.phoneHref}>
-                {SITE.phone}
               </a>
             </li>
             <li className="py-1.5 text-white/65">

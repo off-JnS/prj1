@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ClickSpark from "@/components/fx/ClickSpark";
 import CustomCursor from "@/components/fx/CustomCursor";
@@ -8,6 +8,7 @@ import Preloader from "@/components/layout/Preloader";
 import ConsentBanner from "@/components/layout/ConsentBanner";
 import SmoothScroll from "@/lib/smooth-scroll";
 import { IntroProvider } from "@/lib/intro";
+import { randomiseWear } from "@/lib/wear";
 
 const Landing = lazy(() => import("@/pages/Landing"));
 const Portfolio = lazy(() => import("@/pages/Portfolio"));
@@ -30,6 +31,11 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  // Vary the newsprint wear once per load, before first paint.
+  useLayoutEffect(() => {
+    randomiseWear();
+  }, []);
+
   // The intro curtain only plays for full loads of the start page — deep
   // links and repeat visits within the same session go straight to content.
   const [showIntro] = useState(() => {
@@ -49,11 +55,12 @@ export default function App() {
         <CustomCursor />
         <SmoothScroll />
         {showIntro && <Preloader />}
+        <div className="paper-base" aria-hidden="true" />
         <div className="paper-texture" aria-hidden="true" />
         <a href="#main" className="skip-link">
           Zum Inhalt springen
         </a>
-        <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
+        <div className="relative z-10 min-h-screen text-[var(--color-foreground)]">
           <ScrollToTop />
           <SiteNav />
           <Suspense

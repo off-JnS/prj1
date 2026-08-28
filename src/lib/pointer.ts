@@ -1,87 +1,79 @@
 import { useEffect, useState } from "react";
 
 /**
- * Pointer-capability detection for the cursor effects.
+ * Which input device is driving right now.
  *
- * Media queries alone are not enough: hybrid devices (touch laptops, iPads
- * with a trackpad, Windows convertibles) report `hover: hover` *and*
- * `pointer: fine`, so a media query on its own leaves a stuck cursor dot and
- * spark bursts on every tap. We therefore combine three signals:
+ * The previous version got this wrong twice, and both mistakes killed the
+ * cursor on perfectly ordinary desktops:
  *
- *   1. `(hover: hover) and (pointer: fine)` — a precise, hovering pointer.
- *   2. `not (pointer: coarse)` — no touch digitiser as the *primary* input.
- *   3. A one-way latch on the first `touchstart` ever seen.
+ *   1. It required `not (pointer: coarse)`. Touch-capable laptops report a
+ *      coarse pointer even with a mouse attached, so they lost the cursor
+ *      entirely.
+ *   2. The first `touchstart` disabled the cursor *permanently*. One
+ *      accidental brush of the screen and it never came back until reload.
  *
- * The latch is deliberately irreversible for the lifetime of the page: once
- * someone has touched the screen, the effects stay off even if they pick the
- * mouse back up. Flickering them back on mid-session is worse than losing them.
+ * So this tracks the **currently active** device instead of trying to
+ * classify the hardware once. A mouse event turns the custom cursor on; a
+ * touch or pen event turns it off. It recovers in both directions, which is
+ * exactly what a hybrid device needs. Media queries only supply the initial
+ * guess, before any input has been seen.
+ *
+ * `html[data-cursor="custom"]` is the single CSS hook — see index.css.
  */
 
-const FINE_POINTER_QUERY = "(hover: hover) and (pointer: fine)";
-const COARSE_POINTER_QUERY = "(pointer: coarse)";
+const FINE_QUERY = "(hover: hover) and (pointer: fine)";
 
-let touched = false;
+let fine = false;
 const listeners = new Set<() => void>();
 
-/** True once the user has touched the screen — never resets. */
-export function hasTouched() {
-  return touched;
+function setAttribute() {
+  const root = document.documentElement;
+  if (fine) root.dataset.cursor = "custom";
+  else delete root.dataset.cursor;
 }
 
-function onFirstTouch() {
-  if (touched) return;
-  touched = true;
-  // CSS hook: `html[data-touch]` cancels the `cursor: none` rules in index.css.
-  document.documentElement.dataset.touch = "1";
-  window.removeEventListener("touchstart", onFirstTouch);
+function apply(next: boolean) {
+  if (next === fine) return;
+  fine = next;
+  setAttribute();
   for (const notify of listeners) notify();
 }
 
+function onPointer(e: PointerEvent) {
+  // Pen counts as touch here: it lives on touchscreens, and the ask was to
+  // drop the pointer effects whenever a touch screen is in play.
+  apply(e.pointerType === "mouse");
+}
+
 if (typeof window !== "undefined") {
-  window.addEventListener("touchstart", onFirstTouch, { passive: true, once: true });
+  fine = window.matchMedia(FINE_QUERY).matches;
+  setAttribute();
+
+  window.addEventListener("pointermove", onPointer, { passive: true });
+  window.addEventListener("pointerdown", onPointer, { passive: true });
+
+  // A mouse plugged in (or unplugged) after load changes the answer.
+  const mql = window.matchMedia(FINE_QUERY);
+  mql.addEventListener("change", (e) => apply(e.matches));
 }
 
-/** Media-query half of the check, without the touch latch. */
-function matchesFineQueries() {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia(FINE_POINTER_QUERY).matches &&
-    !window.matchMedia(COARSE_POINTER_QUERY).matches
-  );
-}
-
-/**
- * Non-reactive check — for event handlers and module-level guards where a
- * hook would be the wrong shape.
- */
+/** Non-reactive read, for event handlers and module-level guards. */
 export function isFinePointer() {
-  return !touched && matchesFineQueries();
+  return fine;
 }
 
-/**
- * Reactive version. Initialises synchronously so the cursor never flashes in
- * for a frame on touch devices, then re-renders if the pointer type changes
- * (external mouse plugged in) or the touch latch trips.
- */
+/** Reactive read. Initialises synchronously so nothing flashes for a frame. */
 export function useFinePointer() {
-  const [fine, setFine] = useState(isFinePointer);
+  const [value, setValue] = useState(isFinePointer);
 
   useEffect(() => {
-    const update = () => setFine(isFinePointer());
+    const update = () => setValue(isFinePointer());
     update();
-
-    const fineMql = window.matchMedia(FINE_POINTER_QUERY);
-    const coarseMql = window.matchMedia(COARSE_POINTER_QUERY);
-    fineMql.addEventListener("change", update);
-    coarseMql.addEventListener("change", update);
     listeners.add(update);
-
     return () => {
-      fineMql.removeEventListener("change", update);
-      coarseMql.removeEventListener("change", update);
       listeners.delete(update);
     };
   }, []);
 
-  return fine;
+  return value;
 }
