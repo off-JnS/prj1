@@ -22,6 +22,17 @@ import { useFinePointer } from "@/lib/pointer";
 /** Anything that should make the dot swell. */
 const INTERACTIVE =
   'a, button, summary, label, select, [role="button"], [role="link"], [data-cursor-hover]';
+
+/**
+ * Text-entry targets, where the dot hides entirely and the native I-beam takes
+ * over. Without this the visitor gets *both* — and the dot can sit right on the
+ * caret it is meant to defer to.
+ *
+ * Must stay in step with the `cursor: text` rule in index.css; the two select
+ * the same elements and drift would leave one cursor showing without the other.
+ */
+const TEXT_ENTRY =
+  'input:not([type="button"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]), textarea, [contenteditable="true"]';
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const enabled = useFinePointer();
@@ -35,6 +46,7 @@ export default function CustomCursor() {
     let raf = 0;
     let hover = 1; // multiplier, eased toward the target each frame
     let hoverTarget = 1;
+    let overText = false;
 
     let lastScrollY = window.scrollY;
     let lastScrollT = performance.now();
@@ -51,6 +63,7 @@ export default function CustomCursor() {
       if (dotRef.current) {
         dotRef.current.style.transform =
           `translate3d(${mx - 4}px, ${my - 4}px, 0) scale(${inv * hover}, ${stretch * hover})`;
+        dotRef.current.style.opacity = overText ? "0" : "1";
       }
 
       // keep ticking while the capsule or the hover swell is still settling,
@@ -67,9 +80,9 @@ export default function CustomCursor() {
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      const target = e.target;
-      hoverTarget =
-        target instanceof Element && target.closest(INTERACTIVE) ? 2.6 : 1;
+      const target = e.target instanceof Element ? e.target : null;
+      overText = Boolean(target?.closest(TEXT_ENTRY));
+      hoverTarget = target?.closest(INTERACTIVE) ? 2.6 : 1;
       schedule();
     };
 
@@ -102,8 +115,9 @@ export default function CustomCursor() {
       aria-hidden
       className="pointer-events-none fixed left-0 top-0 z-[101] h-2 w-2 rounded-full bg-white mix-blend-difference"
       style={{
-        willChange: "transform",
+        willChange: "transform, opacity",
         transform: "translate3d(-100px, -100px, 0)",
+        transition: "opacity 120ms linear",
       }}
     />
   );

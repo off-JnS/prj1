@@ -53,6 +53,23 @@ function getSnapshot(): DiscountTier {
   return snapshot;
 }
 
+/**
+ * A local write, where we already know the resulting value.
+ *
+ * Seeding the cache rather than invalidating it is what keeps the tier alive
+ * when storage is blocked (private mode, cookies off, enterprise policy).
+ * Invalidating would send the next read back to `readStorage()`, which throws
+ * and yields 0 — so a win would evaporate before the next render.
+ */
+function publish(value: DiscountTier) {
+  snapshot = value;
+  for (const notify of listeners) notify();
+}
+
+/**
+ * An external change — another tab wrote to storage. The new value is unknown
+ * here, so invalidating and re-reading is the correct move.
+ */
 function emit() {
   snapshot = null;
   for (const notify of listeners) notify();
@@ -95,9 +112,9 @@ export function bankDiscount(result: DiscountTier): DiscountTier {
         JSON.stringify({ tier: next, wonAt: Date.now() } satisfies DiscountRecord),
       );
     } catch {
-      /* storage blocked — the tier still applies for this page's lifetime */
+      /* storage blocked — `publish` still keeps the tier for this page */
     }
-    emit();
+    publish(next);
   }
   return next;
 }
@@ -112,9 +129,9 @@ export function writeDiscount(tier: DiscountTier) {
         JSON.stringify({ tier, wonAt: Date.now() } satisfies DiscountRecord),
       );
   } catch {
-    /* storage blocked — the tier still applies for this page's lifetime */
+    /* storage blocked — `publish` still keeps the tier for this page */
   }
-  emit();
+  publish(tier);
 }
 
 export function useDiscount() {
