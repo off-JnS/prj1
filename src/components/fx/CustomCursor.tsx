@@ -12,7 +12,16 @@ import { useFinePointer } from "@/lib/pointer";
  * is scrolling, with stretch proportional to scroll velocity. Area-preserving
  * (`scale(1/√s, s)`) keeps it from visually ballooning. Velocity decays each
  * frame, so the dot eases back to a circle within ~150 ms of stopping.
+ *
+ * Hover feedback: the dot swells over anything interactive. Without it the
+ * cursor reads as broken rather than deliberate — Design Guideline —
+ * Pointing Devices: "Provide a consistent experience in your app, whether
+ * people are using gestures, eyes, a pointing device, or a keyboard."
  */
+
+/** Anything that should make the dot swell. */
+const INTERACTIVE =
+  'a, button, summary, label, select, [role="button"], [role="link"], [data-cursor-hover]';
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const enabled = useFinePointer();
@@ -24,6 +33,8 @@ export default function CustomCursor() {
     let my = -100;
     let velocity = 0; // px / ms, signed (direction unused — we only use |velocity|)
     let raf = 0;
+    let hover = 1; // multiplier, eased toward the target each frame
+    let hoverTarget = 1;
 
     let lastScrollY = window.scrollY;
     let lastScrollT = performance.now();
@@ -32,18 +43,19 @@ export default function CustomCursor() {
       raf = 0;
       // decay scroll velocity each frame
       velocity *= 0.85;
+      hover += (hoverTarget - hover) * 0.18;
 
       const stretch = Math.min(2.4, 1 + Math.abs(velocity) * 0.35);
       const inv = 1 / Math.sqrt(stretch);
 
       if (dotRef.current) {
         dotRef.current.style.transform =
-          `translate3d(${mx - 4}px, ${my - 4}px, 0) scale(${inv}, ${stretch})`;
+          `translate3d(${mx - 4}px, ${my - 4}px, 0) scale(${inv * hover}, ${stretch * hover})`;
       }
 
-      // keep ticking while the capsule is still settling so the decay plays
-      // out even if the pointer is stationary
-      if (Math.abs(velocity) > 0.05 && !raf) {
+      // keep ticking while the capsule or the hover swell is still settling,
+      // so both play out even if the pointer is stationary
+      if ((Math.abs(velocity) > 0.05 || Math.abs(hoverTarget - hover) > 0.01) && !raf) {
         raf = requestAnimationFrame(tick);
       }
     };
@@ -55,6 +67,9 @@ export default function CustomCursor() {
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
+      const target = e.target;
+      hoverTarget =
+        target instanceof Element && target.closest(INTERACTIVE) ? 2.6 : 1;
       schedule();
     };
 

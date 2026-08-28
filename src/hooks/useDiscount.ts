@@ -2,7 +2,6 @@ import { useCallback, useSyncExternalStore } from "react";
 import { isDiscountTier, type DiscountTier } from "@/data/plans";
 
 const STORAGE_KEY = "prj1-discount";
-const PLAYED_KEY = "prj1-discount-played";
 
 /** A won discount is honoured for a week. */
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -23,7 +22,9 @@ interface DiscountRecord {
  *
  * A client-side discount is trivially forgeable. That is an accepted trade:
  * the worst case is honouring a discount that was on offer anyway, and the
- * price it buys is a game that works with no backend.
+ * price it buys is a game that works with no backend. The game is replayable
+ * on every reload, so a patient visitor reaches 20% regardless — treat the
+ * tier as a marketing gesture, not a guarded asset.
  */
 
 // Cached so useSyncExternalStore's getSnapshot stays referentially stable.
@@ -70,7 +71,38 @@ function subscribe(onChange: () => void) {
   };
 }
 
-/** Persist a won tier. Passing 0 clears it (a lost double-or-nothing). */
+/**
+ * Bank the result of a game. A tier already held acts as a floor: a fresh
+ * hand can raise it, never lower it.
+ *
+ * This is what makes unlimited replay safe to offer. Double-or-nothing still
+ * carries real stakes *inside* a single game — win 10, gamble it, lose, and
+ * that game yields 0 — but it cannot claw back a tier won on an earlier
+ * visit. Losing a discount you already hold because you idly played again
+ * reads as the site cheating you.
+ *
+ * Returns the tier actually in force afterwards, so the UI can tell the
+ * player which of the two things happened.
+ */
+export function bankDiscount(result: DiscountTier): DiscountTier {
+  const held = getSnapshot();
+  const next = (result > held ? result : held) as DiscountTier;
+
+  if (next !== held) {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ tier: next, wonAt: Date.now() } satisfies DiscountRecord),
+      );
+    } catch {
+      /* storage blocked — the tier still applies for this page's lifetime */
+    }
+    emit();
+  }
+  return next;
+}
+
+/** Drop the stored discount outright. Only used by `clear()`. */
 export function writeDiscount(tier: DiscountTier) {
   try {
     if (tier === 0) localStorage.removeItem(STORAGE_KEY);
@@ -83,23 +115,6 @@ export function writeDiscount(tier: DiscountTier) {
     /* storage blocked — the tier still applies for this page's lifetime */
   }
   emit();
-}
-
-/** True once the visitor has played this session — one attempt, no re-rolls. */
-export function hasPlayedThisSession(): boolean {
-  try {
-    return sessionStorage.getItem(PLAYED_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-export function markPlayedThisSession() {
-  try {
-    sessionStorage.setItem(PLAYED_KEY, "1");
-  } catch {
-    /* storage blocked — the in-memory game state still prevents a re-roll */
-  }
 }
 
 export function useDiscount() {

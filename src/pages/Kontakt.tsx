@@ -143,15 +143,6 @@ export default function Kontakt() {
               </a>
             </div>
             <div>
-              <h2 className="u-kicker">Telefon</h2>
-              <a
-                href={SITE.phoneHref}
-                className="mt-3 inline-block text-xl font-semibold tracking-tight transition-colors hover:text-[var(--color-muted-foreground)] sm:text-2xl"
-              >
-                {SITE.phone}
-              </a>
-            </div>
-            <div>
               <h2 className="u-kicker">Studio</h2>
               <p className="mt-3 text-base leading-relaxed text-[var(--color-muted-foreground)]">
                 {SITE.address.street}
@@ -256,11 +247,14 @@ export default function Kontakt() {
                 />
               </Field>
 
-              <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+              <label className="flex min-h-11 cursor-pointer items-start gap-3 py-1 text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+                {/* 44pt minimum — Design Guideline — Accessibility: touch
+                    targets need >= 44x44pt. The label is the hit area, but the
+                    control itself was only 16x16. */}
                 <input
                   type="checkbox"
                   required
-                  className="mt-1 h-4 w-4 flex-none accent-[var(--color-foreground)]"
+                  className="mt-0.5 h-6 w-6 flex-none accent-[var(--color-foreground)]"
                 />
                 <span>
                   Ich habe die{" "}
