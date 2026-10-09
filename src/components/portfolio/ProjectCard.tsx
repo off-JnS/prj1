@@ -45,7 +45,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
                 <span className="h-2 w-2 rounded-full bg-[var(--color-border)]" />
                 <span className="h-2 w-2 rounded-full bg-[var(--color-border)]" />
               </div>
-              <div className="u-halftone aspect-[16/10]">
+              <div className="aspect-[16/10] overflow-hidden">
                 <img
                   src={project.image}
                   alt={project.imageAlt}

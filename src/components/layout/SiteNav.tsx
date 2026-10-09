@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AnimatePresence,
@@ -16,10 +16,9 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 /**
  * Unified site navigation.
  *
- * Bar: fixed. From md up it runs in mix-blend-difference so it renders
- * white over dark sections and flips to black over inverted (white) ones.
- * Below md it is a solid black strip with a hairline, so it reads as its own
- * layer over the hero instead of floating in the threads. It slips away on
+ * Bar: a masthead strip printed on the same stock as the section under it —
+ * black over dark sections, paper over `.section-invert` ones, with the same
+ * grain and a hairline rule in that section's border colour. It slips away on
  * scroll-down and returns on scroll-up.
  *
  * Menu (below md): full-screen black overlay in the site's editorial voice —
@@ -34,17 +33,37 @@ export default function SiteNav() {
   const reduceMotion = useReducedMotion();
   const menuId = useId();
   const { scrollY } = useScroll();
+  const headerRef = useRef<HTMLElement>(null);
+  // Which stock the bar is printed on: the section directly under it.
+  const [light, setLight] = useState(false);
+
+  const probe = useCallback(() => {
+    const below = (headerRef.current?.offsetHeight ?? 64) + 1;
+    // pointer-events:none layers (texture, cursor) are skipped by the hit test.
+    const el = document.elementFromPoint(window.innerWidth / 2, below);
+    setLight(!!el?.closest(".section-invert"));
+  }, []);
 
   // Hide on scroll down, reveal on scroll up. Never while the menu is open.
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
     setHidden(y > prev && y > 160 && !open);
+    probe();
   });
 
-  // Route change closes the menu.
+  // Route change closes the menu and re-reads the stock once the lazy page
+  // has painted.
   useEffect(() => {
     setOpen(false);
-  }, [pathname]);
+    const t1 = setTimeout(probe, 60);
+    const t2 = setTimeout(probe, 600);
+    window.addEventListener("resize", probe);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      window.removeEventListener("resize", probe);
+    };
+  }, [pathname, probe]);
 
   // Escape closes; scroll locks (Lenis + body) while open.
   useEffect(() => {
@@ -97,15 +116,16 @@ export default function SiteNav() {
     <>
       {/* ---- Bar ------------------------------------------------------- */}
       <m.header
-        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] border-b bg-black transition-colors duration-300 md:border-transparent md:bg-transparent md:mix-blend-difference ${
-          open ? "border-transparent" : "border-white/15"
+        ref={headerRef}
+        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] border-b bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ${
+          open ? "border-transparent" : `paper-surface border-[var(--color-border)] ${light ? "section-invert" : ""}`
         }`}
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
       >
         <nav
           aria-label="Hauptnavigation"
-          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-5 py-4 text-white sm:px-10 sm:py-6"
+          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 py-3 sm:px-10 sm:py-4"
         >
           <Link
             to="/"
@@ -129,14 +149,14 @@ export default function SiteNav() {
                   >
                     <span
                       aria-hidden="true"
-                      className={`mr-2 inline-block h-1 w-1 rounded-full bg-white transition-all duration-300 ${
+                      className={`mr-2 inline-block h-1 w-1 rounded-full bg-current transition-all duration-300 ${
                         active ? "scale-100 opacity-100" : "scale-0 opacity-0"
                       }`}
                     />
                     {link.label}
                     <span
                       aria-hidden="true"
-                      className={`absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-white transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100 ${
+                      className={`absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100 ${
                         active ? "hidden" : ""
                       }`}
                     />
@@ -149,7 +169,7 @@ export default function SiteNav() {
           <div className="flex items-center gap-3">
             <Link
               to="/kontakt"
-              className="hidden min-h-11 items-center rounded-full border border-white/40 px-6 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 hover:bg-white hover:text-black md:inline-flex"
+              className="hidden min-h-11 items-center rounded-full border border-[color-mix(in_oklab,currentColor_35%,transparent)] px-6 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 hover:border-[var(--color-foreground)] hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)] md:inline-flex"
             >
               Projekt starten
             </Link>
@@ -162,17 +182,17 @@ export default function SiteNav() {
               aria-expanded={open}
               aria-controls={menuId}
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border border-white/40 px-5 font-mono text-[12px] uppercase tracking-[0.18em] md:hidden"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border border-[color-mix(in_oklab,currentColor_35%,transparent)] px-5 font-mono text-[12px] uppercase tracking-[0.18em] md:hidden"
             >
               <span className="-mr-1">{open ? "Schließen" : "Menü"}</span>
               <span className="relative block h-2.5 w-4" aria-hidden="true">
                 <span
-                  className={`absolute left-0 top-0 block h-px w-full bg-white transition-transform duration-300 ${
+                  className={`absolute left-0 top-0 block h-px w-full bg-current transition-transform duration-300 ${
                     open ? "translate-y-[4.5px] rotate-45" : ""
                   }`}
                 />
                 <span
-                  className={`absolute bottom-0 left-0 block h-px w-full bg-white transition-transform duration-300 ${
+                  className={`absolute bottom-0 left-0 block h-px w-full bg-current transition-transform duration-300 ${
                     open ? "-translate-y-[4.5px] -rotate-45" : ""
                   }`}
                 />
