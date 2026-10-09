@@ -117,15 +117,31 @@ export default function SiteNav() {
       {/* ---- Bar ------------------------------------------------------- */}
       <m.header
         ref={headerRef}
-        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] border-b bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ${
-          open ? "border-transparent" : `paper-surface border-[var(--color-border)] ${light ? "section-invert" : ""}`
+        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ${
+          open ? "" : `paper-surface ${light ? "section-invert" : ""}`
         }`}
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
       >
+        {!open && (
+          <>
+            {/* A shade off the page tone (8% toward the ink) so the bar reads
+                as its own band, under the grain like everything else. */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 -z-10 bg-[color-mix(in_oklab,var(--color-background)_92%,var(--color-foreground))] transition-colors duration-500"
+            />
+            {/* Masthead double rule: thick over thin, as under a newspaper
+                nameplate. */}
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-[6px] border-b border-t-2 border-b-[color-mix(in_oklab,currentColor_45%,transparent)] border-t-[color-mix(in_oklab,currentColor_85%,transparent)]"
+            />
+          </>
+        )}
         <nav
           aria-label="Hauptnavigation"
-          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 py-3 sm:px-10 sm:py-4"
+          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 pb-[calc(0.75rem+6px)] pt-3 sm:px-10 sm:pb-[calc(1rem+6px)] sm:pt-4"
         >
           <Link
             to="/"
