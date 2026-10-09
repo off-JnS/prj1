@@ -134,10 +134,18 @@
   /* Technical label: mono, uppercase, generously tracked. */
   .u-kicker {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.3em;
     color: var(--color-muted-foreground);
+  }
+
+  /* Dark halo for small copy over the hero's light threads and the
+     paper grain — keeps it legible without a visible box. */
+  .u-legible {
+    text-shadow:
+      0 0 2px rgb(0 0 0 / 0.7),
+      0 1px 16px rgb(0 0 0 / 0.9);
   }
 
   /* Hairline rule that adapts to the section's palette. */

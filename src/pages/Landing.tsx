@@ -88,7 +88,7 @@ function Hero() {
       {/* Scrim: keeps white copy legible where the light threads cross it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_42%_at_50%_56%,rgba(0,0,0,0.92),rgba(0,0,0,0.6)_55%,rgba(0,0,0,0)_85%)] sm:bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,rgba(0,0,0,0.68),rgba(0,0,0,0)_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_42%_at_50%_56%,rgba(0,0,0,0.92),rgba(0,0,0,0.6)_55%,rgba(0,0,0,0)_85%)] sm:bg-[radial-gradient(ellipse_68%_62%_at_50%_54%,rgba(0,0,0,0.88),rgba(0,0,0,0.6)_48%,rgba(0,0,0,0)_80%)]"
       />
       <div
         aria-hidden="true"
@@ -96,7 +96,7 @@ function Hero() {
       />
 
       <m.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
-        <m.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker justify-center text-white/60">
+        <m.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker u-legible justify-center text-[0.8125rem] tracking-[0.22em] text-white/85">
           PRJ1 — Webdesign Studio, Hamburg
         </m.p>
 
@@ -118,7 +118,7 @@ function Hero() {
           initial="hidden"
           animate={state}
           custom={0.5}
-          className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-white/75 sm:max-w-2xl sm:text-lg"
+          className="u-legible mx-auto mt-6 max-w-xl text-base leading-relaxed text-white/90 sm:mt-8 sm:max-w-2xl sm:text-xl"
         >
           Websites, die sich bewegen und überzeugen — strikt schwarz-weiß,
           für Marken, die nicht aussehen wollen wie alle anderen.
@@ -135,7 +135,7 @@ function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/70 opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]" />
           </span>
-          <p className="u-kicker text-white/70">Verfügbar für neue Projekte</p>
+          <p className="u-kicker u-legible text-[0.8125rem] tracking-[0.22em] text-white/85">Verfügbar für neue Projekte</p>
         </m.div>
 
         <m.div
@@ -152,7 +152,7 @@ function Hero() {
           </Magnetic>
           <Link
             to="/kontakt"
-            className="group inline-flex min-h-11 items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+            className="u-legible group inline-flex min-h-11 items-center gap-2 text-base text-white/90 transition-colors hover:text-white"
           >
             Oder direkt anfragen
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -167,7 +167,7 @@ function Hero() {
         custom={1}
         className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-8"
       >
-        <span className="u-kicker text-white/70">Scrollen</span>
+        <span className="u-kicker u-legible text-white/80">Scrollen</span>
       </m.div>
     </section>
   );
