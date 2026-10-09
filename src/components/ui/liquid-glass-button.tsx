@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 import { usePointerFine } from "@/hooks/useMediaQuery";
@@ -38,18 +37,14 @@ export function LiquidButton({
   children,
   ...props
 }: LiquidButtonProps) {
-  const Comp = asChild ? Slot : "button";
   // The SVG displacement filter is unsupported in Safari/iOS and expensive
   // where it does work — touch devices get a plain frosted blur instead.
   const pointerFine = usePointerFine();
   const filterId = React.useId();
+  const classes = cn(liquidButtonVariants({ variant, size, className }));
 
-  return (
-    <Comp
-      data-slot="button"
-      className={cn(liquidButtonVariants({ variant, size, className }))}
-      {...props}
-    >
+  const layers = (content: React.ReactNode) => (
+    <>
       <span
         aria-hidden
         className="
@@ -66,9 +61,26 @@ export function LiquidButton({
         )}
         style={pointerFine ? { backdropFilter: `url(#${filterId})` } : undefined}
       />
-      <span className="pointer-events-none relative z-10">{children}</span>
+      <span className="pointer-events-none relative z-10">{content}</span>
       {pointerFine && <GlassFilter id={filterId} />}
-    </Comp>
+    </>
+  );
+
+  // asChild: render the glass layers inside the child element (e.g. a
+  // router <Link>) instead of nesting a <button> in a link. Radix Slot
+  // can't do this — it only accepts a single child.
+  if (asChild && React.isValidElement<{ className?: string; children?: React.ReactNode }>(children)) {
+    return React.cloneElement(
+      children,
+      { ...props, "data-slot": "button", className: cn(classes, children.props.className) } as React.HTMLAttributes<HTMLElement>,
+      layers(children.props.children),
+    );
+  }
+
+  return (
+    <button data-slot="button" className={classes} {...props}>
+      {layers(children)}
+    </button>
   );
 }
 

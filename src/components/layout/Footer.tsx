@@ -38,11 +38,9 @@ export default function Footer() {
         </h2>
         <FadeIn delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <Magnetic>
-            <Link to="/kontakt">
-              <LiquidButton size="xl" className="border border-white/30 text-white">
-                Projekt starten
-              </LiquidButton>
-            </Link>
+            <LiquidButton asChild size="xl" className="border border-white/30 text-white">
+              <Link to="/kontakt">Projekt starten</Link>
+            </LiquidButton>
           </Magnetic>
           <a
             href={`mailto:${SITE.email}`}

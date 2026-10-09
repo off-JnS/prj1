@@ -20,11 +20,15 @@ Options -MultiViews
 </IfModule>
 
 # ------------------------------------------------------------------
-# Caching: hashed build assets are immutable, HTML never cached.
+# Caching: only Vite's content-hashed /assets/ are immutable. Unhashed
+# public files (og-image, logos, /work demos) get a week, so edits reach
+# returning visitors. HTML is never cached.
 # ------------------------------------------------------------------
+SetEnvIf Request_URI "^/assets/" HASHED_ASSET
 <IfModule mod_headers.c>
   <FilesMatch "\.(js|css|woff2|woff|png|jpg|jpeg|webp|avif|svg|mp4)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
+    Header set Cache-Control "public, max-age=31536000, immutable" env=HASHED_ASSET
+    Header set Cache-Control "public, max-age=604800" env=!HASHED_ASSET
   </FilesMatch>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache"

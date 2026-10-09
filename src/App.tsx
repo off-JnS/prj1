@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { domAnimation, LazyMotion, MotionConfig } from "framer-motion";
 import ClickSpark from "@/components/fx/ClickSpark";
 import CustomCursor from "@/components/fx/CustomCursor";
 import SiteNav from "@/components/layout/SiteNav";
@@ -35,52 +36,71 @@ export default function App() {
   const [showIntro] = useState(() => {
     if (window.location.pathname !== "/") return false;
     try {
-      if (sessionStorage.getItem("prj1-intro-seen")) return false;
-      sessionStorage.setItem("prj1-intro-seen", "1");
+      return !sessionStorage.getItem("prj1-intro-seen");
     } catch {
-      /* storage blocked — play the intro anyway */
+      return true; // storage blocked — play the intro anyway
     }
-    return true;
   });
 
+  // Written in an effect, not the initializer: StrictMode runs initializers
+  // twice, and the second run would read our own write and skip the intro.
+  useEffect(() => {
+    if (!showIntro) return;
+    try {
+      sessionStorage.setItem("prj1-intro-seen", "1");
+    } catch {
+      /* storage blocked */
+    }
+  }, [showIntro]);
+
   return (
-    <IntroProvider initialDone={!showIntro}>
-      <ClickSpark sparkColor="#ffffff" sparkSize={12} sparkRadius={18} sparkCount={10} duration={500}>
-        <CustomCursor />
-        <SmoothScroll />
-        {showIntro && <Preloader />}
-        <div className="grain-overlay" aria-hidden="true" />
-        <a href="#main" className="skip-link">
-          Zum Inhalt springen
-        </a>
-        <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
-          <ScrollToTop />
-          <SiteNav />
-          <Suspense
-            fallback={
-              <div className="fixed inset-0 z-[60] grid place-items-center bg-black">
-                <span className="u-kicker animate-pulse text-white/60">PRJ1</span>
-              </div>
-            }
-          >
-            <div id="main" tabIndex={-1} className="outline-none">
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/portfolio" element={<Portfolio />} />
-                <Route path="/preise" element={<Pricing />} />
-                <Route path="/pricing" element={<Navigate to="/preise" replace />} />
-                <Route path="/studio" element={<Studio />} />
-                <Route path="/kontakt" element={<Kontakt />} />
-                <Route path="/impressum" element={<Impressum />} />
-                <Route path="/datenschutz" element={<Datenschutz />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+    // LazyMotion + `m` components ship only the DOM animation features we
+    // use (strict: a stray `motion.*` throws instead of silently re-adding
+    // the full bundle). reducedMotion="user": Framer skips transform/layout
+    // animations for visitors who ask the OS for less motion.
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        <IntroProvider initialDone={!showIntro}>
+          <ClickSpark sparkColor="#ffffff" sparkSize={12} sparkRadius={18} sparkCount={10} duration={500}>
+            <CustomCursor />
+            <SmoothScroll />
+            {showIntro && <Preloader />}
+            <a href="#main" className="skip-link">
+              Zum Inhalt springen
+            </a>
+            <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
+              <ScrollToTop />
+              <SiteNav />
+              <Suspense
+                fallback={
+                  <div className="grid min-h-[100svh] place-items-center bg-black">
+                    <span className="u-kicker animate-pulse text-white/60">PRJ1</span>
+                  </div>
+                }
+              >
+                <div id="main" tabIndex={-1} className="outline-none">
+                  <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/portfolio" element={<Portfolio />} />
+                    <Route path="/preise" element={<Pricing />} />
+                    <Route path="/pricing" element={<Navigate to="/preise" replace />} />
+                    <Route path="/studio" element={<Studio />} />
+                    <Route path="/kontakt" element={<Kontakt />} />
+                    <Route path="/impressum" element={<Impressum />} />
+                    <Route path="/datenschutz" element={<Datenschutz />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+                {/* Inside Suspense so it can't paint at the top and then get
+                    shoved down when the lazy page arrives (CLS ≈ 1.0 before). */}
+                <Footer />
+              </Suspense>
+              <div className="paper-texture" aria-hidden="true" />
             </div>
-          </Suspense>
-          <Footer />
-        </div>
-        <ConsentBanner />
-      </ClickSpark>
-    </IntroProvider>
+            <ConsentBanner />
+          </ClickSpark>
+        </IntroProvider>
+      </MotionConfig>
+    </LazyMotion>
   );
 }

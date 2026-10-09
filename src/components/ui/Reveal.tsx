@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { m, useReducedMotion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -38,16 +38,16 @@ export function Reveal({
       };
 
   return (
-    <motion.span
+    <m.span
       className={cn("block overflow-hidden", className)}
       initial="hidden"
       whileInView="show"
       viewport={{ once, margin: "-8% 0px" }}
     >
-      <motion.span variants={inner} className="block will-change-transform">
+      <m.span variants={inner} className="block will-change-transform">
         {children}
-      </motion.span>
-    </motion.span>
+      </m.span>
+    </m.span>
   );
 }
 
@@ -66,7 +66,7 @@ export function FadeIn({
   className?: string;
 }) {
   return (
-    <motion.div
+    <m.div
       className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ export function FadeIn({
       transition={{ duration: 0.8, delay, ease: EASE }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 

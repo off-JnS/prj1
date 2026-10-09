@@ -2,7 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AnimatePresence,
-  motion,
+  m,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -93,7 +93,7 @@ export default function SiteNav() {
   return (
     <>
       {/* ---- Bar ------------------------------------------------------- */}
-      <motion.header
+      <m.header
         className="pointer-events-none fixed inset-x-0 top-0 z-[80] mix-blend-difference"
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
@@ -175,12 +175,12 @@ export default function SiteNav() {
             </button>
           </div>
         </nav>
-      </motion.header>
+      </m.header>
 
       {/* ---- Overlay menu (mobile) -------------------------------------- */}
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             id={menuId}
             key="menu"
             variants={overlay}
@@ -201,9 +201,10 @@ export default function SiteNav() {
                   const active = pathname === link.href;
                   return (
                     <li key={link.href} className="overflow-hidden border-b border-white/10 last:border-b-0">
-                      <motion.div custom={i} variants={linkMask} className="will-change-transform">
+                      <m.div custom={i} variants={linkMask} className="will-change-transform">
                         <Link
                           to={link.href}
+                          onClick={() => setOpen(false)}
                           aria-current={active ? "page" : undefined}
                           className="group flex min-h-14 items-center gap-4 py-3"
                         >
@@ -224,16 +225,17 @@ export default function SiteNav() {
                             className="ml-auto h-6 w-6 text-white/40 transition-transform duration-300 group-active:-translate-y-0.5 group-active:translate-x-0.5"
                           />
                         </Link>
-                      </motion.div>
+                      </m.div>
                     </li>
                   );
                 })}
               </ul>
             </nav>
 
-            <motion.div variants={metaFade} className="px-6 pb-8">
+            <m.div variants={metaFade} className="px-6 pb-8">
               <Link
                 to="/kontakt"
+                onClick={() => setOpen(false)}
                 className="flex min-h-13 w-full items-center justify-center rounded-full bg-white text-sm font-semibold text-black transition-transform duration-200 active:scale-[0.98]"
               >
                 Projekt starten
@@ -251,8 +253,8 @@ export default function SiteNav() {
                   </Link>
                 ))}
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

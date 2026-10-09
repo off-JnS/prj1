@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, type Variants } from "framer-motion";
+import { m, useScroll, useTransform, type Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import HeroCanvas from "@/components/fx/HeroCanvas";
@@ -88,32 +88,32 @@ function Hero() {
       {/* Scrim: keeps white copy legible where the light threads cross it. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,rgba(0,0,0,0.62),rgba(0,0,0,0)_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_42%_at_50%_56%,rgba(0,0,0,0.92),rgba(0,0,0,0.6)_55%,rgba(0,0,0,0)_85%)] sm:bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,rgba(0,0,0,0.68),rgba(0,0,0,0)_72%)]"
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black"
       />
 
-      <motion.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
-        <motion.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker justify-center text-white/60">
+      <m.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
+        <m.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker justify-center text-white/60">
           PRJ1 — Webdesign Studio, Hamburg
-        </motion.p>
+        </m.p>
 
         <h1 className="u-display mt-6 text-[clamp(3.4rem,14vw,11.5rem)]">
           <span className="block overflow-hidden">
-            <motion.span variants={heroLine} initial="hidden" animate={state} custom={0.15} className="block">
+            <m.span variants={heroLine} initial="hidden" animate={state} custom={0.15} className="block">
               Design ist
-            </motion.span>
+            </m.span>
           </span>
           <span className="block overflow-hidden pb-[0.08em]">
-            <motion.span variants={heroLine} initial="hidden" animate={state} custom={0.27} className="block">
+            <m.span variants={heroLine} initial="hidden" animate={state} custom={0.27} className="block">
               <em className="u-serif not-italic">alles.</em>
-            </motion.span>
+            </m.span>
           </span>
         </h1>
 
-        <motion.p
+        <m.p
           variants={heroFade}
           initial="hidden"
           animate={state}
@@ -122,9 +122,9 @@ function Hero() {
         >
           Websites, die sich bewegen und überzeugen — strikt schwarz-weiß,
           für Marken, die nicht aussehen wollen wie alle anderen.
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           variants={heroFade}
           initial="hidden"
           animate={state}
@@ -136,9 +136,9 @@ function Hero() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.85)]" />
           </span>
           <p className="u-kicker text-white/70">Verfügbar für neue Projekte</p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={heroFade}
           initial="hidden"
           animate={state}
@@ -146,11 +146,9 @@ function Hero() {
           className="mt-8 flex flex-col items-center justify-center gap-4 sm:mt-10 sm:flex-row"
         >
           <Magnetic className="w-full max-w-xs sm:w-auto sm:max-w-none">
-            <Link to="/portfolio" className="block">
-              <LiquidButton size="xl" className="w-full border border-white/30 text-white sm:w-auto">
-                Arbeiten ansehen
-              </LiquidButton>
-            </Link>
+            <LiquidButton asChild size="xl" className="w-full border border-white/30 text-white sm:w-auto">
+              <Link to="/portfolio">Arbeiten ansehen</Link>
+            </LiquidButton>
           </Magnetic>
           <Link
             to="/kontakt"
@@ -159,10 +157,10 @@ function Hero() {
             Oder direkt anfragen
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
-        </motion.div>
-      </motion.div>
+        </m.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         variants={heroFade}
         initial="hidden"
         animate={state}
@@ -170,7 +168,7 @@ function Hero() {
         className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-8"
       >
         <span className="u-kicker text-white/70">Scrollen</span>
-      </motion.div>
+      </m.div>
     </section>
   );
 }
@@ -243,13 +241,19 @@ export default function Landing() {
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
-              <Kicker index="02">Ausgewählte Arbeiten</Kicker>
+              <Kicker index="02">Konzeptprojekte</Kicker>
               <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
-                <Reveal>Websites, die wir</Reveal>
+                <Reveal>Ein Paket,</Reveal>
                 <Reveal delay={0.08}>
-                  <em className="u-serif not-italic">gelauncht</em> haben.
+                  eine <em className="u-serif not-italic">Website.</em>
                 </Reveal>
               </h2>
+              <FadeIn delay={0.15}>
+                <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
+                  Drei komplette Websites für fiktive Hamburger Marken — so sieht
+                  Starter, Professional und Premium in echt aus.
+                </p>
+              </FadeIn>
             </div>
             <FadeIn delay={0.2}>
               <Link
@@ -278,11 +282,12 @@ export default function Landing() {
                     <h3 className="u-display text-[clamp(1.8rem,5vw,4rem)] transition-transform duration-500 ease-out group-hover:translate-x-3">
                       {p.name}
                     </h3>
-                    {p.tagline && (
-                      <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65 sm:mt-0 sm:text-base">
-                        {p.tagline}
-                      </p>
-                    )}
+                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65 sm:mt-0 sm:text-base">
+                      <span className="block font-mono text-[11px] uppercase tracking-[0.25em] text-white/80">
+                        Paket {p.plan}
+                      </span>
+                      <span className="mt-1 block">{p.sector}</span>
+                    </p>
                   </div>
                   <ArrowUpRight
                     aria-hidden="true"

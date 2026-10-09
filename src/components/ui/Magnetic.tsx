@@ -1,5 +1,5 @@
 import { useRef, type ReactNode, type PointerEvent } from "react";
-import { motion, useSpring } from "framer-motion";
+import { m, useSpring } from "framer-motion";
 import { usePointerFine } from "@/hooks/useMediaQuery";
 
 interface MagneticProps {
@@ -43,7 +43,7 @@ function MagneticPull({ children, strength = 0.3, className }: MagneticProps) {
   };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={onLeave}
@@ -51,6 +51,6 @@ function MagneticPull({ children, strength = 0.3, className }: MagneticProps) {
       className={className}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

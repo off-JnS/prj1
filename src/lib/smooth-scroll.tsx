@@ -1,10 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 declare global {
   interface Window {
@@ -13,39 +8,28 @@ declare global {
 }
 
 /**
- * Lenis smooth scrolling, driven by the GSAP ticker so ScrollTrigger and
- * Lenis share one clock. Skipped entirely for reduced-motion users and for
- * coarse pointers — touch scrolling is already smooth and Lenis only adds an
- * instance plus a permanent ticker there. `window.__lenis` then stays
- * undefined, which every call site already handles.
+ * Lenis smooth scrolling, driven by its own requestAnimationFrame loop
+ * (`autoRaf`). Lenis scrolls the native window, so scroll-linked effects
+ * (framer-motion's useScroll) just follow the regular scroll events.
+ * Skipped entirely for reduced-motion users and for coarse pointers — touch
+ * scrolling is already smooth and Lenis only adds an instance plus a
+ * permanent rAF loop there. `window.__lenis` then stays undefined, which
+ * every call site already handles.
  */
 export default function SmoothScroll() {
-  const { pathname } = useLocation();
-
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const lenis = new Lenis({ lerp: 0.115, wheelMultiplier: 1 });
+    const lenis = new Lenis({ lerp: 0.115, wheelMultiplier: 1, autoRaf: true });
     window.__lenis = lenis;
-    lenis.on("scroll", ScrollTrigger.update);
-
-    const raf = (time: number) => lenis.raf(time * 1000);
-    gsap.ticker.add(raf);
-    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      gsap.ticker.remove(raf);
+      // destroy() also cancels the autoRaf loop.
       lenis.destroy();
       window.__lenis = undefined;
     };
   }, []);
-
-  // New page → recalc all scroll-triggered animations once layout settles.
-  useEffect(() => {
-    const id = window.setTimeout(() => ScrollTrigger.refresh(), 120);
-    return () => window.clearTimeout(id);
-  }, [pathname]);
 
   return null;
 }

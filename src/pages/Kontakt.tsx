@@ -6,7 +6,7 @@ import { buildPlans, carePlans, formatEur } from "@/data/plans";
 import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "success" | "error" | "mailto";
 
 // Derived from the plan data so a price change never has to be chased down
 // into this list.
@@ -84,6 +84,8 @@ export default function Kontakt() {
       window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(
         `Projektanfrage von ${name}`,
       )}&body=${encodeURIComponent(body)}`;
+      // No way to know whether a mail app opened — say what should happen.
+      setStatus("mailto");
       return;
     }
 
@@ -297,6 +299,18 @@ export default function Kontakt() {
                   Bearbeitung der Anfrage einverstanden.
                 </span>
               </label>
+
+              {status === "mailto" && (
+                <p role="status" className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 text-sm text-[var(--color-foreground)]">
+                  Dein E-Mail-Programm sollte sich jetzt mit der fertigen
+                  Nachricht öffnen — du musst sie nur noch absenden. Nichts
+                  passiert? Schreib uns direkt an{" "}
+                  <a href={`mailto:${SITE.email}`} className="underline underline-offset-2">
+                    {SITE.email}
+                  </a>
+                  .
+                </p>
+              )}
 
               {status === "error" && (
                 <p role="alert" className="rounded-xl border border-[var(--color-border)] bg-[var(--color-card)] p-4 text-sm text-[var(--color-foreground)]">

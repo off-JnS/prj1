@@ -10,7 +10,7 @@ export default function Portfolio() {
     <main className="px-6 pb-32 pt-36 sm:px-10 sm:pt-44">
       <Seo
         title="Portfolio — PRJ1"
-        description="Ausgewählte Webdesign-Projekte von PRJ1 — Markenwebsites mit Fokus auf Wirkung, Technik und messbare Resultate."
+        description="Konzeptprojekte von PRJ1 — drei komplette Websites für fiktive Hamburger Marken, je eine pro Paket: Starter, Professional und Premium."
         path="/portfolio"
       />
 
@@ -24,8 +24,9 @@ export default function Portfolio() {
         </h1>
         <FadeIn delay={0.25}>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
-            Ausgewählte Projekte mit Fokus auf Wirkung, Technik und Resultate —
-            und die Stimmen der Menschen, für die wir sie gebaut haben.
+            Drei Konzeptprojekte für fiktive Hamburger Marken — je eines pro
+            Paket. Jede Website ist voll funktionsfähig: Öffne sie und sieh dir
+            an, was du für Starter, Professional oder Premium bekommst.
           </p>
         </FadeIn>
       </header>

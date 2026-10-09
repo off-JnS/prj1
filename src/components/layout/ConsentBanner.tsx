@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Link } from "react-router-dom";
 import { getConsent, loadAnalytics, setConsent } from "@/lib/consent";
 
@@ -17,7 +17,7 @@ export default function ConsentBanner() {
       return;
     }
     if (consent === null) {
-      const id = window.setTimeout(() => setVisible(true), 1800);
+      const id = window.setTimeout(() => setVisible(true), 600);
       return () => window.clearTimeout(id);
     }
   }, []);
@@ -30,7 +30,7 @@ export default function ConsentBanner() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.aside
+        <m.aside
           initial={{ y: 32, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 32, opacity: 0 }}
@@ -63,7 +63,7 @@ export default function ConsentBanner() {
               Ablehnen
             </button>
           </div>
-        </motion.aside>
+        </m.aside>
       )}
     </AnimatePresence>
   );

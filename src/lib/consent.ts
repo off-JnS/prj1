@@ -27,12 +27,27 @@ export function setConsent(value: Exclude<Consent, null>) {
   if (value === "granted") loadAnalytics();
 }
 
-/** Clears the stored decision so the banner shows again (used on /datenschutz). */
+/**
+ * Clears the stored decision so the banner shows again (used on /datenschutz)
+ * and deletes Google Analytics' `_ga*` cookies — revoking consent must also
+ * remove what was set under it.
+ */
 export function resetConsent() {
   try {
     localStorage.removeItem(STORAGE_KEY);
   } catch {
     /* ignore */
+  }
+  const host = window.location.hostname;
+  // GA sets its cookies on the registrable domain (".example.de"), so try
+  // the bare host and each parent domain.
+  const domains = ["", ...host.split(".").map((_, i, parts) => "." + parts.slice(i).join("."))];
+  for (const cookie of document.cookie.split(";")) {
+    const name = cookie.split("=")[0].trim();
+    if (!name.startsWith("_ga")) continue;
+    for (const domain of domains) {
+      document.cookie = `${name}=; Max-Age=0; path=/${domain ? `; domain=${domain}` : ""}`;
+    }
   }
 }
 

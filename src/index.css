@@ -191,43 +191,71 @@
   }
 }
 
-/* Inverted section: white background, black text — same tokens stay valid. */
+/* Inverted section: newsprint paper with ink — the one place the palette
+ * leaves pure greyscale, so light sections read as a printed page. */
 .section-invert {
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0 0 0);
-  --color-primary: oklch(0 0 0);
-  --color-primary-foreground: oklch(1 0 0);
-  --color-secondary: oklch(0.94 0 0);
-  --color-secondary-foreground: oklch(0 0 0);
-  --color-muted: oklch(0.96 0 0);
-  --color-muted-foreground: oklch(0.38 0 0);
-  --color-border: oklch(0.86 0 0);
-  --color-input: oklch(0.86 0 0);
-  --color-ring: oklch(0 0 0);
-  --color-card: oklch(0.98 0 0);
-  --color-card-foreground: oklch(0 0 0);
+  --color-background: oklch(0.955 0.012 85);
+  --color-foreground: oklch(0.17 0.006 70);
+  --color-primary: oklch(0.17 0.006 70);
+  --color-primary-foreground: oklch(0.955 0.012 85);
+  --color-secondary: oklch(0.915 0.014 82);
+  --color-secondary-foreground: oklch(0.17 0.006 70);
+  --color-muted: oklch(0.93 0.013 82);
+  --color-muted-foreground: oklch(0.42 0.012 70);
+  --color-border: oklch(0.83 0.016 80);
+  --color-input: oklch(0.83 0.016 80);
+  --color-ring: oklch(0.17 0.006 70);
+  --color-card: oklch(0.97 0.01 85);
+  --color-card-foreground: oklch(0.17 0.006 70);
   background: var(--color-background);
   color: var(--color-foreground);
 }
 
-/* Film grain — one fixed SVG-noise layer above everything paintable. */
-.grain-overlay {
-  position: fixed;
-  inset: -50%;
+/* Newsprint texture — fibres, grain and uneven ink density. It is laid over
+ * the whole document (not the viewport), so it scrolls with the content like
+ * the paper it is printed on. Static and normal-blended: the tiles carry
+ * both light and dark specks, so the same layer reads on black and on paper
+ * without a full-screen mix-blend-mode. */
+.paper-texture {
+  position: absolute;
+  inset: 0;
   z-index: 90;
   pointer-events: none;
-  width: 200%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.05;
-  mix-blend-mode: overlay;
+  background-image: url("./assets/paper-grain.svg"), url("./assets/paper-mottle.svg");
+  background-size: 300px 300px, 900px 900px;
+  opacity: 0.4;
 }
 
-/* The full-viewport blend layer is expensive on mobile GPUs and barely
- * visible at small sizes — skip it there. */
-@media (max-width: 767px) {
-  .grain-overlay {
-    display: none;
+/* Halftone print screen for images: a 45° dot grid, as on a newspaper photo.
+ * The image underneath stays fully legible; hover/focus lifts the screen. */
+.u-halftone {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.u-halftone > img {
+  filter: grayscale(1) contrast(1.06);
+  transition: filter 0.6s var(--ease-out-expo);
+}
+.u-halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, oklch(0.17 0.006 70 / 0.5) 0.7px, transparent 1.3px);
+  background-size: 4px 4px;
+  transform: rotate(45deg) scale(1.5);
+  mix-blend-mode: multiply;
+  transition: opacity 0.6s var(--ease-out-expo);
+}
+@media (hover: hover) {
+  .group:hover .u-halftone > img,
+  .group:focus-visible .u-halftone > img {
+    filter: none;
+  }
+  .group:hover .u-halftone::after,
+  .group:focus-visible .u-halftone::after {
+    opacity: 0;
   }
 }
 
