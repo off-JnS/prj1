@@ -17,3 +17,17 @@ export function useMediaQuery(query: string) {
 
   return matches;
 }
+
+/**
+ * True on devices with a real, hoverable pointer — i.e. a mouse or trackpad.
+ * Every pointer-driven effect (custom cursor, click sparks, magnetic hover)
+ * keys off this, and so does the `cursor: none` block in index.css.
+ */
+export function usePointerFine() {
+  return useMediaQuery("(hover: hover) and (pointer: fine)");
+}
+
+/** True on touch screens and other coarse pointers. */
+export function usePointerCoarse() {
+  return useMediaQuery("(pointer: coarse)");
+}

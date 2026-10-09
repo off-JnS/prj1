@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, type ReactNode, type MutableRefObject } from "react";
+import { usePointerFine } from "@/hooks/useMediaQuery";
 
 type Spark = { x: number; y: number; angle: number; startTime: number };
 
@@ -13,16 +14,17 @@ interface ClickSparkProps {
   children?: ReactNode;
 }
 
-export default function ClickSpark({
-  sparkColor = "#ffffff",
-  sparkSize = 10,
-  sparkRadius = 15,
-  sparkCount = 8,
-  duration = 400,
-  easing = "ease-out",
-  extraScale = 1,
-  children,
-}: ClickSparkProps) {
+type SparkCanvasProps = Required<Omit<ClickSparkProps, "children">>;
+
+function SparkCanvas({
+  sparkColor,
+  sparkSize,
+  sparkRadius,
+  sparkCount,
+  duration,
+  easing,
+  extraScale,
+}: SparkCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const sparksRef = useRef<Spark[]>([]);
   const dprRef = useRef(1);
@@ -120,6 +122,9 @@ export default function ClickSpark({
   // own onClick handlers (we read the event in the capture phase).
   useEffect(() => {
     const onClick = (e: PointerEvent) => {
+      // Hybrid laptops satisfy the hover+fine query but can still be touched;
+      // sparks stay a mouse-only affordance.
+      if (e.pointerType !== "mouse") return;
       const x = e.clientX;
       const y = e.clientY;
       const now = performance.now();
@@ -139,20 +144,55 @@ export default function ClickSpark({
   }, [sparkCount]);
 
   return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden
+      style={{
+        display: "block",
+        userSelect: "none",
+        position: "fixed",
+        inset: 0,
+        pointerEvents: "none",
+        zIndex: 100,
+        mixBlendMode: "difference",
+      }}
+    />
+  );
+}
+
+/**
+ * Wraps the app and bursts a ring of sparks at every click.
+ *
+ * Desktop only: on touch devices the canvas is never mounted, so there is no
+ * permanent full-viewport blend layer and no listener firing on every tap.
+ * `children` render identically either way, so a device change never remounts
+ * the tree below.
+ */
+export default function ClickSpark({
+  sparkColor = "#ffffff",
+  sparkSize = 10,
+  sparkRadius = 15,
+  sparkCount = 8,
+  duration = 400,
+  easing = "ease-out",
+  extraScale = 1,
+  children,
+}: ClickSparkProps) {
+  const pointerFine = usePointerFine();
+
+  return (
     <>
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        style={{
-          display: "block",
-          userSelect: "none",
-          position: "fixed",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 100,
-          mixBlendMode: "difference",
-        }}
-      />
+      {pointerFine && (
+        <SparkCanvas
+          sparkColor={sparkColor}
+          sparkSize={sparkSize}
+          sparkRadius={sparkRadius}
+          sparkCount={sparkCount}
+          duration={duration}
+          easing={easing}
+          extraScale={extraScale}
+        />
+      )}
       {children}
     </>
   );

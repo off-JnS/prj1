@@ -66,7 +66,7 @@ export default function Preloader() {
             >
               PRJ1<sup className="align-super text-[0.35em] font-normal">®</sup>
             </motion.span>
-            <span className="font-mono text-5xl tabular-nums leading-none text-white/80 sm:text-7xl">
+            <span className="font-mono text-[clamp(2rem,7vw,4.5rem)] tabular-nums leading-none text-white/80">
               {progress}
             </span>
           </div>

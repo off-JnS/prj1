@@ -55,7 +55,7 @@ export default function Footer() {
       </div>
 
       {/* Link columns ---------------------------------------------------- */}
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 border-t border-white/10 px-6 py-14 sm:px-10 md:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 border-t border-white/10 px-6 py-14 sm:gap-x-10 sm:px-10 md:grid-cols-4">
         <div>
           <h3 className="u-kicker">Navigation</h3>
           <ul className="mt-4 space-y-1 text-sm text-white/70">
@@ -121,7 +121,7 @@ export default function Footer() {
       {/* Watermark + meta row -------------------------------------------- */}
       <div
         aria-hidden="true"
-        className="u-display pointer-events-none select-none whitespace-nowrap px-4 text-center text-[clamp(6rem,21vw,22rem)] leading-[0.78] text-white/[0.06]"
+        className="u-display pointer-events-none select-none px-4 text-center text-[clamp(3.5rem,20vw,22rem)] leading-[0.78] text-white/[0.06]"
       >
         PRJ1<sup className="align-super text-[0.35em]">®</sup>
       </div>

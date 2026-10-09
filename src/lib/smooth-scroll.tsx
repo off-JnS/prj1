@@ -14,15 +14,17 @@ declare global {
 
 /**
  * Lenis smooth scrolling, driven by the GSAP ticker so ScrollTrigger and
- * Lenis share one clock. Skipped entirely for reduced-motion users and
- * coarse pointers keep their native (already smooth) touch scrolling feel —
- * Lenis handles that itself via syncTouch=false default.
+ * Lenis share one clock. Skipped entirely for reduced-motion users and for
+ * coarse pointers — touch scrolling is already smooth and Lenis only adds an
+ * instance plus a permanent ticker there. `window.__lenis` then stays
+ * undefined, which every call site already handles.
  */
 export default function SmoothScroll() {
   const { pathname } = useLocation();
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const lenis = new Lenis({ lerp: 0.115, wheelMultiplier: 1 });
     window.__lenis = lenis;

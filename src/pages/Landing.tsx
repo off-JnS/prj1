@@ -8,6 +8,8 @@ import Marquee from "@/components/ui/Marquee";
 import Magnetic from "@/components/ui/Magnetic";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
+import { usePointerFine } from "@/hooks/useMediaQuery";
+import { carePlans } from "@/data/plans";
 import { projects } from "@/data/projects";
 import { useIntro } from "@/lib/intro";
 import { scrollToElement } from "@/lib/smooth-scroll";
@@ -29,7 +31,7 @@ const services = [
   {
     n: "03",
     title: "Hosting & Wartung",
-    body: "Hosting, Domain, Updates und Monitoring — ab 59 € im Monat komplett abgedeckt.",
+    body: `Hosting, Domain-Verwaltung und Uptime-Überwachung — ab ${carePlans[0].price} € im Monat komplett abgedeckt.`,
   },
   {
     n: "04",
@@ -72,6 +74,9 @@ function Hero() {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, 140]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
   const state = done ? "show" : "hidden";
+  // On phones the parallax runs on every scroll frame on top of the WebGL
+  // hero — not worth the frame budget for a 140px drift.
+  const parallax = usePointerFine() ? { y: contentY, opacity: contentOpacity } : undefined;
 
   return (
     <section
@@ -90,10 +95,7 @@ function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black"
       />
 
-      <motion.div
-        style={{ y: contentY, opacity: contentOpacity }}
-        className="relative mx-auto w-full max-w-6xl text-center text-white"
-      >
+      <motion.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
         <motion.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker justify-center text-white/60">
           PRJ1 — Webdesign Studio, Hamburg
         </motion.p>
@@ -267,7 +269,7 @@ export default function Landing() {
                   href={p.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="group grid grid-cols-[2.5rem_1fr_2rem] items-center gap-4 border-t border-white/15 py-10 last:border-b sm:grid-cols-[6rem_1fr_1fr_3rem] sm:gap-8 sm:py-14"
+                  className="group grid grid-cols-[1.75rem_1fr_1.25rem] items-center gap-3 border-t border-white/15 py-10 last:border-b sm:grid-cols-[6rem_1fr_1fr_3rem] sm:gap-8 sm:py-14"
                 >
                   <span className="font-mono text-xs tracking-[0.3em] text-white/60">
                     {String(i + 1).padStart(2, "0")}
@@ -284,7 +286,7 @@ export default function Landing() {
                   </div>
                   <ArrowUpRight
                     aria-hidden="true"
-                    className="h-6 w-6 text-white/40 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white sm:h-8 sm:w-8"
+                    className="h-5 w-5 text-white/40 transition-all duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white sm:h-8 sm:w-8"
                   />
                 </a>
               </FadeIn>

@@ -1,20 +1,30 @@
 import { useRef, type ReactNode, type PointerEvent } from "react";
 import { motion, useSpring } from "framer-motion";
+import { usePointerFine } from "@/hooks/useMediaQuery";
 
-/**
- * Magnetic hover wrapper: the child gently follows the pointer while hovered
- * and springs back on leave. No-ops on touch devices (no hover events fire).
- */
-export default function Magnetic({
-  children,
-  strength = 0.3,
-  className,
-}: {
+interface MagneticProps {
   children: ReactNode;
   /** 0–1, how far the element follows the pointer. */
   strength?: number;
   className?: string;
-}) {
+}
+
+/**
+ * Magnetic hover wrapper: the child gently follows the pointer while hovered
+ * and springs back on leave. On touch devices the springs are never mounted —
+ * the child renders in a plain div instead.
+ */
+export default function Magnetic({ children, strength, className }: MagneticProps) {
+  const pointerFine = usePointerFine();
+  if (!pointerFine) return <div className={className}>{children}</div>;
+  return (
+    <MagneticPull strength={strength} className={className}>
+      {children}
+    </MagneticPull>
+  );
+}
+
+function MagneticPull({ children, strength = 0.3, className }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const spring = { stiffness: 180, damping: 14, mass: 0.3 };
   const x = useSpring(0, spring);

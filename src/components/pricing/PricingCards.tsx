@@ -1,13 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/ui/Reveal";
-import { planHref, type BuildPlan, type CarePlan } from "@/data/plans";
-
-const eur = new Intl.NumberFormat("de-DE", {
-  style: "currency",
-  currency: "EUR",
-  minimumFractionDigits: 0,
-});
+import { eur, planHref, type BuildPlan, type CarePlan } from "@/data/plans";
 
 function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
   const popular = Boolean(plan.isPopular);
@@ -16,7 +10,7 @@ function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
     <FadeIn delay={index * 0.08} y={44} className="h-full">
       <article
         className={cn(
-          "relative flex h-full flex-col rounded-3xl border p-8 sm:p-10",
+          "relative flex h-full flex-col rounded-3xl border p-6 md:p-8 lg:p-10",
           popular
             ? "border-white bg-white text-black lg:-translate-y-4"
             : "border-[var(--color-border)] bg-[var(--color-card)]",
@@ -36,7 +30,9 @@ function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
         </header>
 
         <div className="mt-8 flex items-baseline gap-2">
-          <span className="u-display text-5xl tabular-nums sm:text-6xl">{eur.format(plan.price)}</span>
+          <span className="u-display text-[clamp(2.5rem,8vw,3.75rem)] tabular-nums">
+            {eur.format(plan.price)}
+          </span>
           <span className={cn("font-mono text-xs uppercase tracking-[0.2em]", popular ? "text-black/50" : "text-[var(--color-muted-foreground)]")}>
             einmalig
           </span>
@@ -82,7 +78,9 @@ function CareCard({ plan, index }: { plan: CarePlan; index: number }) {
         <header className="flex items-baseline justify-between gap-4">
           <h3 className="u-display text-xl sm:text-2xl">{plan.name}</h3>
           <p className="flex items-baseline gap-1.5">
-            <span className="u-display text-3xl tabular-nums sm:text-4xl">{eur.format(plan.price)}</span>
+            <span className="u-display text-[clamp(1.75rem,6vw,2.25rem)] tabular-nums">
+              {eur.format(plan.price)}
+            </span>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">/ Monat</span>
           </p>
         </header>
@@ -110,13 +108,13 @@ function CareCard({ plan, index }: { plan: CarePlan; index: number }) {
 export function BuildCards({ plans }: { plans: BuildPlan[] }) {
   return (
     <div>
-      <div className="grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-3 md:gap-4 lg:gap-8">
         {plans.map((plan, i) => (
           <BuildCard key={plan.name} plan={plan} index={i} />
         ))}
       </div>
       <p className="mt-10 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
-        Alle Preise zzgl. MwSt. · Festpreis, keine versteckten Kosten
+        Alle Preise zzgl. USt. · Festpreis, keine versteckten Kosten
       </p>
     </div>
   );

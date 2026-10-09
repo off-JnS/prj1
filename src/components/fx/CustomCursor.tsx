@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { usePointerFine } from "@/hooks/useMediaQuery";
 
 /**
  * Small white dot that follows the pointer. Renders only on hover-capable,
@@ -12,12 +13,10 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
-  const [enabled, setEnabled] = useState(false);
+  const enabled = usePointerFine();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    setEnabled(true);
+    if (!enabled) return;
 
     let mx = -100;
     let my = -100;
@@ -76,7 +75,7 @@ export default function CustomCursor() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [enabled]);
 
   if (!enabled) return null;
 

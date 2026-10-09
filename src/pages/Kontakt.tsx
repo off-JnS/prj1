@@ -1,16 +1,17 @@
 import { useState, type FormEvent, type ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { ArrowUpRight, Check } from "lucide-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowUpRight, Check, ChevronDown } from "lucide-react";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
+import { buildPlans, carePlans, formatEur } from "@/data/plans";
 import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
 type Status = "idle" | "sending" | "success" | "error";
 
+// Derived from the plan data so a price change never has to be chased down
+// into this list.
 const budgets = [
-  "Starter — 1.000 €",
-  "Professional — 1.750 €",
-  "Premium — 2.750 €",
+  ...buildPlans.map((plan) => `${plan.name} — ${formatEur(plan.price)}`),
   "Individuell / noch unklar",
 ];
 
@@ -42,6 +43,18 @@ function Field({
 export default function Kontakt() {
   const [status, setStatus] = useState<Status>("idle");
 
+  // The pricing calculator links here as /kontakt?paket=Professional&wartung=Basic
+  // — preselect the budget and open the message with that combination.
+  const [params] = useSearchParams();
+  const paket = buildPlans.find((p) => p.name === params.get("paket"))?.name ?? "";
+  const wartung = carePlans.find((p) => p.name === params.get("wartung"))?.name ?? "";
+  const [budget, setBudget] = useState(
+    () => budgets.find((b) => paket && b.startsWith(paket)) ?? "",
+  );
+  const prefilledMessage = paket
+    ? `Ich interessiere mich für das ${paket}-Paket${wartung ? ` in Kombination mit dem Wartungspaket ${wartung}` : ""}.\n\n`
+    : "";
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
@@ -53,7 +66,6 @@ export default function Kontakt() {
     const name = String(data.get("name") ?? "");
     const email = String(data.get("email") ?? "");
     const company = String(data.get("company") ?? "");
-    const budget = String(data.get("budget") ?? "");
     const message = String(data.get("message") ?? "");
 
     // No Web3Forms key configured yet → hand over to the mail client.
@@ -232,16 +244,29 @@ export default function Kontakt() {
                   />
                 </Field>
                 <Field label="Budget" htmlFor="budget" optional>
-                  <select id="budget" name="budget" defaultValue="" className={`${inputClass} appearance-none`}>
-                    <option value="" disabled className="bg-[var(--color-background)]">
-                      Bitte wählen …
-                    </option>
-                    {budgets.map((b) => (
-                      <option key={b} value={b} className="bg-[var(--color-background)]">
-                        {b}
+                  {/* `appearance-none` strips the native arrow, so we draw our own. */}
+                  <div className="relative">
+                    <select
+                      id="budget"
+                      name="budget"
+                      value={budget}
+                      onChange={(e) => setBudget(e.target.value)}
+                      className={`${inputClass} appearance-none pr-8`}
+                    >
+                      <option value="" disabled className="bg-[var(--color-background)]">
+                        Bitte wählen …
                       </option>
-                    ))}
-                  </select>
+                      {budgets.map((b) => (
+                        <option key={b} value={b} className="bg-[var(--color-background)]">
+                          {b}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown
+                      aria-hidden="true"
+                      className="pointer-events-none absolute right-0 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-muted-foreground)]"
+                    />
+                  </div>
                 </Field>
               </div>
 
@@ -251,6 +276,7 @@ export default function Kontakt() {
                   name="message"
                   required
                   rows={5}
+                  defaultValue={prefilledMessage}
                   placeholder="Worum geht es? Ein paar Sätze reichen völlig."
                   className={`${inputClass} resize-y`}
                 />

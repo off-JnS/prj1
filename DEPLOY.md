@@ -28,7 +28,7 @@ per GitHub Actions automatisch auf Hostinger hochgeladen.
 
 | Was | Wo |
 |---|---|
-| Stripe Payment Links (pro Paket, monatlich + jährlich) | `src/data/plans.ts` → `paymentLinkMonthly` / `paymentLinkYearly` |
+| Stripe Payment Links (pro Paket) | `src/data/plans.ts` → `paymentLink` in `buildPlans` / `carePlans` |
 | Web3Forms Access Key (Kontaktformular) | `src/config/site.ts` → `web3formsKey` (kostenlos: https://web3forms.com) |
 | Video-Testimonial | Datei nach `public/testimonials/prj1.mp4` legen |
 

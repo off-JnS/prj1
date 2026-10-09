@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
 import { BuildCards, CareCards } from "@/components/pricing/PricingCards";
+import OfferCalculator from "@/components/pricing/OfferCalculator";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
-import { buildPlans, carePlans, pricingFaq } from "@/data/plans";
+import { buildPlans, carePlans, pricingFaq, MIN_TERM_MONTHS } from "@/data/plans";
 import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
@@ -11,7 +12,8 @@ export default function Pricing() {
     <main className="relative px-6 pb-32 pt-36 sm:px-10 sm:pt-44">
       <Seo
         title="Preise & Pakete — PRJ1"
-        description="Webdesign zum Festpreis: Websites ab 1.000 €, Wartung ab 59 €/Monat. Handgemacht in Hamburg — ohne Themes, ohne Templates."
+        // Numbers here are static — keep them in sync with src/data/plans.ts.
+        description="Webdesign zum Festpreis: Websites ab 1.000 €, Wartung ab 59 €/Monat — mit Wartungspaket gibt es die Website bis zu 100 % günstiger. Handgemacht in Hamburg, ohne Themes, ohne Templates."
         path="/preise"
       />
       <JsonLd
@@ -50,7 +52,8 @@ export default function Pricing() {
         <FadeIn delay={0.25}>
           <p className="mt-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
             Einmal zahlen, launchen, fertig — alles handgemacht, keine Templates.
-            Um den Betrieb kümmert sich danach ein Wartungspaket.
+            Um den Betrieb kümmert sich danach ein Wartungspaket. Beides zusammen
+            gebucht, wird die Website deutlich günstiger — oft kostenlos.
           </p>
         </FadeIn>
       </header>
@@ -70,11 +73,33 @@ export default function Pricing() {
         </h2>
         <FadeIn delay={0.15}>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)]">
-            Monatlich kündbar. Hosting und Domain immer inklusive.
+            Hosting und Domain immer inklusive. In Kombination mit einer Website
+            gilt eine Mindestlaufzeit von {MIN_TERM_MONTHS} Monaten — danach
+            monatlich kündbar.
           </p>
         </FadeIn>
         <div className="mt-12">
           <CareCards plans={carePlans} />
+        </div>
+      </section>
+
+      {/* Combination discount ------------------------------------------------ */}
+      <section className="mx-auto mt-28 max-w-7xl sm:mt-40" aria-label="Kombi-Rabatt">
+        <Kicker>Kombi-Rabatt</Kicker>
+        <h2 className="u-display mt-6 text-[clamp(2rem,5vw,3.8rem)]">
+          <Reveal>
+            Wartung dazu, Website <em className="u-serif not-italic">günstiger.</em>
+          </Reveal>
+        </h2>
+        <FadeIn delay={0.15}>
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)]">
+            Je größer das Wartungspaket, desto weniger kostet der Bau der Website —
+            in vielen Kombinationen gar nichts mehr.
+          </p>
+        </FadeIn>
+
+        <div className="mt-12">
+          <OfferCalculator />
         </div>
       </section>
 

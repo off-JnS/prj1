@@ -83,8 +83,14 @@ export default function Studio() {
       <section className="mx-auto mt-20 max-w-7xl px-6 sm:mt-28 sm:px-10" aria-label="Studio in Zahlen">
         <div className="grid grid-cols-2 border-y border-[var(--color-border)] lg:grid-cols-4">
           {stats.map((stat, i) => (
-            <FadeIn key={stat.label} delay={i * 0.06} className="border-[var(--color-border)] p-8 odd:border-r sm:p-10 lg:border-r lg:last:border-r-0">
-              <div className="u-display text-5xl tabular-nums sm:text-6xl">{stat.value}</div>
+            <FadeIn
+              key={stat.label}
+              delay={i * 0.06}
+              // 2-up on small screens needs a divider between the two rows;
+              // at lg everything sits on one row, so that rule is dropped.
+              className="border-[var(--color-border)] p-6 odd:border-r [&:nth-child(n+3)]:border-t sm:p-10 lg:border-r lg:last:border-r-0 lg:[&:nth-child(n+3)]:border-t-0"
+            >
+              <div className="u-display text-[clamp(2.25rem,9vw,3.75rem)] tabular-nums">{stat.value}</div>
               <div className="u-kicker mt-3">{stat.label}</div>
             </FadeIn>
           ))}

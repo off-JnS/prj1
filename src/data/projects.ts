@@ -23,43 +23,42 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: "ehsos-burger",
-    name: "Ehso's Burger",
-    tagline: "Markenauftritt und Online-Präsenz für einen Burger-Laden mit Charakter.",
-    url: "https://ehsos-burger.de",
+    id: "roestwerk-ottensen",
+    name: "Röstwerk Ottensen",
+    tagline: "Spezialitäten-Rösterei aus Ottensen — One-Page-Auftritt mit Karte, Kontaktformular und schnellen Ladezeiten. Paket: Starter.",
+    url: "/work/gastro-basic/index.html",
     testimonial: {
       kind: "text",
       quote:
-        "PRJ1 hat unserem Laden ein digitales Zuhause gegeben, das genauso laut und ehrlich ist wie unser Burger. Die Bestellungen über die Seite sind seit dem Launch deutlich gestiegen.",
-      authorName: "Inhaber",
-      authorRole: "EHSOS Burger",
+        "Eine Seite, die riecht wie unser Laden: warm, ehrlich, ohne Schnickschnack. Seit dem Launch reservieren mehr Gäste direkt online — genau das, was wir wollten.",
+      authorName: "Inhaberin",
+      authorRole: "Röstwerk Ottensen",
     },
   },
   {
-    id: "beispiel-cafe",
-    name: "Café Literarität",
-    tagline: "Markenwebsite für ein Literatur-Café mit warmer, einladender Handschrift.",
-    url: "https://cafeliteraritat.netlify.app/",
+    id: "elbstein-immobilien",
+    name: "Elbstein Immobilien",
+    tagline: "Immobilienmakler aus der HafenCity — fünf Seiten mit Live-Filter, Scroll-Motion und lokalem SEO. Paket: Professional.",
+    url: "/work/immobilien-professional/index.html",
     testimonial: {
       kind: "text",
       quote:
-        "Unsere Website fühlt sich jetzt genauso gemütlich an wie das Café selbst — ruhig, einladend und unverwechselbar. Seit dem Launch kommen spürbar mehr Gäste über die Seite zu uns.",
-      authorName: "Mara Iversen",
-      authorRole: "Inhaberin, Café Literarität",
+        "Die Seite verkauft Vertrauen, bevor wir ein Wort sagen. Anfragen über die Objekt-Filter sind spürbar hochwertiger geworden — und unser Google-Profil läuft endlich rund.",
+      authorName: "Geschäftsführung",
+      authorRole: "Elbstein Immobilien",
     },
   },
   {
-    id: "prj1",
-    name: "PRJ1",
-    tagline: "Unsere eigene Website — gebaut mit denselben Standards, die wir für unsere Kunden anlegen.",
-    url: "https://prj1.de",
+    id: "nordmeridian-logistik",
+    name: "Nordmeridian Logistik",
+    tagline: "Maritime Spedition aus der Speicherstadt — volle Art Direction, eigene Texte und ein interaktiver 3D-Globus. Paket: Premium.",
+    url: "/work/maritim-premium/index.html",
     testimonial: {
-      kind: "video",
-      // Add the video file at public/testimonials/prj1.mp4.
-      src: "/testimonials/prj1.mp4",
-      poster: "/og-image.jpg",
-      authorName: "Elena Costa",
-      authorRole: "Kreativdirektorin, Pionier Manufaktur",
+      kind: "text",
+      quote:
+        "In einer konservativen Branche sehen wir jetzt aus wie der fähigste Anbieter am Kai. Der Globus auf der Startseite ist kein Gimmick — er zeigt genau, was wir verkaufen: Routen.",
+      authorName: "Geschäftsführung",
+      authorRole: "Nordmeridian Logistik",
     },
   },
 ];

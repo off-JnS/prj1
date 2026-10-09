@@ -22,20 +22,33 @@ export default function ScrubText({ text, className }: { text: string; className
       return;
     }
 
+    // A scrub keeps ScrollTrigger recomputing every frame the paragraph is on
+    // screen. On touch devices the same reveal plays once and then costs
+    // nothing for the rest of the scroll.
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+
     const tween = gsap.fromTo(
       words,
       { opacity: 0.14 },
-      {
-        opacity: 1,
-        stagger: 0.05,
-        ease: "none",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 78%",
-          end: "bottom 45%",
-          scrub: 0.4,
-        },
-      },
+      coarse
+        ? {
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.03,
+            ease: "power2.out",
+            scrollTrigger: { trigger: el, start: "top 85%", once: true },
+          }
+        : {
+            opacity: 1,
+            stagger: 0.05,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 78%",
+              end: "bottom 45%",
+              scrub: 0.4,
+            },
+          },
     );
 
     return () => {

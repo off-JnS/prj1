@@ -2,9 +2,10 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { usePointerFine } from "@/hooks/useMediaQuery";
 
 const liquidButtonVariants = cva(
-  "relative inline-flex items-center justify-center cursor-pointer gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-transform duration-300 hover:scale-105 disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]",
+  "relative inline-flex items-center justify-center cursor-pointer gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-transform duration-300 hover:scale-105 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-background)]",
   {
     variants: {
       variant: {
@@ -38,6 +39,10 @@ export function LiquidButton({
   ...props
 }: LiquidButtonProps) {
   const Comp = asChild ? Slot : "button";
+  // The SVG displacement filter is unsupported in Safari/iOS and expensive
+  // where it does work — touch devices get a plain frosted blur instead.
+  const pointerFine = usePointerFine();
+  const filterId = React.useId();
 
   return (
     <Comp
@@ -55,21 +60,24 @@ export function LiquidButton({
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-0 isolate -z-10 overflow-hidden rounded-full"
-        style={{ backdropFilter: "url(#prj1-liquid-glass)" }}
+        className={cn(
+          "pointer-events-none absolute inset-0 isolate -z-10 overflow-hidden rounded-full",
+          !pointerFine && "bg-white/[0.06] backdrop-blur-md",
+        )}
+        style={pointerFine ? { backdropFilter: `url(#${filterId})` } : undefined}
       />
       <span className="pointer-events-none relative z-10">{children}</span>
-      <GlassFilter />
+      {pointerFine && <GlassFilter id={filterId} />}
     </Comp>
   );
 }
 
-function GlassFilter() {
+function GlassFilter({ id }: { id: string }) {
   return (
     <svg className="hidden" aria-hidden>
       <defs>
         <filter
-          id="prj1-liquid-glass"
+          id={id}
           x="0%"
           y="0%"
           width="100%"
