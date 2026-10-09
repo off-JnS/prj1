@@ -101,7 +101,10 @@ function Hero() {
         </m.p>
 
         <h1 className="u-display mt-6 text-[clamp(3.4rem,14vw,11.5rem)]">
-          <span className="block overflow-hidden">
+          {/* pb: room for the "g" descender inside the reveal mask (line-height
+              0.94 would clip it); the smaller negative mb keeps a clear gap
+              to "alles." without pushing the copy block down much. */}
+          <span className="block overflow-hidden pb-[0.2em] -mb-[0.08em]">
             <m.span variants={heroLine} initial="hidden" animate={state} custom={0.15} className="block">
               Design ist
             </m.span>
