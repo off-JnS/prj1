@@ -16,12 +16,15 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 /**
  * Unified site navigation.
  *
- * Bar: fixed, runs in mix-blend-difference so it renders white over dark
- * sections and flips to black over inverted (white) ones — no scroll-state
- * bookkeeping. It slips away on scroll-down and returns on scroll-up.
+ * Bar: fixed. From md up it runs in mix-blend-difference so it renders
+ * white over dark sections and flips to black over inverted (white) ones.
+ * Below md it is a solid black strip with a hairline, so it reads as its own
+ * layer over the hero instead of floating in the threads. It slips away on
+ * scroll-down and returns on scroll-up.
  *
  * Menu (below md): full-screen black overlay in the site's editorial voice —
- * giant masked link reveals, mono indices, meta row at the bottom.
+ * giant masked link reveals, mono indices, meta row at the bottom. Bar and
+ * menu sit above the paper texture (z-90) so the open menu is clean black.
  */
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
@@ -94,7 +97,9 @@ export default function SiteNav() {
     <>
       {/* ---- Bar ------------------------------------------------------- */}
       <m.header
-        className="pointer-events-none fixed inset-x-0 top-0 z-[80] mix-blend-difference"
+        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] border-b bg-black transition-colors duration-300 md:border-transparent md:bg-transparent md:mix-blend-difference ${
+          open ? "border-transparent" : "border-white/15"
+        }`}
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
       >
@@ -187,7 +192,7 @@ export default function SiteNav() {
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-[70] flex flex-col bg-black text-white md:hidden"
+            className="fixed inset-0 z-[92] flex flex-col bg-black text-white md:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Menü"

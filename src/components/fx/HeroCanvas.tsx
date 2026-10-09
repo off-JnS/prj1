@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Monochrome WebGL backdrop: three interfering light threads drifting across
- * black, printed through a 45° halftone screen in paper tone — the same
- * newsprint language as the page texture. Written against raw WebGL (a
+ * black in warm paper tone. Written against raw WebGL (a
  * fullscreen triangle + one fragment shader) so we don't ship a 3D engine
  * for a 2D effect.
  *
@@ -20,7 +19,6 @@ const FRAG = `
 precision highp float;
 uniform vec2 u_res;
 uniform float u_time;
-uniform float u_cell;
 
 float thread(vec2 p, float t, float freq, float amp, float thick) {
   return thick / abs(p.y + sin((p.x + t) * freq) * amp);
@@ -40,24 +38,15 @@ float light(vec2 frag) {
 }
 
 void main() {
-  /* Rotate into screen space, find this pixel's cell, sample the light at
-     the cell centre and print one dot whose area tracks that value. */
-  const float S = 0.70710678;
-  mat2 toScreen = mat2(S, S, -S, S);
-  mat2 fromScreen = mat2(S, -S, S, S);
+  float c = light(gl_FragCoord.xy);
 
-  vec2 q = toScreen * gl_FragCoord.xy / u_cell;
-  vec2 cell = floor(q) + 0.5;
-  /* Small floor keeps the deep blacks paper-free, like unprinted stock. */
-  float v = max(light(fromScreen * (cell * u_cell)) - 0.02, 0.0);
+  /* Hash dither so the dark falloff doesn't band. */
+  float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
+  c = clamp(c + (n - 0.5) * 0.016, 0.0, 1.0);
 
-  float r = sqrt(v) * 0.68;
-  float d = length(q - cell);
-  float aa = 0.75 / u_cell;
-  float dotMask = 1.0 - smoothstep(r - aa, r + aa, d);
-
+  /* Paper tone instead of pure white: warm like the page texture. */
   vec3 paper = vec3(0.955, 0.94, 0.905);
-  gl_FragColor = vec4(paper * dotMask, 1.0);
+  gl_FragColor = vec4(paper * c, 1.0);
 }
 `;
 
@@ -100,7 +89,6 @@ export default function HeroCanvas() {
 
     const uRes = gl.getUniformLocation(program, "u_res");
     const uTime = gl.getUniformLocation(program, "u_time");
-    const uCell = gl.getUniformLocation(program, "u_cell");
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let raf = 0;
@@ -110,8 +98,8 @@ export default function HeroCanvas() {
     const start = performance.now();
 
     const resize = () => {
-      // The shader is fill-rate bound; past ~1.5× the halftone dots gain
-      // nothing visible, so don't pay for full retina resolution.
+      // The shader is fill-rate bound and the threads are soft glows, so
+      // full retina resolution buys nothing visible.
       const cap = window.innerWidth < 768 ? 1.25 : 1.5;
       const dpr = Math.min(window.devicePixelRatio || 1, cap);
       const w = Math.round(canvas.clientWidth * dpr);
@@ -123,8 +111,6 @@ export default function HeroCanvas() {
         gl.viewport(0, 0, w, h);
       }
       gl.uniform2f(uRes, w, h);
-      // Halftone cell in CSS px — coarser on phones so dots stay visible.
-      gl.uniform1f(uCell, (window.innerWidth < 768 ? 5 : 6) * dpr);
     };
 
     const frame = () => {
