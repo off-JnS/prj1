@@ -6,16 +6,14 @@
 
   <title>Über uns – Nordmeridian Logistik, Hamburg Speicherstadt</title>
   <meta name="description" content="Seit 2011 steuert Nordmeridian Lieferketten aus der Hamburger Speicherstadt. Lernen Sie das Unternehmen, die Geschichte und die Menschen dahinter kennen.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.nordmeridian-logistik.de/ueber-uns.html">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#05090F">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Nordmeridian Logistik">
   <meta property="og:title" content="Über uns – Nordmeridian Logistik, Hamburg Speicherstadt">
   <meta property="og:description" content="Seit 2011 steuern wir Lieferketten aus der Hamburger Speicherstadt. Die Geschichte und die Menschen dahinter.">
-  <meta property="og:url" content="https://www.nordmeridian-logistik.de/ueber-uns.html">
-  <meta property="og:image" content="https://picsum.photos/seed/nordmeridian-og/1200/630">
+  <meta property="og:image" content="img/og-nordmeridian.jpg">
   <meta property="og:locale" content="de_DE">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -24,28 +22,43 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Start", "item": "https://www.nordmeridian-logistik.de/" },
-      { "@type": "ListItem", "position": 2, "name": "Über uns", "item": "https://www.nordmeridian-logistik.de/ueber-uns.html" }
+      { "@type": "ListItem", "position": 1, "name": "Start", "item": "index.html" },
+      { "@type": "ListItem", "position": 2, "name": "Über uns", "item": "ueber-uns.html" }
     ]
   }
   </script>
 
-  <!-- ===== Google Analytics (placeholder) — uncomment and insert your Measurement ID =====
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-  ===== -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="css/main.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305090F'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23FF5A36' stroke-width='2'/%3E%3Cpath d='M16 6v20M6 16h20' stroke='%2345D6C4' stroke-width='1.4'/%3E%3C/svg%3E">
+
+  <!-- PRJ1 concept notice: identical snippet on every demo page. Hide it for screenshots with [data-concept-banner]{display:none}. -->
+  <style id="prj1-concept-banner-css">
+    :root { --concept-banner-space: 52px; }
+    .prj1-cb {
+      position: fixed; z-index: 2147483000;
+      left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom));
+      max-width: calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right));
+      box-sizing: border-box; margin: 0; display: flex; align-items: center; gap: 10px;
+      padding: 6px 6px 6px 14px; border-radius: 999px;
+      background: rgba(18, 18, 20, 0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+      color: #F4F4F2; font: 500 12px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0; text-transform: none; text-align: left; -webkit-font-smoothing: antialiased;
+    }
+    .prj1-cb .prj1-cb__text { color: #F4F4F2; text-wrap: balance; }
+    .prj1-cb .prj1-cb__link, .prj1-cb .prj1-cb__link:visited {
+      flex-shrink: 0; display: inline-block; padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+      background: #F4F4F2; color: #121214; font-weight: 600; text-decoration: none; border: 0;
+    }
+    .prj1-cb .prj1-cb__link:hover { background: #FFFFFF; color: #121214; }
+    .prj1-cb .prj1-cb__link:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+    body:has(.main-nav.is-open) .prj1-cb { visibility: hidden; }
+    @media (max-width: 480px) {
+      :root { --concept-banner-space: 58px; }
+      .prj1-cb { border-radius: 20px; padding: 6px 6px 6px 12px; }
+    }
+    @media print { .prj1-cb { display: none; } }
+  </style>
 </head>
 <body>
 
@@ -108,7 +121,7 @@
           </p>
         </div>
         <figure class="feature__media reveal" data-reveal-delay="1">
-          <img src="https://picsum.photos/seed/nordmeridian-story/840/620" alt="Die Speicherstadt mit dem Nordmeridian-Kontor" width="840" height="620" loading="lazy">
+          <img src="img/speicherstadt-kontor.jpg" alt="Die Speicherstadt mit dem Nordmeridian-Kontor" width="840" height="620" loading="lazy">
           <figcaption class="mono">Kontor Bei St. Annen 12, Speicherstadt — UNESCO-Welterbe seit 2015</figcaption>
         </figure>
       </div>
@@ -155,17 +168,17 @@
         </div>
         <div class="tiles">
           <div class="tile tile--person reveal">
-            <img src="https://picsum.photos/seed/nordmeridian-l1/560/620" alt="Porträt von Henrik Volquardsen" width="560" height="620" loading="lazy">
+            <img src="img/team-henrik-volquardsen.jpg" alt="Steuerrad auf einer Schiffsbrücke – Symbolbild für Henrik Volquardsen" width="560" height="620" loading="lazy">
             <h3>Henrik Volquardsen</h3>
             <p class="mono">Gründer &amp; Geschäftsführer · Ex-Schiffsoffizier</p>
           </div>
           <div class="tile tile--person reveal" data-reveal-delay="1">
-            <img src="https://picsum.photos/seed/nordmeridian-l2/560/620" alt="Porträt von Sina Petersen" width="560" height="620" loading="lazy">
+            <img src="img/team-sina-petersen.jpg" alt="Stempel auf Unterlagen im Aktenordner – Symbolbild für Sina Petersen" width="560" height="620" loading="lazy">
             <h3>Sina Petersen</h3>
             <p class="mono">Geschäftsführerin Operations · Zoll &amp; Compliance</p>
           </div>
           <div class="tile tile--person reveal" data-reveal-delay="2">
-            <img src="https://picsum.photos/seed/nordmeridian-l3/560/620" alt="Porträt von Deniz Kaya" width="560" height="620" loading="lazy">
+            <img src="img/team-deniz-kaya.jpg" alt="Containerbrücke im Gegenlicht – Symbolbild für Deniz Kaya" width="560" height="620" loading="lazy">
             <h3>Deniz Kaya</h3>
             <p class="mono">Leiter Kontrollturm · Projektlogistik</p>
           </div>
@@ -198,8 +211,8 @@
           Nordmeridian Logistik GmbH<br>
           Bei St. Annen 12<br>
           20457 Hamburg-Speicherstadt<br>
-          <a href="tel:+494055591020">+49 40 555 910 20</a><br>
-          <a href="mailto:kontakt@nordmeridian-logistik.de">kontakt@nordmeridian-logistik.de</a>
+          <a href="tel:+494066969910">+49 40 66969 910</a><br>
+          <a href="mailto:kontakt@nordmeridian-logistik.example">kontakt@nordmeridian-logistik.example</a>
         </address>
       </div>
       <div>
@@ -213,14 +226,30 @@
       </div>
       <div>
         <h4>Notfall-Hotline</h4>
-        <p>Für laufende Sendungen:<br><a href="tel:+494055591099">+49 40 555 910 99</a><br><span class="mono">24/7 erreichbar</span></p>
+        <p>Für laufende Sendungen:<br><a href="tel:+494066969999">+49 40 66969 999</a><br><span class="mono">24/7 erreichbar</span></p>
       </div>
     </div>
     <div class="container site-footer__bottom">
       <p>© <span data-year>2026</span> Nordmeridian Logistik GmbH. Demo-Website.</p>
-      <p><a href="#">Impressum</a> · <a href="#">Datenschutz</a> · <a href="#">AGB</a> · <a href="sitemap.xml">Sitemap</a></p>
+      <p><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
     </div>
   </footer>
+
+  <!-- PRJ1 concept notice (see #prj1-concept-banner-css) -->
+  <aside class="prj1-cb" data-concept-banner aria-label="Hinweis zu dieser Website">
+    <span class="prj1-cb__text">Konzeptprojekt von PRJ1 · fiktive Marke</span>
+    <a class="prj1-cb__link" href="/portfolio"><span aria-hidden="true">←</span> Zurück zu PRJ1</a>
+  </aside>
+  <script>
+    /* Keeps the site's own bottom-left tier badge stacked above the notice (0 when the notice is hidden). */
+    (function () {
+      var b = document.querySelector("[data-concept-banner]"), r = document.documentElement;
+      if (!b || !("ResizeObserver" in window)) return;
+      new ResizeObserver(function () {
+        r.style.setProperty("--concept-banner-space", (b.offsetHeight ? b.offsetHeight + 8 : 0) + "px");
+      }).observe(b);
+    })();
+  </script>
 
   <script src="js/main.js" defer></script>
 </body>

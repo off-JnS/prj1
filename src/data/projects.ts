@@ -50,11 +50,12 @@ export const projects: Project[] = [
       "One-Pager mit Karte, Öffnungszeiten und Galerie",
       "Kontaktformular mit Validierung",
       "Ohne JS-Bibliotheken — schnelle Ladezeiten",
-      "Basis-SEO: Title, Description, Canonical",
+      "Basis-SEO: Title und Meta-Description",
     ],
     url: "/work/gastro-basic/index.html",
     image: "/work/shots/roestwerk-ottensen.jpg",
-    imageAlt: "Startseite von Röstwerk Ottensen: warme Farben, Foto einer Kaffeetasse und die Überschrift „Handgeröstet im Herzen von Ottensen“.",
+    imageAlt:
+      "Startseite von Röstwerk Ottensen: cremefarbenes Layout mit der Überschrift „Handgeröstet im Herzen von Ottensen.“, den Buttons „Karte ansehen“ und „Tisch anfragen“ und einem großen Foto rechts.",
   },
   {
     id: "elbstein-immobilien",
@@ -68,11 +69,12 @@ export const projects: Project[] = [
       "Fünf individuell gestaltete Seiten",
       "Objektliste mit Live-Filter",
       "Scroll-Reveals und Counter",
-      "JSON-LD, Open Graph und Sitemap für lokales SEO",
+      "Strukturierte Daten (JSON-LD) für lokales SEO",
     ],
     url: "/work/immobilien-professional/index.html",
     image: "/work/shots/elbstein-immobilien.jpg",
-    imageAlt: "Startseite von Elbstein Immobilien: ruhiges, helles Layout mit der Überschrift „Zuhause ist keine Adresse.“ und Objektfotos.",
+    imageAlt:
+      "Startseite von Elbstein Immobilien: abgedunkeltes Vollbildfoto mit der Überschrift „Zuhause ist keine Adresse. Es ist ein Gefühl.“ und den Buttons „Aktuelle Objekte“ und „Beratung vereinbaren“.",
   },
   {
     id: "nordmeridian-logistik",
@@ -90,6 +92,7 @@ export const projects: Project[] = [
     ],
     url: "/work/maritim-premium/index.html",
     image: "/work/shots/nordmeridian-logistik.jpg",
-    imageAlt: "Startseite von Nordmeridian Logistik: dunkles Layout mit einem leuchtenden 3D-Globus und der Überschrift „Von der Elbe in die Welt“.",
+    imageAlt:
+      "Startseite von Nordmeridian Logistik: dunkles Layout mit einem 3D-Globus aus Punkten und Handelsrouten und der Überschrift „Von der Elbe in die Welt.“",
   },
 ];

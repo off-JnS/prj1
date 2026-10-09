@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Röstwerk Ottensen — Basic tier demo
+   Röstwerk Ottensen — Starter tier demo
    Mobile nav toggle + client-side form validation (simulated submit).
    ========================================================================== */
 
@@ -82,7 +82,7 @@
   });
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // demo: no server — remove once a real action is set
+    e.preventDefault(); // demo: never sends anything — shows the PRJ1 demo notice instead
 
     var firstInvalid = null;
     Object.keys(fields).forEach(function (key) {

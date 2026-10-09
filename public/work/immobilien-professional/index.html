@@ -7,8 +7,7 @@
   <!-- ===== Advanced SEO (Professional tier) ===== -->
   <title>Elbstein Immobilien – Immobilienmakler in Hamburg HafenCity</title>
   <meta name="description" content="Elbstein Immobilien vermittelt außergewöhnliche Wohnungen und Häuser in Hamburgs besten Lagen – von Blankenese bis Winterhude. Bewertung, Verkauf und Vermietung aus einer Hand.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.elbstein-immobilien.de/">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#10202E">
 
   <!-- Open Graph / social sharing -->
@@ -16,8 +15,7 @@
   <meta property="og:site_name" content="Elbstein Immobilien">
   <meta property="og:title" content="Elbstein Immobilien – Immobilienmakler in Hamburg HafenCity">
   <meta property="og:description" content="Außergewöhnliche Immobilien in Hamburgs besten Lagen. Bewertung, Verkauf und Vermietung aus einer Hand.">
-  <meta property="og:url" content="https://www.elbstein-immobilien.de/">
-  <meta property="og:image" content="https://picsum.photos/seed/elbstein-og/1200/630">
+  <meta property="og:image" content="img/og-elbstein.jpg">
   <meta property="og:locale" content="de_DE">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -28,9 +26,8 @@
     "@type": "RealEstateAgent",
     "name": "Elbstein Immobilien GmbH",
     "description": "Immobilienmakler für Verkauf, Vermietung und Bewertung in Hamburg.",
-    "url": "https://www.elbstein-immobilien.de/",
-    "telephone": "+49 40 555 678 90",
-    "email": "kontakt@elbstein-immobilien.de",
+    "telephone": "+49 40 66969 456",
+    "email": "kontakt@elbstein-immobilien.example",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Am Sandtorkai 42",
@@ -44,29 +41,44 @@
   }
   </script>
 
-  <!-- ===== Google Analytics (placeholder) — uncomment and insert your Measurement ID =====
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-  ===== -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="css/main.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2310202E'/%3E%3Cpath d='M8 24V13l8-6 8 6v11h-6v-7h-4v7z' fill='%23B08D57'/%3E%3C/svg%3E">
+
+  <!-- PRJ1 concept notice: identical snippet on every demo page. Hide it for screenshots with [data-concept-banner]{display:none}. -->
+  <style id="prj1-concept-banner-css">
+    :root { --concept-banner-space: 52px; }
+    .prj1-cb {
+      position: fixed; z-index: 2147483000;
+      left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom));
+      max-width: calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right));
+      box-sizing: border-box; margin: 0; display: flex; align-items: center; gap: 10px;
+      padding: 6px 6px 6px 14px; border-radius: 999px;
+      background: rgba(18, 18, 20, 0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+      color: #F4F4F2; font: 500 12px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0; text-transform: none; text-align: left; -webkit-font-smoothing: antialiased;
+    }
+    .prj1-cb .prj1-cb__text { color: #F4F4F2; text-wrap: balance; }
+    .prj1-cb .prj1-cb__link, .prj1-cb .prj1-cb__link:visited {
+      flex-shrink: 0; display: inline-block; padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+      background: #F4F4F2; color: #121214; font-weight: 600; text-decoration: none; border: 0;
+    }
+    .prj1-cb .prj1-cb__link:hover { background: #FFFFFF; color: #121214; }
+    .prj1-cb .prj1-cb__link:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+    body:has(.main-nav.is-open) .prj1-cb { visibility: hidden; }
+    @media (max-width: 480px) {
+      :root { --concept-banner-space: 58px; }
+      .prj1-cb { border-radius: 20px; padding: 6px 6px 6px 12px; }
+    }
+    @media print { .prj1-cb { display: none; } }
+  </style>
 </head>
 <body>
 
   <!-- Tier badge -->
-  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Professional, unbegrenzte Revisionen">
+  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Professional, unbegrenzte Korrekturschleifen">
     <span class="tier-badge__tier">Professional</span>
-    <span class="tier-badge__note">Demo · Unbegrenzte Revisionen</span>
+    <span class="tier-badge__note">Demo · Unbegrenzte Korrekturschleifen</span>
   </div>
 
   <header class="site-header" data-header>
@@ -98,7 +110,7 @@
     <!-- ===== Hero ===== -->
     <section class="hero">
       <div class="hero__bg" aria-hidden="true">
-        <img src="https://picsum.photos/seed/elbstein-hero/1800/1100" alt="" width="1800" height="1100" fetchpriority="high">
+        <img src="img/hero-hamburg.jpg" alt="" width="1800" height="1100" fetchpriority="high">
       </div>
       <div class="container hero__content">
         <p class="eyebrow reveal">Immobilien · Hamburg · seit 2008</p>
@@ -148,7 +160,7 @@
         <div class="cards-grid">
           <a class="prop-card reveal" href="immobilien.html">
             <div class="prop-card__media">
-              <img src="https://picsum.photos/seed/elbstein-p1/720/520" alt="Penthouse mit Elbblick in Blankenese" width="720" height="520" loading="lazy">
+              <img src="img/objekt-penthouse-blankenese.jpg" alt="Penthouse mit Elbblick in Blankenese" width="720" height="520" loading="lazy">
               <span class="prop-card__tag">Kauf</span>
             </div>
             <div class="prop-card__body">
@@ -163,7 +175,7 @@
 
           <a class="prop-card reveal" data-reveal-delay="1" href="immobilien.html">
             <div class="prop-card__media">
-              <img src="https://picsum.photos/seed/elbstein-p2/720/520" alt="Altbau-Etage mit Stuck in Eppendorf" width="720" height="520" loading="lazy">
+              <img src="img/objekt-altbau-eppendorf.jpg" alt="Altbau-Etage mit Stuck in Eppendorf" width="720" height="520" loading="lazy">
               <span class="prop-card__tag">Kauf</span>
             </div>
             <div class="prop-card__body">
@@ -178,7 +190,7 @@
 
           <a class="prop-card reveal" data-reveal-delay="2" href="immobilien.html">
             <div class="prop-card__media">
-              <img src="https://picsum.photos/seed/elbstein-p3/720/520" alt="Loft in den Zeise-Höfen in Ottensen" width="720" height="520" loading="lazy">
+              <img src="img/objekt-loft-ottensen.jpg" alt="Loft in den Zeise-Höfen in Ottensen" width="720" height="520" loading="lazy">
               <span class="prop-card__tag prop-card__tag--rent">Miete</span>
             </div>
             <div class="prop-card__body">
@@ -274,8 +286,8 @@
           Elbstein Immobilien GmbH<br>
           Am Sandtorkai 42<br>
           20457 Hamburg-HafenCity<br>
-          <a href="tel:+494055567890">+49 40 555 678 90</a><br>
-          <a href="mailto:kontakt@elbstein-immobilien.de">kontakt@elbstein-immobilien.de</a>
+          <a href="tel:+494066969456">+49 40 66969 456</a><br>
+          <a href="mailto:kontakt@elbstein-immobilien.example">kontakt@elbstein-immobilien.example</a>
         </address>
       </div>
       <div>
@@ -294,9 +306,25 @@
     </div>
     <div class="container site-footer__bottom">
       <p>© <span data-year>2026</span> Elbstein Immobilien GmbH. Demo-Website.</p>
-      <p><a href="#">Impressum</a> · <a href="#">Datenschutz</a> · <a href="sitemap.xml">Sitemap</a></p>
+      <p><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
     </div>
   </footer>
+
+  <!-- PRJ1 concept notice (see #prj1-concept-banner-css) -->
+  <aside class="prj1-cb" data-concept-banner aria-label="Hinweis zu dieser Website">
+    <span class="prj1-cb__text">Konzeptprojekt von PRJ1 · fiktive Marke</span>
+    <a class="prj1-cb__link" href="/portfolio"><span aria-hidden="true">←</span> Zurück zu PRJ1</a>
+  </aside>
+  <script>
+    /* Keeps the site's own bottom-left tier badge stacked above the notice (0 when the notice is hidden). */
+    (function () {
+      var b = document.querySelector("[data-concept-banner]"), r = document.documentElement;
+      if (!b || !("ResizeObserver" in window)) return;
+      new ResizeObserver(function () {
+        r.style.setProperty("--concept-banner-space", (b.offsetHeight ? b.offsetHeight + 8 : 0) + "px");
+      }).observe(b);
+    })();
+  </script>
 
   <script src="js/main.js" defer></script>
 </body>

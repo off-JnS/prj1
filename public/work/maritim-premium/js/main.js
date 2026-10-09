@@ -173,7 +173,7 @@
     });
 
     form.addEventListener("submit", function (e) {
-      e.preventDefault(); // demo: no server — remove once a real action is set
+      e.preventDefault(); // demo: never sends anything — shows the PRJ1 demo notice instead
 
       var firstInvalid = null;
       rules.forEach(function (rule) {

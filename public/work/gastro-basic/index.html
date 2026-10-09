@@ -4,37 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- ===== Basic SEO meta tags (Basic tier) ===== -->
+  <!-- ===== Basic SEO meta tags (Starter tier) ===== -->
   <title>Röstwerk Ottensen – Spezialitätenkaffee &amp; Rösterei in Hamburg-Ottensen</title>
   <meta name="description" content="Handgerösteter Spezialitätenkaffee, Franzbrötchen und hausgemachte Kuchen im Herzen von Hamburg-Ottensen. Mo–So geöffnet, Bahrenfelder Straße 87.">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://www.roestwerk-ottensen.de/">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#2E2118">
-
-  <!-- ===== Google Analytics (placeholder) — uncomment and insert your Measurement ID =====
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-  ===== -->
-
-  <!-- Fonts: Fraunces (display) + Karla (body), swap to avoid FOIT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23C4692F'/%3E%3Cpath d='M16 7c-3 3.5-3 8 0 11.5 3-3.5 3-8 0-11.5z' fill='%23FBF6EE'/%3E%3C/svg%3E">
+
+  <!-- PRJ1 concept notice: identical snippet on every demo page. Hide it for screenshots with [data-concept-banner]{display:none}. -->
+  <style id="prj1-concept-banner-css">
+    :root { --concept-banner-space: 52px; }
+    .prj1-cb {
+      position: fixed; z-index: 2147483000;
+      left: max(12px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom));
+      max-width: calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right));
+      box-sizing: border-box; margin: 0; display: flex; align-items: center; gap: 10px;
+      padding: 6px 6px 6px 14px; border-radius: 999px;
+      background: rgba(18, 18, 20, 0.9); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18); box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+      color: #F4F4F2; font: 500 12px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0; text-transform: none; text-align: left; -webkit-font-smoothing: antialiased;
+    }
+    .prj1-cb .prj1-cb__text { color: #F4F4F2; text-wrap: balance; }
+    .prj1-cb .prj1-cb__link, .prj1-cb .prj1-cb__link:visited {
+      flex-shrink: 0; display: inline-block; padding: 5px 11px; border-radius: 999px; white-space: nowrap;
+      background: #F4F4F2; color: #121214; font-weight: 600; text-decoration: none; border: 0;
+    }
+    .prj1-cb .prj1-cb__link:hover { background: #FFFFFF; color: #121214; }
+    .prj1-cb .prj1-cb__link:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+    body:has(.main-nav.is-open) .prj1-cb { visibility: hidden; }
+    @media (max-width: 480px) {
+      :root { --concept-banner-space: 58px; }
+      .prj1-cb { border-radius: 20px; padding: 6px 6px 6px 12px; }
+    }
+    @media print { .prj1-cb { display: none; } }
+  </style>
 </head>
 <body>
 
   <!-- Tier badge: identifies the demo package level -->
-  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Basic, inklusive 2 Revisionsrunden">
-    <span class="tier-badge__tier">Basic</span>
-    <span class="tier-badge__note">Demo · 2 Revisionsrunden inkl.</span>
+  <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Starter, inklusive 2 Korrekturschleifen">
+    <span class="tier-badge__tier">Starter</span>
+    <span class="tier-badge__note">Demo · 2 Korrekturschleifen inkl.</span>
   </div>
 
   <header class="site-header">
@@ -80,7 +93,7 @@
           </div>
         </div>
         <figure class="hero__media">
-          <img src="https://picsum.photos/seed/roastwerk-hero/860/1040" alt="Frisch gebrühter Kaffee im Röstwerk Ottensen" width="860" height="1040" fetchpriority="high">
+          <img src="img/hero-kaffee.jpg" alt="Frisch gebrühter Kaffee im Röstwerk Ottensen" width="860" height="1040" fetchpriority="high">
           <figcaption class="hero__stamp" aria-hidden="true">100&nbsp;% Arabica<br>fair gehandelt</figcaption>
         </figure>
       </div>
@@ -108,7 +121,7 @@
     <section id="roesterei" class="section about">
       <div class="container about__inner">
         <div class="about__media">
-          <img src="https://picsum.photos/seed/roastwerk-about/720/560" alt="Röstmaschine und Kaffeesäcke in der Rösterei" width="720" height="560" loading="lazy">
+          <img src="img/roesterei-roestmaschine.jpg" alt="Rohkaffee in Jutesäcken im Lager der Rösterei" width="720" height="560" loading="lazy">
         </div>
         <div class="about__copy">
           <p class="eyebrow">Unsere Rösterei</p>
@@ -177,10 +190,10 @@
         <p class="eyebrow eyebrow--center">Einblicke</p>
         <h2 class="section-title">Ein Nachmittag bei uns.</h2>
         <div class="gallery__grid">
-          <img src="https://picsum.photos/seed/roastwerk-g1/640/760" alt="Gastraum mit Holztischen und warmem Licht" width="640" height="760" loading="lazy">
-          <img src="https://picsum.photos/seed/roastwerk-g2/640/560" alt="Barista bereitet einen Cappuccino zu" width="640" height="560" loading="lazy">
-          <img src="https://picsum.photos/seed/roastwerk-g3/640/560" alt="Frische Franzbrötchen auf der Theke" width="640" height="560" loading="lazy">
-          <img src="https://picsum.photos/seed/roastwerk-g4/640/760" alt="Kaffeebohnen beim Abkühlen im Röster" width="640" height="760" loading="lazy">
+          <img src="img/galerie-gastraum.jpg" alt="Gastraum mit Holztischen und warmem Licht" width="640" height="760" loading="lazy">
+          <img src="img/galerie-barista-cappuccino.jpg" alt="Barista bereitet einen Cappuccino zu" width="640" height="560" loading="lazy">
+          <img src="img/galerie-franzbroetchen.jpg" alt="Frische Franzbrötchen auf dem Backblech" width="640" height="560" loading="lazy">
+          <img src="img/galerie-kaffeebohnen-kuehlen.jpg" alt="Kaffeebohnen beim Abkühlen im Röster" width="640" height="760" loading="lazy">
         </div>
       </div>
     </section>
@@ -200,17 +213,13 @@
             Bahrenfelder Straße 87<br>
             22765 Hamburg-Ottensen</p>
             <p>
-              <a href="tel:+494055512340">+49 40 555 123 40</a><br>
-              <a href="mailto:hallo@roestwerk-ottensen.de">hallo@roestwerk-ottensen.de</a>
+              <a href="tel:+494066969123">+49 40 66969 123</a><br>
+              <a href="mailto:hallo@roestwerk-ottensen.example">hallo@roestwerk-ottensen.example</a>
             </p>
           </address>
         </div>
 
-        <!--
-          Contact form: client-side validation only (demo).
-          To go live, uncomment the action attribute and point it at your
-          Formspree endpoint, e.g. action="https://formspree.io/f/your-id" method="POST"
-        -->
+        <!-- Demo-Formular: nur clientseitige Validierung, es werden keine Daten versendet. -->
         <form id="contact-form" class="form" novalidate>
           <div class="form__field">
             <label for="name">Name <span aria-hidden="true">*</span></label>
@@ -229,14 +238,13 @@
           </div>
           <button type="submit" class="btn btn--primary form__submit">Nachricht senden</button>
 
-          <!-- Success message, revealed by script.js after valid submit -->
+          <!-- Demo notice, revealed by script.js after a valid submit (nothing is sent) -->
           <div class="form__success" id="form-success" role="status" hidden>
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <circle cx="12" cy="12" r="11" fill="var(--clr-accent)"/>
-              <path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 11v6M12 7.25v.01" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
             </svg>
-            <p><strong>Vielen Dank!</strong> Ihre Nachricht ist bei uns gelandet.
-            Wir melden uns innerhalb eines Werktags – versprochen.</p>
+            <p><strong>Demo-Formular</strong> – dies ist ein Konzeptprojekt von PRJ1, es werden keine Daten versendet.</p>
           </div>
         </form>
       </div>
@@ -248,14 +256,30 @@
       <div>
         <p class="site-footer__brand">Röstwerk <em>Ottensen</em></p>
         <p>Bahrenfelder Straße 87 · 22765 Hamburg-Ottensen<br>
-        <a href="tel:+494055512340">+49 40 555 123 40</a> · <a href="mailto:hallo@roestwerk-ottensen.de">hallo@roestwerk-ottensen.de</a></p>
+        <a href="tel:+494066969123">+49 40 66969 123</a> · <a href="mailto:hallo@roestwerk-ottensen.example">hallo@roestwerk-ottensen.example</a></p>
       </div>
       <div class="site-footer__meta">
-        <p><a href="#top">Nach oben</a> · <a href="#" aria-disabled="true">Impressum</a> · <a href="#" aria-disabled="true">Datenschutz</a></p>
+        <p><a href="#top">Nach oben</a> · <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
         <p>© <span id="year">2026</span> Röstwerk Ottensen GmbH. Demo-Website.</p>
       </div>
     </div>
   </footer>
+
+  <!-- PRJ1 concept notice (see #prj1-concept-banner-css) -->
+  <aside class="prj1-cb" data-concept-banner aria-label="Hinweis zu dieser Website">
+    <span class="prj1-cb__text">Konzeptprojekt von PRJ1 · fiktive Marke</span>
+    <a class="prj1-cb__link" href="/portfolio"><span aria-hidden="true">←</span> Zurück zu PRJ1</a>
+  </aside>
+  <script>
+    /* Keeps the site's own bottom-left tier badge stacked above the notice (0 when the notice is hidden). */
+    (function () {
+      var b = document.querySelector("[data-concept-banner]"), r = document.documentElement;
+      if (!b || !("ResizeObserver" in window)) return;
+      new ResizeObserver(function () {
+        r.style.setProperty("--concept-banner-space", (b.offsetHeight ? b.offsetHeight + 8 : 0) + "px");
+      }).observe(b);
+    })();
+  </script>
 
   <script src="script.js" defer></script>
 </body>

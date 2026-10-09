@@ -10,7 +10,8 @@
    - If WebGL is unavailable, the CSS gradient fallback stays visible.
    ========================================================================== */
 
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+// three.js r160 (MIT), vendored locally — no CDN request. See js/vendor/three.LICENSE.
+import * as THREE from "./vendor/three.module.min.js";
 
 const container = document.getElementById("globe-canvas");
 if (container) init(container);

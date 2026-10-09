@@ -242,7 +242,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(circle, oklch(0.17 0.006 70 / 0.5) 0.7px, transparent 1.3px);
+  background-image: radial-gradient(circle, oklch(0.17 0.006 70 / 0.35) 0.7px, transparent 1.3px);
   background-size: 4px 4px;
   transform: rotate(45deg) scale(1.5);
   mix-blend-mode: multiply;
