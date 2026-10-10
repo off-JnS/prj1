@@ -16,7 +16,7 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 /**
  * Unified site navigation.
  *
- * Bar: an opaque band in the tone of the section under it — black over dark
+ * Bar: frosted glass in the tone of the section under it — black over dark
  * sections, paper over `.section-invert` ones — closed by a hairline rule. It slips away on
  * scroll-down and returns on scroll-up.
  *
@@ -116,22 +116,20 @@ export default function SiteNav() {
       {/* ---- Bar ------------------------------------------------------- */}
       <m.header
         ref={headerRef}
-        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ${
-          !open && light ? "section-invert" : ""
+        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] text-[var(--color-foreground)] transition-colors duration-500 ${
+          open
+            ? "bg-black"
+            : // Frosted glass tinted with the section's own tone: content
+              // stays visible but blurred, and the hairline (same 1px rule as
+              // the site's dividers) closes the band. `!` beats the solid
+              // background .section-invert sets.
+              `border-b border-[color-mix(in_oklab,currentColor_22%,transparent)] bg-[color-mix(in_oklab,var(--color-background)_62%,transparent)]! backdrop-blur-xl backdrop-saturate-150 ${
+                light ? "section-invert" : ""
+              }`
         }`}
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
       >
-        {!open && (
-          /* Its own band — a shade off the page tone, toward the ink — closed
-             by a 1px hairline like the site's other rules (marquee band,
-             lists, cards), inked a touch darker so it holds against the
-             band. Solid, no grain: content never shows through it. */
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 border-b border-[color-mix(in_oklab,currentColor_30%,transparent)] bg-[color-mix(in_oklab,var(--color-background)_88%,var(--color-foreground))] transition-colors duration-500"
-          />
-        )}
         <nav
           aria-label="Hauptnavigation"
           className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 py-3 sm:px-10 sm:py-4"
