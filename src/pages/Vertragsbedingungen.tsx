@@ -272,7 +272,11 @@ export default function Vertragsbedingungen() {
               Datenschutzerklärung
             </Link>
             . Verarbeiten wir im Rahmen von Hosting oder Wartung personenbezogene Daten im Auftrag des Kunden,
-            schließen wir dazu einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.
+            gilt unser{" "}
+            <Link to="/auftragsverarbeitung" className={linkClass}>
+              Vertrag zur Auftragsverarbeitung
+            </Link>{" "}
+            nach Art. 28 DSGVO als Bestandteil des Wartungsvertrags.
           </p>
         </Section>
 

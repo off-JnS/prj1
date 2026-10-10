@@ -3,9 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   AnimatePresence,
   m,
-  useMotionValueEvent,
   useReducedMotion,
-  useScroll,
   type Variants,
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -13,44 +11,12 @@ import { NAV_LINKS, LEGAL_LINKS, SITE } from "@/config/site";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
-/** Studio time in Hamburg, ticking — a small "live edition" detail. */
-function HamburgTime() {
-  const [parts, setParts] = useState<[string, string]>(["--", "--"]);
-  useEffect(() => {
-    const fmt = new Intl.DateTimeFormat("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Berlin",
-    });
-    const tick = () => {
-      const [h, min] = fmt.format(new Date()).split(":");
-      setParts([h, min]);
-    };
-    tick();
-    const id = setInterval(tick, 10_000);
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <time className="tabular-nums" aria-label={`Ortszeit Hamburg ${parts[0]}:${parts[1]}`}>
-      {parts[0]}
-      <span aria-hidden="true" className="animate-pulse">:</span>
-      {parts[1]}
-    </time>
-  );
-}
-
 /**
- * Unified site navigation, in two states.
+ * Unified site navigation.
  *
- * Masthead (top of page, and whenever the menu is open): no bar at all — the
- * nav is a row of the page itself, set on the content grid with the studio's
- * Hamburg time in mono, and closed by an inset hairline like the section
- * rules below it.
- *
- * Capsule (once scrolled): the same row condenses into a floating dark glass
- * island — centred, rounded, blurred — with the CTA inked solid. It is always
- * dark, so it reads as one deliberate object over black and paper sections
- * alike.
+ * Bar: a floating dark glass capsule — centred, rounded, blurred — with the
+ * CTA inked solid. Always dark and always the same shape, so it reads as one
+ * deliberate object over the hero, black sections and paper sections alike.
  *
  * Menu (below md): full-screen black overlay in the site's editorial voice —
  * giant masked link reveals, mono indices, meta row at the bottom. Bar and
@@ -58,15 +24,10 @@ function HamburgTime() {
  */
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const { pathname } = useLocation();
   const reduceMotion = useReducedMotion();
   const menuId = useId();
-  const { scrollY } = useScroll();
-
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 48));
-  const compact = scrolled && !open;
 
   // Route change closes the menu.
   useEffect(() => {
@@ -119,31 +80,15 @@ export default function SiteNav() {
     },
   };
 
-  const morph =
-    "transition-[max-width,margin,padding,border-radius,background-color,border-color,box-shadow,gap] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]";
-
   return (
     <>
       {/* ---- Bar ------------------------------------------------------- */}
       <header className="pointer-events-none fixed inset-x-0 top-0 z-[93] text-white">
         <nav
           aria-label="Hauptnavigation"
-          className={`pointer-events-auto relative mx-auto flex items-center justify-between border ${morph} ${
-            compact
-              ? "mt-3 max-w-[calc(100%-1.5rem)] rounded-full border-white/10 bg-[oklch(0.1_0_0/0.86)] py-1.5 pl-5 pr-1.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl backdrop-saturate-150 md:mt-4 md:max-w-[50rem]"
-              : "mt-0 max-w-[120rem] rounded-none border-transparent bg-transparent px-6 py-4 sm:px-10 sm:py-6"
-          }`}
+          className="pointer-events-auto relative mx-auto mt-3 flex max-w-[calc(100%-1.5rem)] items-center justify-between rounded-full border border-white/10 bg-[oklch(0.1_0_0/0.86)] py-1.5 pl-5 pr-1.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl backdrop-saturate-150 md:mt-4 md:max-w-[50rem]"
         >
-          {/* Masthead rule: inset to the content gutters, like the section
-              rules; gone once the row becomes the capsule. */}
-          <span
-            aria-hidden="true"
-            className={`pointer-events-none absolute bottom-0 left-6 right-6 h-px bg-white/15 transition-opacity duration-500 sm:left-10 sm:right-10 ${
-              compact ? "opacity-0" : "opacity-100"
-            }`}
-          />
-
-          <div className="flex items-center gap-8">
+          <div className="flex items-center">
             <Link
               to="/"
               aria-label="PRJ1 – Startseite"
@@ -152,23 +97,10 @@ export default function SiteNav() {
             >
               PRJ1<sup className="align-super text-[0.45em] font-normal">®</sup>
             </Link>
-
-            {/* Edition line — masthead only. */}
-            <p
-              className={`items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60 ${
-                compact ? "hidden" : "hidden lg:flex"
-              }`}
-            >
-              <span>Webdesign Studio</span>
-              <span aria-hidden="true" className="h-px w-6 bg-white/25" />
-              <span>
-                Hamburg <HamburgTime />
-              </span>
-            </p>
           </div>
 
           {/* Desktop links */}
-          <ul className={`hidden items-center md:flex ${morph} ${compact ? "gap-6" : "gap-8"}`}>
+          <ul className="hidden items-center gap-6 md:flex">
             {NAV_LINKS.filter((l) => l.href !== "/").map((link) => {
               const active = pathname === link.href;
               return (
@@ -202,11 +134,7 @@ export default function SiteNav() {
           <div className="flex items-center gap-3">
             <Link
               to="/kontakt"
-              className={`hidden min-h-11 items-center gap-2 rounded-full border px-6 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 md:inline-flex ${
-                compact
-                  ? "border-white bg-white text-black hover:bg-white/85"
-                  : "border-white/35 hover:border-white hover:bg-white hover:text-black"
-              }`}
+              className="hidden min-h-11 items-center gap-2 rounded-full border border-white bg-white px-6 font-mono text-[12px] uppercase tracking-[0.18em] text-black transition-colors duration-300 hover:bg-white/85 md:inline-flex"
             >
               Projekt starten
               <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
@@ -220,9 +148,7 @@ export default function SiteNav() {
               aria-expanded={open}
               aria-controls={menuId}
               onClick={() => setOpen((v) => !v)}
-              className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border px-5 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 md:hidden ${
-                compact ? "border-white bg-white text-black" : "border-white/35"
-              }`}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border border-white bg-white px-5 font-mono text-[12px] uppercase tracking-[0.18em] text-black md:hidden"
             >
               <span className="-mr-1">{open ? "Schließen" : "Menü"}</span>
               <span className="relative block h-2.5 w-4" aria-hidden="true">
