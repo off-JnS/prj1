@@ -234,21 +234,6 @@
   opacity: 0.4;
 }
 
-/* Same paper grain for fixed surfaces that sit above .paper-texture (the
- * nav bar), so they read as part of the printed page, not a pasted strip. */
-/* The element must be positioned and create a stacking context (fixed + z-index
- * does both); position is not set here so it can't override `fixed`. */
-.paper-surface::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: url("./assets/paper-grain.svg"), url("./assets/paper-mottle.svg");
-  background-size: 300px 300px, 900px 900px;
-  opacity: 0.4;
-}
-
 /* Respect reduced motion globally. Heavy WebGL/GSAP animations are
  * paused programmatically in their components; this catches everything
  * driven by CSS transitions and Framer-Motion's reduced-motion checks. */

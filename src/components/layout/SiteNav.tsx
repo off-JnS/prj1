@@ -16,9 +16,8 @@ const EASE = [0.76, 0, 0.24, 1] as const;
 /**
  * Unified site navigation.
  *
- * Bar: a masthead strip printed on the same stock as the section under it —
- * black over dark sections, paper over `.section-invert` ones, with the same
- * grain and a hairline rule in that section's border colour. It slips away on
+ * Bar: an opaque band in the tone of the section under it — black over dark
+ * sections, paper over `.section-invert` ones — closed by a hairline rule. It slips away on
  * scroll-down and returns on scroll-up.
  *
  * Menu (below md): full-screen black overlay in the site's editorial voice —
@@ -118,7 +117,7 @@ export default function SiteNav() {
       <m.header
         ref={headerRef}
         className={`pointer-events-none fixed inset-x-0 top-0 z-[93] bg-[var(--color-background)] text-[var(--color-foreground)] transition-colors duration-500 ${
-          open ? "" : `paper-surface ${light ? "section-invert" : ""}`
+          !open && light ? "section-invert" : ""
         }`}
         animate={{ y: hidden ? "-110%" : "0%" }}
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
@@ -127,7 +126,7 @@ export default function SiteNav() {
           /* Its own band — a shade off the page tone, toward the ink — closed
              by a 1px hairline like the site's other rules (marquee band,
              lists, cards), inked a touch darker so it holds against the
-             band. Under the grain like everything else. */
+             band. Solid, no grain: content never shows through it. */
           <span
             aria-hidden="true"
             className="absolute inset-0 -z-10 border-b border-[color-mix(in_oklab,currentColor_30%,transparent)] bg-[color-mix(in_oklab,var(--color-background)_88%,var(--color-foreground))] transition-colors duration-500"
