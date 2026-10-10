@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AnimatePresence,
@@ -13,12 +13,44 @@ import { NAV_LINKS, LEGAL_LINKS, SITE } from "@/config/site";
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
+/** Studio time in Hamburg, ticking — a small "live edition" detail. */
+function HamburgTime() {
+  const [parts, setParts] = useState<[string, string]>(["--", "--"]);
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("de-DE", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Berlin",
+    });
+    const tick = () => {
+      const [h, min] = fmt.format(new Date()).split(":");
+      setParts([h, min]);
+    };
+    tick();
+    const id = setInterval(tick, 10_000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <time className="tabular-nums" aria-label={`Ortszeit Hamburg ${parts[0]}:${parts[1]}`}>
+      {parts[0]}
+      <span aria-hidden="true" className="animate-pulse">:</span>
+      {parts[1]}
+    </time>
+  );
+}
+
 /**
- * Unified site navigation.
+ * Unified site navigation, in two states.
  *
- * Bar: frosted glass in the tone of the section under it — black over dark
- * sections, paper over `.section-invert` ones — closed by a hairline rule. It slips away on
- * scroll-down and returns on scroll-up.
+ * Masthead (top of page, and whenever the menu is open): no bar at all — the
+ * nav is a row of the page itself, set on the content grid with the studio's
+ * Hamburg time in mono, and closed by an inset hairline like the section
+ * rules below it.
+ *
+ * Capsule (once scrolled): the same row condenses into a floating dark glass
+ * island — centred, rounded, blurred — with the CTA inked solid. It is always
+ * dark, so it reads as one deliberate object over black and paper sections
+ * alike.
  *
  * Menu (below md): full-screen black overlay in the site's editorial voice —
  * giant masked link reveals, mono indices, meta row at the bottom. Bar and
@@ -26,48 +58,24 @@ const EASE = [0.76, 0, 0.24, 1] as const;
  */
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const { pathname } = useLocation();
   const reduceMotion = useReducedMotion();
   const menuId = useId();
   const { scrollY } = useScroll();
-  const headerRef = useRef<HTMLElement>(null);
-  // Which stock the bar is printed on: the section directly under it.
-  const [light, setLight] = useState(false);
 
-  const probe = useCallback(() => {
-    const below = (headerRef.current?.offsetHeight ?? 64) + 1;
-    // pointer-events:none layers (texture, cursor) are skipped by the hit test.
-    const el = document.elementFromPoint(window.innerWidth / 2, below);
-    setLight(!!el?.closest(".section-invert"));
-  }, []);
+  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 48));
+  const compact = scrolled && !open;
 
-  // Hide on scroll down, reveal on scroll up. Never while the menu is open.
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const prev = scrollY.getPrevious() ?? 0;
-    setHidden(y > prev && y > 160 && !open);
-    probe();
-  });
-
-  // Route change closes the menu and re-reads the stock once the lazy page
-  // has painted.
+  // Route change closes the menu.
   useEffect(() => {
     setOpen(false);
-    const t1 = setTimeout(probe, 60);
-    const t2 = setTimeout(probe, 600);
-    window.addEventListener("resize", probe);
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      window.removeEventListener("resize", probe);
-    };
-  }, [pathname, probe]);
+  }, [pathname]);
 
   // Escape closes; scroll locks (Lenis + body) while open.
   useEffect(() => {
     if (!open) return;
-    setHidden(false);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setOpen(false);
@@ -111,40 +119,56 @@ export default function SiteNav() {
     },
   };
 
+  const morph =
+    "transition-[max-width,margin,padding,border-radius,background-color,border-color,box-shadow,gap] duration-700 ease-[cubic-bezier(0.76,0,0.24,1)]";
+
   return (
     <>
       {/* ---- Bar ------------------------------------------------------- */}
-      <m.header
-        ref={headerRef}
-        className={`pointer-events-none fixed inset-x-0 top-0 z-[93] text-[var(--color-foreground)] transition-colors duration-500 ${
-          open
-            ? "bg-black"
-            : // Frosted glass tinted with the section's own tone: content
-              // stays visible but blurred, and the hairline (same 1px rule as
-              // the site's dividers) closes the band. `!` beats the solid
-              // background .section-invert sets.
-              `border-b border-[color-mix(in_oklab,currentColor_22%,transparent)] bg-[color-mix(in_oklab,var(--color-background)_62%,transparent)]! backdrop-blur-xl backdrop-saturate-150 ${
-                light ? "section-invert" : ""
-              }`
-        }`}
-        animate={{ y: hidden ? "-110%" : "0%" }}
-        transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
-      >
+      <header className="pointer-events-none fixed inset-x-0 top-0 z-[93] text-white">
         <nav
           aria-label="Hauptnavigation"
-          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 py-3 sm:px-10 sm:py-4"
+          className={`pointer-events-auto relative mx-auto flex items-center justify-between border ${morph} ${
+            compact
+              ? "mt-3 max-w-[calc(100%-1.5rem)] rounded-full border-white/10 bg-[oklch(0.1_0_0/0.86)] py-1.5 pl-5 pr-1.5 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl backdrop-saturate-150 md:mt-4 md:max-w-[50rem]"
+              : "mt-0 max-w-[120rem] rounded-none border-transparent bg-transparent px-6 py-4 sm:px-10 sm:py-6"
+          }`}
         >
-          <Link
-            to="/"
-            aria-label="PRJ1 – Startseite"
-            onClick={() => setOpen(false)}
-            className="u-display text-xl leading-none tracking-tight"
-          >
-            PRJ1<sup className="align-super text-[0.45em] font-normal">®</sup>
-          </Link>
+          {/* Masthead rule: inset to the content gutters, like the section
+              rules; gone once the row becomes the capsule. */}
+          <span
+            aria-hidden="true"
+            className={`pointer-events-none absolute bottom-0 left-6 right-6 h-px bg-white/15 transition-opacity duration-500 sm:left-10 sm:right-10 ${
+              compact ? "opacity-0" : "opacity-100"
+            }`}
+          />
+
+          <div className="flex items-center gap-8">
+            <Link
+              to="/"
+              aria-label="PRJ1 – Startseite"
+              onClick={() => setOpen(false)}
+              className="u-display text-xl leading-none tracking-tight"
+            >
+              PRJ1<sup className="align-super text-[0.45em] font-normal">®</sup>
+            </Link>
+
+            {/* Edition line — masthead only. */}
+            <p
+              className={`items-center gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60 ${
+                compact ? "hidden" : "hidden lg:flex"
+              }`}
+            >
+              <span>Webdesign Studio</span>
+              <span aria-hidden="true" className="h-px w-6 bg-white/25" />
+              <span>
+                Hamburg <HamburgTime />
+              </span>
+            </p>
+          </div>
 
           {/* Desktop links */}
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className={`hidden items-center md:flex ${morph} ${compact ? "gap-6" : "gap-8"}`}>
             {NAV_LINKS.filter((l) => l.href !== "/").map((link) => {
               const active = pathname === link.href;
               return (
@@ -152,7 +176,9 @@ export default function SiteNav() {
                   <Link
                     to={link.href}
                     aria-current={active ? "page" : undefined}
-                    className="group relative inline-flex min-h-11 items-center font-mono text-[12px] uppercase tracking-[0.18em]"
+                    className={`group relative inline-flex min-h-11 items-center font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 hover:text-white ${
+                      active ? "text-white" : "text-white/75"
+                    }`}
                   >
                     <span
                       aria-hidden="true"
@@ -163,7 +189,7 @@ export default function SiteNav() {
                     {link.label}
                     <span
                       aria-hidden="true"
-                      className={`absolute -bottom-0.5 left-0 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100 ${
+                      className={`absolute bottom-2 left-0 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100 ${
                         active ? "hidden" : ""
                       }`}
                     />
@@ -176,9 +202,14 @@ export default function SiteNav() {
           <div className="flex items-center gap-3">
             <Link
               to="/kontakt"
-              className="hidden min-h-11 items-center rounded-full border border-[color-mix(in_oklab,currentColor_35%,transparent)] px-6 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 hover:border-[var(--color-foreground)] hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)] md:inline-flex"
+              className={`hidden min-h-11 items-center gap-2 rounded-full border px-6 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 md:inline-flex ${
+                compact
+                  ? "border-white bg-white text-black hover:bg-white/85"
+                  : "border-white/35 hover:border-white hover:bg-white hover:text-black"
+              }`}
             >
               Projekt starten
+              <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5" />
             </Link>
 
             {/* Mobile toggle */}
@@ -189,7 +220,9 @@ export default function SiteNav() {
               aria-expanded={open}
               aria-controls={menuId}
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border border-[color-mix(in_oklab,currentColor_35%,transparent)] px-5 font-mono text-[12px] uppercase tracking-[0.18em] md:hidden"
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-3.5 rounded-full border px-5 font-mono text-[12px] uppercase tracking-[0.18em] transition-colors duration-300 md:hidden ${
+                compact ? "border-white bg-white text-black" : "border-white/35"
+              }`}
             >
               <span className="-mr-1">{open ? "Schließen" : "Menü"}</span>
               <span className="relative block h-2.5 w-4" aria-hidden="true">
@@ -207,7 +240,7 @@ export default function SiteNav() {
             </button>
           </div>
         </nav>
-      </m.header>
+      </header>
 
       {/* ---- Overlay menu (mobile) -------------------------------------- */}
       <AnimatePresence>
