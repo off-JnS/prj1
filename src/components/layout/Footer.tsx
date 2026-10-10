@@ -88,11 +88,6 @@ export default function Footer() {
                 {SITE.email}
               </a>
             </li>
-            <li>
-              <a className="inline-block py-1.5 transition-colors hover:text-white" href={SITE.phoneHref}>
-                {SITE.phone}
-              </a>
-            </li>
             <li className="py-1.5 text-white/65">
               {SITE.address.zip} {SITE.address.city}
             </li>

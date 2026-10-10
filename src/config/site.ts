@@ -7,8 +7,6 @@ export const SITE = {
   url: "https://prj1.de",
   claim: "Design ist alles.",
   email: "kontakt@prj1.de",
-  phone: "+49 176 86765197",
-  phoneHref: "tel:+4917686765197",
   address: {
     street: "Jan-Külper-Weg 8d",
     zip: "22547",

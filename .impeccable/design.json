@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-12T00:00:00.000Z",
+  "title": "Design System: PRJ1",
+  "extensions": {
+    "colorMeta": {
+      "gallery-black": {
+        "role": "primary",
+        "displayName": "Gallery Black",
+        "canonical": "oklch(0 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.26 0 0)", "oklch(0.37 0 0)", "oklch(0.49 0 0)", "oklch(0.60 0 0)", "oklch(0.72 0 0)", "oklch(0.83 0 0)", "oklch(0.95 0 0)"]
+      },
+      "exposed-white": {
+        "role": "primary",
+        "displayName": "Exposed White",
+        "canonical": "oklch(1 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.26 0 0)", "oklch(0.37 0 0)", "oklch(0.49 0 0)", "oklch(0.60 0 0)", "oklch(0.72 0 0)", "oklch(0.83 0 0)", "oklch(0.95 0 0)"]
+      },
+      "plinth-black": {
+        "role": "neutral",
+        "displayName": "Plinth Black",
+        "canonical": "oklch(0.05 0 0)",
+        "tonalRamp": ["oklch(0.05 0 0)", "oklch(0.14 0 0)", "oklch(0.18 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)"]
+      },
+      "alcove-grey": {
+        "role": "neutral",
+        "displayName": "Alcove Grey",
+        "canonical": "oklch(0.14 0 0)",
+        "tonalRamp": ["oklch(0.05 0 0)", "oklch(0.14 0 0)", "oklch(0.18 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)"]
+      },
+      "stage-grey": {
+        "role": "neutral",
+        "displayName": "Stage Grey",
+        "canonical": "oklch(0.18 0 0)",
+        "tonalRamp": ["oklch(0.05 0 0)", "oklch(0.14 0 0)", "oklch(0.18 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)"]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(0.26 0 0)",
+        "tonalRamp": ["oklch(0.05 0 0)", "oklch(0.14 0 0)", "oklch(0.18 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)"]
+      },
+      "developer-grey": {
+        "role": "neutral",
+        "displayName": "Developer Grey",
+        "canonical": "oklch(0.72 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.60 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.96 0 0)"]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "oklch(0.98 0 0)",
+        "tonalRamp": ["oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.94 0 0)", "oklch(0.96 0 0)", "oklch(0.98 0 0)", "oklch(1 0 0)"]
+      },
+      "mount-white": {
+        "role": "neutral",
+        "displayName": "Mount White",
+        "canonical": "oklch(0.96 0 0)",
+        "tonalRamp": ["oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.94 0 0)", "oklch(0.96 0 0)", "oklch(0.98 0 0)", "oklch(1 0 0)"]
+      },
+      "mat-white": {
+        "role": "neutral",
+        "displayName": "Mat White",
+        "canonical": "oklch(0.94 0 0)",
+        "tonalRamp": ["oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.94 0 0)", "oklch(0.96 0 0)", "oklch(0.98 0 0)", "oklch(1 0 0)"]
+      },
+      "hairline-lit": {
+        "role": "neutral",
+        "displayName": "Hairline Lit",
+        "canonical": "oklch(0.86 0 0)",
+        "tonalRamp": ["oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.94 0 0)", "oklch(0.96 0 0)", "oklch(0.98 0 0)", "oklch(1 0 0)"]
+      },
+      "graphite-grey": {
+        "role": "neutral",
+        "displayName": "Graphite Grey",
+        "canonical": "oklch(0.38 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.60 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.96 0 0)"]
+      },
+      "dim-grey": {
+        "role": "neutral",
+        "displayName": "Dim Grey",
+        "canonical": "oklch(0.5 0 0)",
+        "tonalRamp": ["oklch(0.15 0 0)", "oklch(0.26 0 0)", "oklch(0.38 0 0)", "oklch(0.50 0 0)", "oklch(0.60 0 0)", "oklch(0.72 0 0)", "oklch(0.86 0 0)", "oklch(0.96 0 0)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only. One per page, wide (115%), heavy (740), tracked -0.035em, line-height 0.94." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings, composed one Reveal per line so lines rise in sequence." },
+      "title": { "displayName": "Title", "purpose": "Item titles inside indexed hairline rows, card names, plan names." },
+      "accent": { "displayName": "Serif Accent", "purpose": "Instrument Serif italic on exactly one word per headline. The system's only typographic accent." },
+      "body": { "displayName": "Body", "purpose": "Paragraphs held to 28-36rem so lines land near 65-75 characters. Secondary copy sits on Developer Grey, not full white." },
+      "label": { "displayName": "Mono Label", "purpose": "Kickers, plate numbers, nav links, meta rows, price units. Uppercase, tracked 0.18em-0.3em." }
+    },
+    "shadows": [
+      { "name": "glow-point", "value": "0 0 12px rgba(255,255,255,0.85)", "purpose": "A small element that is itself a light source, such as the availability dot. Observed in the hero." },
+      { "name": "glow-soft", "value": "0 0 32px rgba(255,255,255,0.12)", "purpose": "Soft halo for an active or focused element on the dark ground. Newly established; use sparingly." },
+      { "name": "lift-low", "value": "0 2px 8px rgba(0,0,0,0.18)", "purpose": "A card resting on the printed (white) ground. Newly established; no incumbent usage." },
+      { "name": "lift-high", "value": "0 16px 40px rgba(0,0,0,0.24)", "purpose": "A surface that has genuinely left the page on the printed ground: dialog, popover, dropdown. Newly established." },
+      { "name": "glass-edge", "value": "0 0 8px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.08), inset 3px 3px 0.5px -3.5px rgba(255,255,255,0.09), inset -3px -3px 0.5px -3.5px rgba(255,255,255,0.85), inset 1px 1px 1px -0.5px rgba(255,255,255,0.6), inset -1px -1px 1px -0.5px rgba(255,255,255,0.6), inset 0 0 6px 6px rgba(255,255,255,0.12), inset 0 0 2px 2px rgba(255,255,255,0.06), 0 0 12px rgba(0,0,0,0.15)", "purpose": "The liquid-glass button's refractive rim. One recipe for one button on one ground. Never copy it onto other components." }
+    ],
+    "motion": [
+      { "name": "ease-out-expo", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Every entrance: masked line reveals at 900ms, fades at 800ms." },
+      { "name": "ease-inout-soft", "value": "cubic-bezier(0.65, 0, 0.35, 1)", "purpose": "Symmetric moves that go out and come back." },
+      { "name": "ease-curtain", "value": "cubic-bezier(0.76, 0, 0.24, 1)", "purpose": "Curtains and the nav bar hide/reveal. Sharper than the entrance ease." },
+      { "name": "duration-state", "value": "200ms", "purpose": "Press and scale feedback on buttons." },
+      { "name": "duration-transition", "value": "300ms", "purpose": "Color and border state changes on links, inputs, and outline buttons." },
+      { "name": "stagger-item", "value": "50-80ms", "purpose": "Per-item delay in a revealed series." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid foreground fill with inverted text. The loudest control in the system; one per view.",
+      "html": "<button class=\"ds-btn-primary\">Anfrage senden</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 3.25rem; padding: 0 2rem; border: none; border-radius: 999px; background: oklch(1 0 0); color: oklch(0 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { transform: scale(1.02); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid oklch(1 0 0); outline-offset: 3px; } .ds-btn-primary:disabled { opacity: 0.6; pointer-events: none; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Transparent pill with a hairline border. Hover fills solid and inverts the text: the state change is a color inversion, not an effect.",
+      "html": "<div class=\"ds-outline-stage\"><a class=\"ds-btn-outline\" href=\"#\">Website öffnen<svg class=\"ds-btn-outline-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></a></div>",
+      "css": ".ds-outline-stage { background: oklch(0 0 0); padding: 2rem; } .ds-btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 1.5rem; border: 1px solid oklch(0.26 0 0); border-radius: 999px; background: transparent; color: oklch(1 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: background 300ms cubic-bezier(0.16, 1, 0.3, 1), color 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-outline:hover { background: oklch(1 0 0); color: oklch(0 0 0); } .ds-btn-outline-icon { width: 1rem; height: 1rem; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-outline:hover .ds-btn-outline-icon { transform: translate(2px, -2px); } .ds-btn-outline:focus-visible { outline: 2px solid oklch(1 0 0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Liquid Glass Button",
+      "kind": "custom",
+      "refersTo": "button-primary",
+      "description": "Signature hero action. Transparent body with a layered inset rim that fakes refraction over the moving WebGL ground. One button, one ground; never reuse the shadow stack.",
+      "html": "<div class=\"ds-glass-stage\"><button class=\"ds-btn-glass\"><span class=\"ds-btn-glass-rim\" aria-hidden=\"true\"></span><span class=\"ds-btn-glass-label\">Arbeiten ansehen</span></button></div>",
+      "css": ".ds-glass-stage { background: radial-gradient(ellipse 70% 60% at 50% 50%, oklch(0.22 0 0), oklch(0 0 0) 72%); padding: 2.5rem; } .ds-btn-glass { position: relative; display: inline-flex; align-items: center; justify-content: center; height: 3rem; padding: 0 2rem; border: 1px solid rgba(255,255,255,0.3); border-radius: 999px; background: transparent; color: oklch(1 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-glass:hover { transform: scale(1.05); } .ds-btn-glass-rim { position: absolute; inset: 0; border-radius: 999px; pointer-events: none; box-shadow: 0 0 8px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.08), inset 3px 3px 0.5px -3.5px rgba(255,255,255,0.09), inset -3px -3px 0.5px -3.5px rgba(255,255,255,0.85), inset 1px 1px 1px -0.5px rgba(255,255,255,0.6), inset -1px -1px 1px -0.5px rgba(255,255,255,0.6), inset 0 0 6px 6px rgba(255,255,255,0.12), inset 0 0 2px 2px rgba(255,255,255,0.06), 0 0 12px rgba(0,0,0,0.15); } .ds-btn-glass-label { position: relative; z-index: 1; } .ds-btn-glass:focus-visible { outline: 2px solid oklch(1 0 0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Underline Input",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "No box, no radius, no fill. A mono kicker label above a hairline underline that brightens to full foreground on focus.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-name\">Name</label><input class=\"ds-input\" id=\"ds-name\" type=\"text\" placeholder=\"Wie heißt du?\"></div>",
+      "css": ".ds-field { background: oklch(0 0 0); padding: 2rem; max-width: 22rem; } .ds-field-label { display: block; margin-bottom: 0.5rem; font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.3em; color: oklch(0.72 0 0); } .ds-input { width: 100%; padding: 0.75rem 0; border: none; border-bottom: 1px solid oklch(0.26 0 0); border-radius: 0; background: transparent; color: oklch(1 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1rem; transition: border-color 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-input::placeholder { color: rgba(255,255,255,0.35); } .ds-input:focus { outline: none; border-bottom-color: oklch(1 0 0); } .ds-input:focus-visible { outline: none; }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Mono uppercase link. Hover wipes a hairline underline in from the left; the active route is marked by a small filled dot instead.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-link--active\" href=\"#\"><span class=\"ds-nav-dot\" aria-hidden=\"true\"></span>Portfolio</a><a class=\"ds-nav-link\" href=\"#\">Studio</a><a class=\"ds-nav-link\" href=\"#\">Preise</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 2rem; background: oklch(0 0 0); padding: 1.5rem 2rem; } .ds-nav-link { position: relative; display: inline-flex; align-items: center; min-height: 2.75rem; color: oklch(1 0 0); font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.18em; text-decoration: none; } .ds-nav-link::after { content: ''; position: absolute; left: 0; bottom: 0.5rem; width: 100%; height: 1px; background: oklch(1 0 0); transform: scaleX(0); transform-origin: right; transition: transform 300ms ease-out; } .ds-nav-link:hover::after { transform: scaleX(1); transform-origin: left; } .ds-nav-link--active::after { display: none; } .ds-nav-dot { display: inline-block; width: 0.25rem; height: 0.25rem; margin-right: 0.5rem; border-radius: 999px; background: oklch(1 0 0); } .ds-nav-link:focus-visible { outline: 2px solid oklch(1 0 0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Plinth Card",
+      "kind": "card",
+      "refersTo": "card-plinth",
+      "description": "The default surface on the dark ground: a near-black sheet on black, separated by a hairline rather than a shadow.",
+      "html": "<div class=\"ds-card-stage\"><article class=\"ds-card-plinth\"><h3 class=\"ds-card-plinth-title\">Basic</h3><p class=\"ds-card-plinth-price\">59 €<span class=\"ds-card-plinth-unit\">/ Monat</span></p><ul class=\"ds-card-plinth-list\"><li><svg class=\"ds-check\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Hosting &amp; Domain</li><li><svg class=\"ds-check\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Uptime-Monitoring</li></ul></article></div>",
+      "css": ".ds-card-stage { background: oklch(0 0 0); padding: 2rem; } .ds-card-plinth { display: flex; flex-direction: column; padding: 2rem; border: 1px solid oklch(0.26 0 0); border-radius: 1rem; background: oklch(0.05 0 0); color: oklch(1 0 0); max-width: 20rem; } .ds-card-plinth-title { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1.5rem; font-weight: 740; font-stretch: 115%; letter-spacing: -0.035em; line-height: 0.94; } .ds-card-plinth-price { margin: 1rem 0 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 2.25rem; font-weight: 740; font-stretch: 115%; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; } .ds-card-plinth-unit { margin-left: 0.5rem; font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 0.625rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.2em; color: oklch(0.72 0 0); } .ds-card-plinth-list { margin: 1.5rem 0 0; padding: 1.5rem 0 0; list-style: none; border-top: 1px solid oklch(0.26 0 0); color: oklch(0.72 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.875rem; line-height: 1.625; } .ds-card-plinth-list li { display: flex; gap: 0.75rem; margin-bottom: 0.875rem; } .ds-check { width: 1rem; height: 1rem; flex: none; margin-top: 0.125rem; color: oklch(1 0 0); }"
+    },
+    {
+      "name": "Featured Card",
+      "kind": "card",
+      "refersTo": "card-featured",
+      "description": "The rare solid: a fully white sheet on the black ground, lifted above its row, with an overlapping mono badge. Reserved for genuine emphasis.",
+      "html": "<div class=\"ds-card-stage\"><article class=\"ds-card-featured\"><span class=\"ds-card-featured-badge\">Beliebteste Wahl</span><h3 class=\"ds-card-featured-title\">Professional</h3><p class=\"ds-card-featured-price\">1.750 €<span class=\"ds-card-featured-unit\">einmalig</span></p><a class=\"ds-card-featured-cta\" href=\"#\">Professional wählen</a></article></div>",
+      "css": ".ds-card-featured { position: relative; display: flex; flex-direction: column; padding: 2.5rem; border: 1px solid oklch(1 0 0); border-radius: 1.5rem; background: oklch(1 0 0); color: oklch(0 0 0); max-width: 20rem; } .ds-card-featured-badge { position: absolute; top: -0.875rem; left: 2rem; padding: 0.375rem 1rem; border-radius: 999px; background: oklch(0 0 0); color: oklch(1 0 0); font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; } .ds-card-featured-title { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1.875rem; font-weight: 740; font-stretch: 115%; letter-spacing: -0.035em; line-height: 0.94; } .ds-card-featured-price { margin: 1.5rem 0 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 3rem; font-weight: 740; font-stretch: 115%; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; } .ds-card-featured-unit { margin-left: 0.5rem; font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 0.75rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(0,0,0,0.5); } .ds-card-featured-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 3rem; margin-top: 2rem; padding: 0 1.5rem; border-radius: 999px; background: oklch(0 0 0); color: oklch(1 0 0); font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-featured-cta:hover { transform: scale(1.02); } .ds-card-featured-cta:active { transform: scale(0.98); } .ds-card-featured-cta:focus-visible { outline: 2px solid oklch(0 0 0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Indexed Hairline Row",
+      "kind": "custom",
+      "refersTo": "kicker",
+      "description": "The system's primary list unit and the reason cards are rare. A mono plate number, a title, body copy, and a trailing arrow, separated by 1px rules. Hover inverts the whole row.",
+      "html": "<div class=\"ds-row-stage\"><div class=\"ds-row\"><span class=\"ds-row-index\">(01)</span><h3 class=\"ds-row-title\">Markenwebsites</h3><p class=\"ds-row-body\">One-Page- oder Multi-Page-Websites, die deine Marke in ein fokussiertes Erlebnis verwandeln.</p><svg class=\"ds-row-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></div><div class=\"ds-row\"><span class=\"ds-row-index\">(02)</span><h3 class=\"ds-row-title\">Motion &amp; Interaktion</h3><p class=\"ds-row-body\">Maßgeschneiderte Animationen, Scroll-Choreografie und Mikrointeraktionen.</p><svg class=\"ds-row-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></div></div>",
+      "css": ".ds-row-stage { background: oklch(1 0 0); padding: 1rem 2rem; } .ds-row { display: grid; grid-template-columns: 5rem 1fr 1fr 3rem; align-items: center; gap: 2rem; padding: 2rem 0; border-top: 1px solid oklch(0.86 0 0); color: oklch(0 0 0); transition: background 300ms ease, color 300ms ease; } .ds-row:last-child { border-bottom: 1px solid oklch(0.86 0 0); } .ds-row:hover { background: oklch(0 0 0); color: oklch(1 0 0); } .ds-row-index { padding-left: 1rem; font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 0.75rem; letter-spacing: 0.3em; color: oklch(0.38 0 0); transition: color 300ms ease; } .ds-row:hover .ds-row-index { color: rgba(255,255,255,0.5); } .ds-row-title { margin: 0; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 2rem; font-weight: 740; font-stretch: 115%; letter-spacing: -0.035em; line-height: 0.94; } .ds-row-body { margin: 0; max-width: 28rem; font-family: 'Archivo Variable', system-ui, sans-serif; font-size: 1rem; line-height: 1.625; color: oklch(0.38 0 0); transition: color 300ms ease; } .ds-row:hover .ds-row-body { color: rgba(255,255,255,0.7); } .ds-row-icon { width: 1.5rem; height: 1.5rem; opacity: 0; transform: translateX(-0.5rem); transition: all 300ms ease; } .ds-row:hover .ds-row-icon { opacity: 1; transform: translateX(0); }"
+    },
+    {
+      "name": "Availability Dot",
+      "kind": "chip",
+      "refersTo": "kicker",
+      "description": "The only element in the system that emits light. A pinging white dot beside a mono kicker, standing in for a status badge.",
+      "html": "<div class=\"ds-dot-stage\"><span class=\"ds-dot\" aria-hidden=\"true\"><span class=\"ds-dot-ping\"></span><span class=\"ds-dot-core\"></span></span><span class=\"ds-dot-label\">Verfügbar für neue Projekte</span></div>",
+      "css": ".ds-dot-stage { display: flex; align-items: center; gap: 0.5rem; background: oklch(0 0 0); padding: 2rem; } .ds-dot { position: relative; display: inline-flex; width: 0.625rem; height: 0.625rem; } .ds-dot-ping { position: absolute; inset: 0; border-radius: 999px; background: rgba(255,255,255,0.5); animation: ds-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; } .ds-dot-core { position: relative; width: 0.625rem; height: 0.625rem; border-radius: 999px; background: oklch(1 0 0); box-shadow: 0 0 12px rgba(255,255,255,0.85); } .ds-dot-label { font-family: 'JetBrains Mono Variable', ui-monospace, Menlo, monospace; font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.3em; color: oklch(0.72 0 0); } @keyframes ds-ping { 75%, 100% { transform: scale(2); opacity: 0; } } @media (prefers-reduced-motion: reduce) { .ds-dot-ping { animation: none; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Darkroom Gallery",
+    "overview": "A black room, hung after hours, where every piece on the wall is a silver print. There is no daylight and no color — only exposure. Light is the material the whole system is built from: it draws the threads behind the hero, it lifts type out of the dark, it follows the pointer as a single moving dot, and it lands on the page as film grain over everything paintable. When a section turns white, it is not a theme change; it is the same image printed instead of projected.\n\nThe mood is cinematic and atmospheric. Pages do not present themselves all at once — they arrive. A curtain counts to 100 and lifts. Headlines rise out of masks, one line at a time. Body copy fades up from below. Scroll-scrubbed sentences resolve word by word. The visitor is inside the work before they have read a word of it, which is the whole argument the studio is making: that black and white is not a limitation but a position, and that convincing without color requires typography, space, and motion to actually work.\n\nAgainst that atmosphere, the structure is severe. Editorial hairlines separate everything. Series are indexed in mono, (01), (02), like plate numbers under a print. Display type is set wide, heavy, and tight enough to nearly touch. Nothing is decorated; the aliveness lives entirely in motion and state, never in ornament.",
+    "keyCharacteristics": [
+      "Zero chroma. Every value in the system is greyscale, permanently.",
+      "Two grounds — projected (black) and printed (white) — that swap the same token set.",
+      "Film grain over the entire dark page as a unifying surface texture.",
+      "Editorial hairlines and mono plate numbers instead of boxes and badges.",
+      "Wide, heavy, tightly-tracked display type with exactly one serif italic word per headline.",
+      "Motion as a primary material: masked reveals, scroll scrubbing, magnetic pull, a cursor that stretches with velocity."
+    ],
+    "rules": [
+      { "name": "The No-Hue Rule", "body": "Every color in this system has chroma 0. A token with a hue is a bug, not a variant. This includes error, success, and warning states: they are communicated by copy, position, and iconography, never by color.", "section": "colors" },
+      { "name": "The Two-Ground Rule", "body": "A section declares its ground by owning .section-invert (printed) or inheriting the page default (projected). Components never hardcode black or white — they read var(--color-foreground) and var(--color-background) so a single component works correctly on both grounds. The one deliberate exception is the site header, which uses mix-blend-difference to invert itself against whatever it happens to be over.", "section": "colors" },
+      { "name": "The Rare-Solid Rule", "body": "A fully white surface on the dark ground is the loudest move available. It is reserved for genuine emphasis — the featured pricing card, the primary submit button, the success state — and never used for ordinary containers.", "section": "colors" },
+      { "name": "The One Serif Word Rule", "body": "Instrument Serif italic appears at most once per headline, on a single word. It is the system's only typographic accent and it stops working the moment there are two.", "section": "typography" },
+      { "name": "The Mono Label Rule", "body": "Any text below 0.75rem is JetBrains Mono, uppercase, and tracked at least 0.18em. Small text is never just small sans — if it needs to shrink, it changes voice.", "section": "typography" },
+      { "name": "The Plate Number Rule", "body": "Any repeating series — services, principles, process steps, projects, nav items — carries a mono index in parentheses, (01), zero-padded to two digits.", "section": "typography" },
+      { "name": "The Hairline Rule", "body": "Lists of comparable things are separated by 1px rules, not wrapped in cards. Reach for a card only when items must be compared as discrete offers.", "section": "layout" },
+      { "name": "The Full-Bleed Ground Rule", "body": "Sections own their ground edge-to-edge and the inner container handles the max width. A section never sits inside a padded shell of a different ground.", "section": "layout" },
+      { "name": "The Emitted-Light Rule", "body": "On the projected (black) ground, depth is made of light: glows, scrims, and tonal steps. Cast shadows belong to the printed (white) ground only. A drop shadow on black is either invisible or muddy, and both are failures.", "section": "elevation" },
+      { "name": "The Flat-At-Rest Rule", "body": "Surfaces are flat at rest. Lift appears in response to state, never as decoration on a resting element.", "section": "elevation" },
+      { "name": "The Pill-or-Sheet Rule", "body": "If it can be pressed, it is a pill. If it holds content, it is a sheet. Nothing in this system has a slightly-rounded rectangle.", "section": "shapes" },
+      { "name": "The Naked Input Rule", "body": "Text inputs, selects, and textareas carry an underline and nothing else — no fill, no border box, no radius.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do author every color at chroma 0. If a value needs a hue to work, the design is wrong, not the palette.",
+      "Do read var(--color-foreground) and var(--color-background) instead of hardcoding black or white, so the component survives .section-invert.",
+      "Do separate comparable items with 1px hairlines and index them with mono plate numbers, (01).",
+      "Do give each headline exactly one Instrument Serif italic word.",
+      "Do set display type at 740 weight, 115% width, -0.035em tracking, 0.94 line-height. It is one setting, not a range to taste.",
+      "Do compose headlines as one Reveal per line so lines rise in sequence.",
+      "Do make depth from light on black grounds and from lift-* shadows on white ones.",
+      "Do hold interactive targets at 2.75rem minimum height.",
+      "Do guard every new animation behind prefers-reduced-motion, and pause off-screen canvas work.",
+      "Do keep fonts self-hosted through Fontsource. No CDN font request, ever — this is a DSGVO constraint, not a preference."
+    ],
+    "donts": [
+      "Don't introduce a chromatic accent, a gradient with hue, or a colored state. Not for errors, not for success, not \"just for the CTA.\"",
+      "Don't drift toward the SaaS template look: soft purple-blue gradients, rounded feature cards in a three-up grid, illustrated blobs, badge rows.",
+      "Don't use stock photography of people, generic trust badges, or safe centered corporate layouts.",
+      "Don't cast a drop shadow on the black ground.",
+      "Don't put a slightly-rounded rectangle anywhere — pills for controls, sheets for surfaces, nothing between.",
+      "Don't box a text input. Underline only.",
+      "Don't use a second serif word in a headline, or a serif that is not Instrument Serif.",
+      "Don't shrink sans text below 0.75rem — change voice to mono uppercase instead.",
+      "Don't wrap a list of comparable items in cards when hairline rows would do.",
+      "Don't copy the liquid-glass button's shadow stack onto other components. It is one recipe for one button on one ground."
+    ]
+  }
+}

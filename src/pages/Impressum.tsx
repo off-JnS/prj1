@@ -43,8 +43,6 @@ export default function Impressum() {
 
         <Section title="Kontakt">
           <p>
-            Telefon: <a className="underline underline-offset-2 hover:text-[var(--color-foreground)]" href={SITE.phoneHref}>{SITE.phone}</a>
-            <br />
             E-Mail:{" "}
             <a className="underline underline-offset-2 hover:text-[var(--color-foreground)]" href={`mailto:${SITE.email}`}>
               {SITE.email}

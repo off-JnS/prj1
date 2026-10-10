@@ -297,7 +297,7 @@ export default function Vertragsbedingungen() {
             </p>
             <p>Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.</p>
             <p>
-              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ({address}, Telefon: {SITE.phone}, E-Mail:{" "}
+              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ({address}, E-Mail:{" "}
               <a className={linkClass} href={`mailto:${SITE.email}`}>
                 {SITE.email}
               </a>

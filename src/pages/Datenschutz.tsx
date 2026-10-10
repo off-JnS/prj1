@@ -48,7 +48,7 @@ export default function Datenschutz() {
             <a className="underline underline-offset-2 hover:text-[var(--color-foreground)]" href={`mailto:${SITE.email}`}>
               {SITE.email}
             </a>
-            , Telefon: {SITE.phone}.
+            .
           </p>
         </Section>
 
@@ -77,7 +77,7 @@ export default function Datenschutz() {
 
         <Section title="4. Kontaktaufnahme">
           <p>
-            Wenn du uns per E-Mail, Telefon oder über das Kontaktformular
+            Wenn du uns per E-Mail oder über das Kontaktformular
             kontaktierst, verarbeiten wir die übermittelten Angaben (Name,
             E-Mail-Adresse, ggf. Unternehmen, Budgetrahmen und Nachricht)
             ausschließlich zur Bearbeitung deiner Anfrage. Rechtsgrundlage ist
