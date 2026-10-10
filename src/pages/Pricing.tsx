@@ -108,7 +108,7 @@ export default function Pricing() {
           </p>
         </FadeIn>
 
-        <div className="mt-12">
+        <div className="u-lift mt-12">
           <OfferCalculator />
         </div>
       </section>

@@ -26,7 +26,7 @@ export default function Footer() {
   const time = useHamburgTime();
 
   return (
-    <footer className="relative z-20 overflow-hidden border-t border-[var(--color-border)] bg-black text-white">
+    <footer className="relative overflow-hidden border-t border-[var(--color-border)] bg-black text-white">
       {/* Sitewide CTA ---------------------------------------------------- */}
       <div className="mx-auto max-w-7xl px-6 pb-20 pt-24 sm:px-10 sm:pt-32">
         <Kicker>Nächster Schritt</Kicker>
@@ -36,7 +36,7 @@ export default function Footer() {
             das man <em className="u-serif not-italic">zeigen</em> will.
           </Reveal>
         </h2>
-        <FadeIn delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+        <FadeIn lift delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <Magnetic>
             <LiquidButton asChild size="xl" className="border border-white/30 text-white">
               <Link to="/kontakt">Projekt starten</Link>

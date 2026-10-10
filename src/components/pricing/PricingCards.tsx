@@ -7,7 +7,7 @@ function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
   const popular = Boolean(plan.isPopular);
 
   return (
-    <FadeIn delay={index * 0.08} y={44} className="h-full">
+    <FadeIn lift delay={index * 0.08} y={44} className="h-full">
       <article
         className={cn(
           "relative flex h-full flex-col rounded-3xl border p-6 md:p-8 lg:p-10",
@@ -67,7 +67,7 @@ function CareCard({ plan, index }: { plan: CarePlan; index: number }) {
   const popular = Boolean(plan.isPopular);
 
   return (
-    <FadeIn delay={index * 0.06} y={32} className="h-full">
+    <FadeIn lift delay={index * 0.06} y={32} className="h-full">
       <article
         className={cn(
           "flex h-full flex-col rounded-2xl border p-6 sm:p-8",

@@ -82,7 +82,7 @@ function Hero() {
     <section
       ref={ref}
       id="hero"
-      className="relative isolate flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-24 pt-28"
+      className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-24 pt-28"
     >
       <HeroCanvas />
       {/* Scrim: keeps white copy legible where the light threads cross it. */}
@@ -95,7 +95,7 @@ function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black"
       />
 
-      <m.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
+      <m.div style={parallax} className="u-lift mx-auto w-full max-w-6xl text-center text-white">
         <m.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker u-legible justify-center text-[0.8125rem] tracking-[0.22em] text-white/85">
           PRJ1 — Webdesign Studio, Hamburg
         </m.p>
@@ -195,7 +195,7 @@ export default function Landing() {
       <Hero />
 
       {/* MARQUEE ---------------------------------------------------------- */}
-      <section aria-hidden="true" className="relative z-10 border-y border-[var(--color-border)] bg-black py-5 sm:py-7">
+      <section aria-hidden="true" className="relative border-y border-[var(--color-border)] bg-black py-5 sm:py-7">
         <Marquee duration={26}>
           {marqueeWords.map((word) => (
             <span key={word} className="u-display flex items-center text-3xl uppercase text-white sm:text-5xl">
@@ -207,7 +207,7 @@ export default function Landing() {
       </section>
 
       {/* SERVICES --------------------------------------------------------- */}
-      <section id="leistungen" className="section-invert relative z-10 px-6 py-28 sm:px-10 sm:py-40">
+      <section id="leistungen" className="section-invert relative px-6 py-28 sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
           <Kicker index="01">Leistungen</Kicker>
           <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
@@ -240,7 +240,7 @@ export default function Landing() {
       </section>
 
       {/* SELECTED WORK ----------------------------------------------------- */}
-      <section id="arbeiten" className="relative z-10 bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
+      <section id="arbeiten" className="relative bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
@@ -304,7 +304,7 @@ export default function Landing() {
       </section>
 
       {/* MANIFESTO ---------------------------------------------------------- */}
-      <section id="manifest" className="section-invert relative z-10 px-6 py-32 sm:px-10 sm:py-48">
+      <section id="manifest" className="section-invert relative px-6 py-32 sm:px-10 sm:py-48">
         <div className="mx-auto max-w-5xl">
           <Kicker index="03">Haltung</Kicker>
           <ScrubText
@@ -315,7 +315,7 @@ export default function Landing() {
       </section>
 
       {/* PROCESS ------------------------------------------------------------ */}
-      <section id="prozess" className="relative z-10 bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
+      <section id="prozess" className="relative bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
           <Kicker index="04">Prozess</Kicker>
           <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">

@@ -234,6 +234,16 @@
   opacity: 0.4;
 }
 
+/* Foreground layer: cards, media, buttons and the hero copy sit on top of
+ * the paper texture, so the grain stays on the backgrounds and these read
+ * as objects placed on the page. Only works when no ancestor forms its own
+ * stacking context (z-index, transform, opacity < 1, isolation) — put it on
+ * the outermost animated wrapper, e.g. <FadeIn lift>. */
+.u-lift {
+  position: relative;
+  z-index: 91;
+}
+
 /* Respect reduced motion globally. Heavy WebGL/GSAP animations are
  * paused programmatically in their components; this catches everything
  * driven by CSS transitions and Framer-Motion's reduced-motion checks. */

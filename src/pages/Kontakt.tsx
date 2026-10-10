@@ -186,7 +186,7 @@ export default function Kontakt() {
         </FadeIn>
 
         {/* Form ------------------------------------------------------------ */}
-        <FadeIn delay={0.1} className="order-1 lg:order-2">
+        <FadeIn lift delay={0.1} className="order-1 lg:order-2">
           {status === "success" ? (
             <div className="flex h-full min-h-72 flex-col items-start justify-center rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-10">
               <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--color-foreground)] text-[var(--color-background)]">

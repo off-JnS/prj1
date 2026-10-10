@@ -98,7 +98,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
           <Link
             to="/preise"
-            className="group mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-border)] px-6 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
+            className="u-lift group mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-border)] px-6 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
           >
             Paket {project.plan} ansehen
             <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -107,7 +107,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       </div>
 
       {testimonial && (
-        <div className="mt-12 lg:ml-auto lg:max-w-xl">
+        <div className="u-lift mt-12 lg:ml-auto lg:max-w-xl">
           {testimonial.kind === "video" ? (
             <TestimonialVideo
               src={testimonial.src}

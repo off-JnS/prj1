@@ -119,7 +119,7 @@ export default function Datenschutz() {
             <button
               type="button"
               onClick={revoke}
-              className="inline-flex min-h-11 items-center rounded-full border border-[var(--color-border)] px-6 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
+              className="u-lift inline-flex min-h-11 items-center rounded-full border border-[var(--color-border)] px-6 text-sm font-medium text-[var(--color-foreground)] transition-colors hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
             >
               Cookie-Einstellungen zurücksetzen
             </button>
