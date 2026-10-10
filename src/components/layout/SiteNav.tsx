@@ -311,7 +311,7 @@ export default function SiteNav() {
                 </a>
                 <span>Hamburg, DE</span>
               </div>
-              <div className="mt-3 flex gap-5 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
                 {LEGAL_LINKS.map((l) => (
                   <Link key={l.href} to={l.href} className="transition-colors hover:text-white">
                     {l.label}

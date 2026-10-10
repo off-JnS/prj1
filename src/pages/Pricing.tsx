@@ -61,6 +61,16 @@ export default function Pricing() {
       {/* Website builds ------------------------------------------------------ */}
       <section className="mx-auto mt-20 max-w-7xl sm:mt-28" aria-label="Website-Pakete">
         <BuildCards plans={buildPlans} />
+        <p className="mt-8 text-sm text-[var(--color-muted-foreground)]">
+          Alle Preise sind Endpreise. Es gelten unsere{" "}
+          <Link
+            to="/vertragsbedingungen"
+            className="underline underline-offset-2 hover:text-[var(--color-foreground)]"
+          >
+            Vertragsbedingungen
+          </Link>
+          .
+        </p>
       </section>
 
       {/* Maintenance retainers ----------------------------------------------- */}

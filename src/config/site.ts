@@ -38,4 +38,5 @@ export const NAV_LINKS = [
 export const LEGAL_LINKS = [
   { label: "Impressum", href: "/impressum" },
   { label: "Datenschutz", href: "/datenschutz" },
+  { label: "Vertragsbedingungen", href: "/vertragsbedingungen" },
 ] as const;

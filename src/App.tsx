@@ -17,6 +17,7 @@ const Studio = lazy(() => import("@/pages/Studio"));
 const Kontakt = lazy(() => import("@/pages/Kontakt"));
 const Impressum = lazy(() => import("@/pages/Impressum"));
 const Datenschutz = lazy(() => import("@/pages/Datenschutz"));
+const Vertragsbedingungen = lazy(() => import("@/pages/Vertragsbedingungen"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 function ScrollToTop() {
@@ -88,6 +89,8 @@ export default function App() {
                     <Route path="/kontakt" element={<Kontakt />} />
                     <Route path="/impressum" element={<Impressum />} />
                     <Route path="/datenschutz" element={<Datenschutz />} />
+                    <Route path="/vertragsbedingungen" element={<Vertragsbedingungen />} />
+                    <Route path="/agb" element={<Navigate to="/vertragsbedingungen" replace />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>
