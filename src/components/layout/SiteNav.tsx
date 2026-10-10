@@ -124,24 +124,18 @@ export default function SiteNav() {
         transition={reduceMotion ? { duration: 0 } : { duration: 0.45, ease: EASE }}
       >
         {!open && (
-          <>
-            {/* A shade off the page tone (8% toward the ink) so the bar reads
-                as its own band, under the grain like everything else. */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 -z-10 bg-[color-mix(in_oklab,var(--color-background)_92%,var(--color-foreground))] transition-colors duration-500"
-            />
-            {/* Masthead double rule: thick over thin, as under a newspaper
-                nameplate. */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-[6px] border-b border-t-2 border-b-[color-mix(in_oklab,currentColor_45%,transparent)] border-t-[color-mix(in_oklab,currentColor_85%,transparent)]"
-            />
-          </>
+          /* Its own band — a shade off the page tone, toward the ink — closed
+             by a 1px hairline like the site's other rules (marquee band,
+             lists, cards), inked a touch darker so it holds against the
+             band. Under the grain like everything else. */
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 border-b border-[color-mix(in_oklab,currentColor_30%,transparent)] bg-[color-mix(in_oklab,var(--color-background)_88%,var(--color-foreground))] transition-colors duration-500"
+          />
         )}
         <nav
           aria-label="Hauptnavigation"
-          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 pb-[calc(0.75rem+6px)] pt-3 sm:px-10 sm:pb-[calc(1rem+6px)] sm:pt-4"
+          className="pointer-events-auto mx-auto flex max-w-[120rem] items-center justify-between px-6 py-3 sm:px-10 sm:py-4"
         >
           <Link
             to="/"
