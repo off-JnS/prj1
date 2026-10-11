@@ -24,18 +24,36 @@
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.getElementById("main-nav");
   if (toggle && nav) {
+    var navHeader = document.querySelector(".site-header");
+    // Coordinates footer for the Kontrollturm menu (hidden on desktop via CSS)
+    nav.insertAdjacentHTML(
+      "beforeend",
+      '<div class="main-nav__meta">' +
+        "53,5405° N · 9,9847° O — Speicherstadt<br>" +
+        'Kontrollturm 24/7: <a href="tel:+494066969999">+49 40 66969 999</a>' +
+      "</div>"
+    );
+
+    var closeNav = function () {
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Menü öffnen");
+      document.body.style.overflow = "";
+      if (navHeader) navHeader.classList.remove("nav-open");
+    };
+
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
       document.body.style.overflow = open ? "hidden" : "";
+      if (navHeader) navHeader.classList.toggle("nav-open", open);
     });
     nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") {
-        nav.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-        document.body.style.overflow = "";
-      }
+      if (e.target.tagName === "A") closeNav();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) closeNav();
     });
   }
 

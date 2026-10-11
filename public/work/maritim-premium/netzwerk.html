@@ -29,6 +29,7 @@
   </script>
 
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/fx.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305090F'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23FF5A36' stroke-width='2'/%3E%3Cpath d='M16 6v20M6 16h20' stroke='%2345D6C4' stroke-width='1.4'/%3E%3C/svg%3E">
 
   <!-- PRJ1 concept notice: identical snippet on every demo page. Hide it for screenshots with [data-concept-banner]{display:none}. -->
@@ -105,7 +106,7 @@
     <section class="section">
       <div class="container">
         <div class="route-map reveal" role="img" aria-label="Stilisierte Weltkarte mit Nordmeridian-Kernrouten ab Hamburg">
-          <svg viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet">
+          <svg viewBox="0 0 1000 480" preserveAspectRatio="xMidYMid meet" data-fx-draw>
             <!-- dotted graticule background -->
             <defs>
               <pattern id="dots" width="26" height="26" patternUnits="userSpaceOnUse">
@@ -128,6 +129,18 @@
               <path d="M505 128 C 640 170, 720 240, 758 300" stroke-dasharray="4 5"/>
               <path d="M505 128 C 680 110, 790 160, 828 208" stroke-dasharray="4 5"/>
               <path d="M505 128 C 720 70, 850 110, 900 160" stroke-dasharray="4 5"/>
+            </g>
+
+            <!-- solid routes that draw themselves on reveal (js/fx.js) -->
+            <g fill="none" stroke="url(#routeGrad)" stroke-width="2" stroke-linecap="round">
+              <path d="M505 128 C 480 150, 455 158, 448 168" data-fx-draw-el/>
+              <path d="M505 128 C 380 90, 260 120, 205 190" data-fx-draw-el/>
+              <path d="M505 128 C 420 220, 350 320, 320 372" data-fx-draw-el/>
+              <path d="M505 128 C 520 250, 540 330, 545 392" data-fx-draw-el/>
+              <path d="M505 128 C 570 190, 610 220, 638 232" data-fx-draw-el/>
+              <path d="M505 128 C 640 170, 720 240, 758 300" data-fx-draw-el/>
+              <path d="M505 128 C 680 110, 790 160, 828 208" data-fx-draw-el/>
+              <path d="M505 128 C 720 70, 850 110, 900 160" data-fx-draw-el/>
             </g>
 
             <!-- port nodes -->
@@ -279,5 +292,6 @@
   </script>
 
   <script src="js/main.js" defer></script>
+  <script src="js/fx.js" defer></script>
 </body>
 </html>

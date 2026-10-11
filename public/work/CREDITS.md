@@ -40,3 +40,9 @@ Format: local path — title — source page — licence
 - maritim-premium/img/team-deniz-kaya.jpg — 2015_07_31_Mombasa_Port_JPEG_RESIZED_0034 — https://www.flickr.com/photos/132371669@N04/20316449746 — Public Domain Mark 1.0
 - maritim-premium/img/team-henrik-volquardsen.jpg — tamaroa bridge and ships wheel — https://www.flickr.com/photos/149802044@N06/34449975742 — CC0 1.0 (Public Domain Dedication)
 - maritim-premium/img/team-sina-petersen.jpg — Untitled — https://www.rawpixel.com/image/5962938/free-public-domain-cc0-photo — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-nordeuropa.jpg — Container ship OOCL Malaysia at Skandiahamnen 1 — https://commons.wikimedia.org/w/index.php?curid=68314712 — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-transatlantik.jpg — Free cargo ship ocean image — https://www.rawpixel.com/image/5923270/photo-image-public-domain-ocean-free — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-suedamerika.jpg — Ship Cargo — https://stocksnap.io/photo/ship-cargo-M3RGNMTIDG — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-afrika.jpg — Cape Town harbour — https://www.rawpixel.com/image/9863776/cape-town-harbour — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-nahost.jpg — Free container terminal Port Melbourne — https://www.rawpixel.com/image/4026120/container-terminal — CC0 1.0 (Public Domain Dedication)
+- maritim-premium/img/route-fernost.jpg — Container ships on Saigon River 3 — https://commons.wikimedia.org/w/index.php?curid=133286873 — CC0 1.0 (Public Domain Dedication)

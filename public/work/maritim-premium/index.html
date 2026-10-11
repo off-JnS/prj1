@@ -41,6 +41,7 @@
   </script>
 
   <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/fx.css">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2305090F'/%3E%3Ccircle cx='16' cy='16' r='10' fill='none' stroke='%23FF5A36' stroke-width='2'/%3E%3Cpath d='M16 6v20M6 16h20' stroke='%2345D6C4' stroke-width='1.4'/%3E%3C/svg%3E">
 
   <!-- PRJ1 concept notice: identical snippet on every demo page. Hide it for screenshots with [data-concept-banner]{display:none}. -->
@@ -71,8 +72,17 @@
     }
     @media print { .prj1-cb { display: none; } }
   </style>
+  <!-- Repeat visits in this session skip the loader (see css/fx.css) -->
+  <script>try{if(sessionStorage.getItem("fx-seen"))document.documentElement.classList.add("fx-skip-loader");sessionStorage.setItem("fx-seen","1")}catch(e){}</script>
 </head>
 <body>
+
+  <!-- Page loader: sonar ping, auto-dismisses (pure CSS) -->
+  <div class="page-loader" aria-hidden="true">
+    <div class="page-loader__ping"><span></span></div>
+    <p class="page-loader__word">NORD<em>MERIDIAN</em></p>
+    <p class="page-loader__coords">53,5405° N · 9,9847° O</p>
+  </div>
 
   <!-- Tier badge -->
   <div class="tier-badge" role="note" aria-label="Demo-Website, Paket: Premium, Priority Support und Launch">
@@ -109,12 +119,12 @@
     <!-- ===== Immersive hero with Three.js globe (Premium WebGL experience) ===== -->
     <section class="hero">
       <!-- WebGL canvas mounts here; CSS gradient serves as no-WebGL fallback -->
-      <div id="globe-canvas" class="hero__globe" aria-hidden="true"></div>
+      <div id="globe-canvas" class="hero__globe" aria-hidden="true" data-fx-cursor="Drehen"></div>
       <div class="hero__overlay" aria-hidden="true"></div>
 
-      <div class="container hero__content">
+      <div class="container hero__content" data-fx-hero>
         <p class="mono hero__coords reveal">53,5405° N · 9,9847° O — Hamburg, Speicherstadt</p>
-        <h1 class="reveal" data-reveal-delay="1">Von der Elbe<br>in die Welt.</h1>
+        <h1 class="reveal" data-reveal-delay="1" data-fx-delay="1.3">Von der Elbe<br>in die Welt.</h1>
         <p class="hero__sub reveal" data-reveal-delay="2">
           Nordmeridian steuert Ihre Fracht über 45 Länder – Seefracht, Luftfracht
           und Projektlogistik, überwacht von einem Kontrollturm, der niemals schläft.
@@ -129,7 +139,7 @@
     </section>
 
     <!-- ===== Metrics ===== -->
-    <section class="metrics" aria-label="Nordmeridian in Zahlen">
+    <section class="metrics fx-spot" aria-label="Nordmeridian in Zahlen">
       <div class="container metrics__grid">
         <div class="metrics__item reveal">
           <span class="metrics__num"><span data-count="982" data-decimal="true">0</span>&nbsp;%</span>
@@ -181,9 +191,82 @@
       </div>
     </section>
 
+
+    <!-- ===== Trade lanes: pinned horizontal showcase (js/fx.js · data-fx-hs) ===== -->
+    <section class="fx-hs" data-fx-hs aria-label="Fahrtgebiete">
+      <div class="fx-hs__sticky">
+        <div class="container fx-hs__head">
+          <div>
+            <p class="mono kicker">// Fahrtgebiete</p>
+            <h2>Sechs Routen. <em>Ein Kontrollturm.</em></h2>
+          </div>
+          <span class="fx-hs__count" data-fx-hs-count>01 / 06</span>
+        </div>
+        <div class="fx-hs__track">
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-nordeuropa.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 01 · Feeder</span>
+              <h3>Nordeuropa &amp; Ostsee</h3>
+              <p>Feederdienste ab Hamburg nach Skandinavien, ins Baltikum und nach Großbritannien – ideal für Just-in-time-Nachschub.</p>
+              <div class="fx-hs__stats"><span><b>1–4</b>Tage Transit</span><span><b>12×</b>pro Woche</span></div>
+            </div>
+          </article>
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-transatlantik.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 02 · Atlantik</span>
+              <h3>Transatlantik</h3>
+              <p>New York, Houston, Montreal: feste Stellplätze auf den großen Diensten, auch zur Peak Season.</p>
+              <div class="fx-hs__stats"><span><b>9–14</b>Tage Transit</span><span><b>6×</b>pro Woche</span></div>
+            </div>
+          </article>
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-suedamerika.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 03 · Südatlantik</span>
+              <h3>Südamerika Ostküste</h3>
+              <p>Santos, Buenos Aires, Montevideo – inklusive Kühlcontainer für Lebensmittel und Pharma.</p>
+              <div class="fx-hs__stats"><span><b>21–26</b>Tage Transit</span><span><b>3×</b>pro Woche</span></div>
+            </div>
+          </article>
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-afrika.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 04 · Kap</span>
+              <h3>Afrika</h3>
+              <p>Kapstadt, Durban, Lagos: Projektladung und Maschinen mit Partneragenten in jedem Hafen.</p>
+              <div class="fx-hs__stats"><span><b>18–28</b>Tage Transit</span><span><b>4×</b>pro Woche</span></div>
+            </div>
+          </article>
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-nahost.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 05 · Suez</span>
+              <h3>Nahost &amp; Indien</h3>
+              <p>Jebel Ali und Nhava Sheva über den Suezkanal – mit Umroutung ums Kap, wenn es nötig wird.</p>
+              <div class="fx-hs__stats"><span><b>18–22</b>Tage Transit</span><span><b>4×</b>pro Woche</span></div>
+            </div>
+          </article>
+          <article class="fx-hs__card">
+            <div class="fx-hs__media"><img src="img/route-fernost.jpg" alt="" width="800" height="500" loading="lazy"></div>
+            <div class="fx-hs__body">
+              <span class="fx-hs__code">Route 06 · Fernost</span>
+              <h3>Asien &amp; Pazifik</h3>
+              <p>Shanghai, Singapur, Tokio: unser stärkstes Fahrtgebiet, mit eigenem Büro-Partner in Shanghai.</p>
+              <div class="fx-hs__stats"><span><b>30–36</b>Tage Transit</span><span><b>5×</b>pro Woche</span></div>
+            </div>
+          </article>
+        </div>
+        <div class="container">
+          <div class="fx-hs__bar"><span class="fx-hs__fill"></span></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== Ports marquee ===== -->
     <section class="marquee" aria-hidden="true">
-      <div class="marquee__track">
+      <div class="marquee__track" data-fx-marquee="55">
         <span>Hamburg</span><span>·</span><span>Rotterdam</span><span>·</span><span>New York</span><span>·</span><span>Santos</span><span>·</span><span>Kapstadt</span><span>·</span><span>Dubai</span><span>·</span><span>Singapur</span><span>·</span><span>Shanghai</span><span>·</span><span>Tokio</span><span>·</span>
         <span>Hamburg</span><span>·</span><span>Rotterdam</span><span>·</span><span>New York</span><span>·</span><span>Santos</span><span>·</span><span>Kapstadt</span><span>·</span><span>Dubai</span><span>·</span><span>Singapur</span><span>·</span><span>Shanghai</span><span>·</span><span>Tokio</span><span>·</span>
       </div>
@@ -201,6 +284,88 @@
           eine Nummer und einen Menschen, der sie kennt.
         </p>
         <p class="statement__sign mono">— Henrik Volquardsen, Gründer &amp; Geschäftsführer</p>
+      </div>
+    </section>
+
+
+    <!-- ===== One shipment, scroll-driven (js/fx.js · data-fx-story) ===== -->
+    <section class="section fx-story voyage" data-fx-story aria-label="Eine Sendung von Hamburg nach Shanghai">
+      <div class="container">
+        <div class="fx-story__intro">
+          <p class="mono kicker">// Eine Sendung</p>
+          <h2>Hamburg – Shanghai.<br><em>34 Tage, fünf Stationen.</em></h2>
+        </div>
+        <div class="fx-story__grid">
+          <div class="fx-story__visual" aria-hidden="true">
+            <div class="fx-story__bar"><span>Sendung NM-2026-4471</span><b>ETA ±0 h</b></div>
+            <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <pattern id="voyage-dots" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <circle cx="1.2" cy="1.2" r="1.2" fill="rgba(140,160,175,0.18)"/>
+                </pattern>
+                <linearGradient id="voyage-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#45D6C4"/>
+                  <stop offset="1" stop-color="#FF5A36"/>
+                </linearGradient>
+                <radialGradient id="voyage-glow">
+                  <stop offset="0" stop-color="#FF5A36" stop-opacity="0.55"/>
+                  <stop offset="1" stop-color="#FF5A36" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="600" height="360" fill="url(#voyage-dots)"/>
+              <g class="voyage__grid">
+                <path d="M0 90H600M0 180H600M0 270H600M150 0V360M300 0V360M450 0V360"/>
+              </g>
+              <path class="voyage__ghost" d="M110 44 L88 53 L65 63 Q32 78 28 101 L46 139 Q90 150 131 144 L202 164 L203 172 L247 265 Q270 276 295 268 L396 296 Q450 318 495 326 Q524 304 528 268 L567 165"/>
+              <path class="voyage__route" data-fx-story-path d="M110 44 L88 53 L65 63 Q32 78 28 101 L46 139 Q90 150 131 144 L202 164 L203 172 L247 265 Q270 276 295 268 L396 296 Q450 318 495 326 Q524 304 528 268 L567 165"/>
+              <g class="voyage__ports">
+                <g data-on="1"><circle cx="110" cy="44" r="5"/><text x="120" y="38">HAMBURG</text></g>
+                <g data-on="2"><circle cx="88" cy="53" r="4"/><text x="34" y="30">ROTTERDAM</text></g>
+                <g data-on="3"><circle cx="202" cy="166" r="4"/><text x="212" y="160">SUEZ</text></g>
+                <g data-on="4"><circle cx="495" cy="326" r="4"/><text x="430" y="350">SINGAPUR</text></g>
+                <g data-on="5"><circle cx="567" cy="165" r="5"/><text x="500" y="152">SHANGHAI</text></g>
+              </g>
+              <g data-fx-story-marker transform="translate(110 44)">
+                <circle r="22" fill="url(#voyage-glow)"/>
+                <circle class="voyage__ship" r="6"/>
+              </g>
+            </svg>
+            <div>
+              <div class="fx-story__meter"><span></span></div>
+              <div class="fx-story__foot">
+                <span class="fx-story__big" data-fx-story-readout="day">Tag 00</span>
+                <span class="fx-story__small" data-fx-story-readout="status">Abholung Hamburg</span>
+              </div>
+            </div>
+          </div>
+          <ol class="fx-story__steps">
+            <li class="fx-story__step" data-day="Tag 00" data-status="Abholung · Zoll frei">
+              <span class="fx-story__code">01 · Hamburg</span>
+              <h3>Abholung und Exportzoll.</h3>
+              <p>Unser Lkw holt den Container im Werk ab, die Ausfuhranmeldung läuft parallel. Bevor er am Terminal Burchardkai steht, ist er zollrechtlich frei.</p>
+            </li>
+            <li class="fx-story__step" data-day="Tag 02" data-status="Verladen · Mainliner">
+              <span class="fx-story__code">02 · Nordsee</span>
+              <h3>An Bord, mit festem Stellplatz.</h3>
+              <p>Dank Kontingent bei der Reederei ist der Platz gebucht, auch wenn der Markt eng wird. Sie bekommen die Bill of Lading am selben Tag.</p>
+            </li>
+            <li class="fx-story__step" data-day="Tag 14" data-status="Transit · Suezkanal">
+              <span class="fx-story__code">03 · Suezkanal</span>
+              <h3>Der Kontrollturm sieht mit.</h3>
+              <p>Wartezeiten am Kanal, Wetter im Roten Meer: Weicht die ETA um mehr als sechs Stunden ab, erfahren Sie es von uns – nicht von Ihrem Kunden.</p>
+            </li>
+            <li class="fx-story__step" data-day="Tag 24" data-status="Umschlag · Singapur">
+              <span class="fx-story__code">04 · Singapur</span>
+              <h3>Umschlag ohne Funkstille.</h3>
+              <p>Beim Transshipment auf den Feeder nach Shanghai prüft unser Partneragent jeden Container einzeln. Status-Update im Portal, in Echtzeit.</p>
+            </li>
+            <li class="fx-story__step" data-day="Tag 34" data-status="Zugestellt · POD im Portal">
+              <span class="fx-story__code">05 · Shanghai</span>
+              <h3>Zugestellt. Dokumentiert.</h3>
+              <p>Importzoll, Lkw bis zur Rampe, unterschriebener Liefernachweis als PDF. Eine Sendung, ein Ansprechpartner, 34 Tage.</p>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -230,7 +395,7 @@
     </section>
 
     <!-- ===== CTA ===== -->
-    <section class="cta-band">
+    <section class="cta-band fx-spot">
       <div class="container cta-band__inner reveal">
         <div>
           <p class="mono kicker">// Nächster Schritt</p>
@@ -296,6 +461,7 @@
   </script>
 
   <script src="js/main.js" defer></script>
+  <script src="js/fx.js" defer></script>
   <!-- Three.js globe: ES module, loaded only on this page -->
   <script type="module" src="js/hero-globe.js"></script>
 </body>

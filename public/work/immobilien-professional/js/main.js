@@ -23,18 +23,36 @@
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.getElementById("main-nav");
   if (toggle && nav) {
+    var navHeader = document.querySelector(".site-header");
+    // Office card at the foot of the mobile Exposé menu (hidden on desktop via CSS)
+    nav.insertAdjacentHTML(
+      "beforeend",
+      '<div class="main-nav__meta">' +
+        "Am Sandtorkai 42 · HafenCity<br>" +
+        '<a href="tel:+494066969456">040 66969 456</a> · Mo–Fr 9–18 Uhr' +
+      "</div>"
+    );
+
+    var closeNav = function () {
+      nav.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Menü öffnen");
+      document.body.style.overflow = "";
+      if (navHeader) navHeader.classList.remove("nav-open");
+    };
+
     toggle.addEventListener("click", function () {
       var open = nav.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
       document.body.style.overflow = open ? "hidden" : "";
+      if (navHeader) navHeader.classList.toggle("nav-open", open);
     });
     nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") {
-        nav.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-        document.body.style.overflow = "";
-      }
+      if (e.target.tagName === "A") closeNav();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) closeNav();
     });
   }
 

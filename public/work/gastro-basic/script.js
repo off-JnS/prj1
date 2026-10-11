@@ -6,23 +6,29 @@
 (function () {
   "use strict";
 
-  /* ---------- Mobile navigation ---------- */
+  /* ---------- Mobile navigation ----------
+     Starter keeps it simple: a plain dropdown under the header. */
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.getElementById("main-nav");
 
   if (toggle && nav) {
-    toggle.addEventListener("click", function () {
-      var open = nav.classList.toggle("is-open");
+    var setNav = function (open) {
+      nav.classList.toggle("is-open", open);
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Menü schließen" : "Menü öffnen");
+    };
+
+    toggle.addEventListener("click", function () {
+      setNav(!nav.classList.contains("is-open"));
     });
 
     // Close the menu after a link is tapped (one-pager anchors)
     nav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") {
-        nav.classList.remove("is-open");
-        toggle.setAttribute("aria-expanded", "false");
-      }
+      if (e.target.tagName === "A") setNav(false);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && nav.classList.contains("is-open")) setNav(false);
     });
   }
 

@@ -8,6 +8,10 @@
    - Rendering pauses when the tab is hidden or the hero leaves the viewport.
    - prefers-reduced-motion renders a single static frame.
    - If WebGL is unavailable, the CSS gradient fallback stays visible.
+
+   Interaction: drag (mouse or finger, horizontally) spins the globe with
+   inertia; scrolling out of the hero pulls the camera back and tips the
+   globe. A soft additive halo gives the sphere an atmosphere.
    ========================================================================== */
 
 // three.js r160 (MIT), vendored locally — no CDN request. See js/vendor/three.LICENSE.
@@ -138,6 +142,26 @@ function init(container) {
     pulses.push({ mesh: pulse, curve, offset: i / PORTS.length, speed: 0.09 + (i % 3) * 0.025 });
   });
 
+  /* ---------- Atmosphere: additive halo sprite behind the sphere ---------- */
+  const haloCanvas = document.createElement("canvas");
+  haloCanvas.width = haloCanvas.height = 256;
+  const hctx = haloCanvas.getContext("2d");
+  const haloGrad = hctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  haloGrad.addColorStop(0, "rgba(69, 214, 196, 0)");
+  haloGrad.addColorStop(0.6, "rgba(69, 214, 196, 0.02)");
+  haloGrad.addColorStop(0.66, "rgba(69, 214, 196, 0.32)");
+  haloGrad.addColorStop(0.78, "rgba(69, 214, 196, 0.08)");
+  haloGrad.addColorStop(1, "rgba(69, 214, 196, 0)");
+  hctx.fillStyle = haloGrad;
+  hctx.fillRect(0, 0, 256, 256);
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: new THREE.CanvasTexture(haloCanvas),
+    blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
+  }));
+  halo.scale.set(RADIUS * 3.25, RADIUS * 3.25, 1);
+  halo.position.copy(globe.position);
+  scene.add(halo);
+
   /* ---------- Background starfield ---------- */
   const STAR_COUNT = 420;
   const starPositions = new Float32Array(STAR_COUNT * 3);
@@ -163,6 +187,28 @@ function init(container) {
     }, { passive: true });
   }
 
+  /* ---------- Interaction: drag to spin, with inertia ---------- */
+  let spin = 0, spinVelocity = 0, dragging = false, lastX = 0;
+  const hero = container.closest(".hero");
+  if (hero && !prefersReducedMotion) {
+    hero.addEventListener("pointerdown", (e) => {
+      if (e.target.closest("a, button")) return;
+      dragging = true;
+      lastX = e.clientX;
+      hero.classList.add("is-dragging");
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      lastX = e.clientX;
+      spinVelocity = dx * 0.0045;
+      spin += spinVelocity;
+    }, { passive: true });
+    const endDrag = () => { dragging = false; hero.classList.remove("is-dragging"); };
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
+  }
+
   /* ---------- Resize ---------- */
   window.addEventListener("resize", () => {
     const w = container.clientWidth, h = container.clientHeight;
@@ -176,11 +222,22 @@ function init(container) {
   let pageVisible = !document.hidden;
   let rafId = null;
   const clock = new THREE.Clock();
+  let t = 0;
 
   const render = () => {
-    const t = clock.getElapsedTime();
+    const dt = Math.min(clock.getDelta(), 0.05);
+    t += dt;
 
-    globe.rotation.y = t * 0.06;                       // slow drift
+    // Slow drift plus whatever spin the last drag left behind
+    if (!dragging) {
+      spin += dt * 0.06 + spinVelocity;
+      spinVelocity *= 0.95;
+    }
+    globe.rotation.y = spin;
+
+    // Scrolling out of the hero pulls the camera back and tips the globe
+    const scrollP = Math.min(1, window.scrollY / window.innerHeight);
+    globe.rotation.x = scrollP * 0.35;
     hubRing.scale.setScalar(1 + Math.sin(t * 2.4) * 0.25);
     hubRing.material.opacity = 0.5 + Math.sin(t * 2.4) * 0.3;
 
@@ -192,6 +249,7 @@ function init(container) {
     // Parallax easing toward pointer target
     camera.position.x += (1.4 + targetX - camera.position.x) * 0.04;
     camera.position.y += (0.4 - targetY - camera.position.y) * 0.04;
+    camera.position.z = 6.4 + scrollP * 1.8;
     camera.lookAt(1.0, 0, 0);
 
     renderer.render(scene, camera);
@@ -205,7 +263,7 @@ function init(container) {
   const updateRunning = () => {
     const shouldRun = heroVisible && pageVisible && !prefersReducedMotion;
     if (shouldRun && rafId === null) {
-      clock.start();
+      clock.getDelta(); // drop the paused interval
       rafId = requestAnimationFrame(loop);
     } else if (!shouldRun && rafId !== null) {
       cancelAnimationFrame(rafId);
