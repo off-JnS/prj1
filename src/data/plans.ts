@@ -75,7 +75,7 @@ export const buildPlans: BuildPlan[] = [
       "2 Korrekturschleifen",
     ],
     buttonText: "Mit Starter loslegen",
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/6oU6oHcYY8FmdGpeb93Ru07",
   },
   {
     name: "Professional",
@@ -92,7 +92,7 @@ export const buildPlans: BuildPlan[] = [
     ],
     buttonText: "Professional wählen",
     isPopular: true,
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/4gM7sL9MMaNuaudeb93Ru08",
   },
   {
     name: "Premium",
@@ -107,7 +107,7 @@ export const buildPlans: BuildPlan[] = [
       "Priority-Support und begleiteter Launch",
     ],
     buttonText: "Premium anfragen",
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/aFa4gzbUUdZG6dXc313Ru09",
   },
 ];
 
@@ -121,7 +121,7 @@ export const carePlans: CarePlan[] = [
     price: 59,
     features: ["Hosting", "Domain-Verwaltung", "Uptime-Überwachung"],
     discounts: [100, 50, 25],
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/9B65kD4ssbRyeKtffd3Ru0k",
   },
   {
     name: "Standard",
@@ -129,7 +129,7 @@ export const carePlans: CarePlan[] = [
     features: ["Alles aus Basic", "Monatlicher Bericht per E-Mail", "Kleine inhaltliche Änderungen"],
     discounts: [100, 100, 50],
     isPopular: true,
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/5kQ14n6AA4p66dX8QP3Ru0l",
   },
   {
     name: "Premium",
@@ -140,9 +140,36 @@ export const carePlans: CarePlan[] = [
       "Laufende Google-Optimierung",
     ],
     discounts: [100, 100, 100],
-    paymentLink: "",
+    paymentLink: "https://buy.stripe.com/9B6bJ1aQQg7OeKt4Az3Ru0m",
   },
 ];
+
+/**
+ * Stripe Payment Links for the combination offer, by maintenance plan, then
+ * website package. Each charges the discounted build price (see
+ * `offerPrice`) plus the first month of maintenance in one payment.
+ */
+export const KOMBI_LINKS: Record<CarePlan["name"], Record<BuildPlan["name"], string>> = {
+  Basic: {
+    Starter: "https://buy.stripe.com/eVq4gz1ggbRy6dX8QP3Ru0b", // 0 € + 59 €/Mon.
+    Professional: "https://buy.stripe.com/14AcN59MM3l2eKtffd3Ru0c", // 750 € + 59 €/Mon.
+    Premium: "https://buy.stripe.com/00wdR9cYY2gY9q99UT3Ru0d", // 2.000 € + 59 €/Mon.
+  },
+  Standard: {
+    Starter: "https://buy.stripe.com/cNiaEX7EEf3KeKt0kj3Ru0e", // 0 € + 99 €/Mon.
+    Professional: "https://buy.stripe.com/eVqcN53oo8Fm1XH6IH3Ru0f", // 0 € + 99 €/Mon.
+    Premium: "https://buy.stripe.com/14A14n3oo2gYfOxeb93Ru0g", // 1.250 € + 99 €/Mon.
+  },
+  Premium: {
+    Starter: "https://buy.stripe.com/5kQ5kD8II08QdGp8QP3Ru0h", // 0 € + 149 €/Mon.
+    Professional: "https://buy.stripe.com/bJe5kDaQQ7BifOxffd3Ru0i", // 0 € + 149 €/Mon.
+    Premium: "https://buy.stripe.com/aFa14ncYYcVC45P0kj3Ru0j", // 0 € + 149 €/Mon.
+  },
+};
+
+/** Legal pricing note shown under every price list on /preise. */
+export const PRICE_NOTICE =
+  "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Alle Preise sind Endpreise. Unsere Angebote richten sich ausschließlich an Unternehmer (§ 14 BGB).";
 
 export const pricingFaq = [
   {

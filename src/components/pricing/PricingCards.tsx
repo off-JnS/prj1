@@ -1,7 +1,11 @@
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/ui/Reveal";
-import { eur, planHref, type BuildPlan, type CarePlan } from "@/data/plans";
+import { eur, planHref, PRICE_NOTICE, type BuildPlan, type CarePlan } from "@/data/plans";
+
+/** Stripe links open in a new tab; the mailto fallback stays in place. */
+const linkTarget = (plan: BuildPlan | CarePlan) =>
+  plan.paymentLink ? { target: "_blank", rel: "noopener" } : {};
 
 function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
   const popular = Boolean(plan.isPopular);
@@ -49,6 +53,7 @@ function BuildCard({ plan, index }: { plan: BuildPlan; index: number }) {
 
         <a
           href={planHref(plan)}
+          {...linkTarget(plan)}
           className={cn(
             "mt-10 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-sm font-semibold transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]",
             popular
@@ -96,6 +101,7 @@ function CareCard({ plan, index }: { plan: CarePlan; index: number }) {
 
         <a
           href={planHref(plan)}
+          {...linkTarget(plan)}
           className="mt-8 inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-foreground)]/40 px-6 text-sm font-semibold text-[var(--color-foreground)] transition-colors hover:border-[var(--color-foreground)]"
         >
           {plan.name} buchen
@@ -113,8 +119,8 @@ export function BuildCards({ plans }: { plans: BuildPlan[] }) {
           <BuildCard key={plan.name} plan={plan} index={i} />
         ))}
       </div>
-      <p className="mt-10 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-muted-foreground)]">
-        Alle Preise zzgl. USt. · Festpreis, keine versteckten Kosten
+      <p className="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-[var(--color-muted-foreground)]">
+        {PRICE_NOTICE}
       </p>
     </div>
   );

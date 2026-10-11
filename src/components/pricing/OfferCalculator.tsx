@@ -1,25 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   buildPlans,
   carePlans,
   formatEur,
+  KOMBI_LINKS,
   offerPrice,
+  PRICE_NOTICE,
   MIN_TERM_MONTHS,
   ROUND_STEP,
 } from "@/data/plans";
 
-export const OFFER_FOOTNOTE = `Rabatt gilt bei ${MIN_TERM_MONTHS} Monaten Mindestlaufzeit des Wartungsvertrags. Danach monatlich kündbar. Endpreise auf volle ${ROUND_STEP} € abgerundet – zu deinen Gunsten. Alle Preise zzgl. USt.`;
+export const OFFER_FOOTNOTE = `Rabatt gilt bei ${MIN_TERM_MONTHS} Monaten Mindestlaufzeit des Wartungsvertrags. Danach monatlich kündbar. Endpreise auf volle ${ROUND_STEP} € abgerundet – zu deinen Gunsten. ${PRICE_NOTICE}`;
 
 /**
  * Combination-offer calculator: pick a maintenance package, see what each
  * website build costs with it. Mirrors the pricing model in the sales
  * handbook — same discounts, same round-down-to-250 rule, same wording.
  *
- * Every result row is a link into the contact form with the combination
- * pre-selected, so the whole row is the tap target on touch devices.
+ * Every result row is the Stripe Payment Link for that combination (opens
+ * in a new tab), so the whole row is the tap target on touch devices.
  */
 export default function OfferCalculator() {
   const [careIndex, setCareIndex] = useState(0);
@@ -73,10 +74,12 @@ export default function OfferCalculator() {
       {/* Results ---------------------------------------------------------- */}
       <div aria-live="polite" className="mt-7 border-t border-[var(--color-border)] sm:mt-8">
         {rows.map(({ plan, off, now, free }) => (
-          <Link
+          <a
             key={plan.name}
-            to={`/kontakt?paket=${encodeURIComponent(plan.name)}&wartung=${encodeURIComponent(care.name)}`}
-            aria-label={`${plan.name} mit Wartung ${care.name} anfragen — ${free ? "geschenkt" : formatEur(now)}`}
+            href={KOMBI_LINKS[care.name][plan.name]}
+            target="_blank"
+            rel="noopener"
+            aria-label={`${plan.name} mit Wartung ${care.name} buchen — ${free ? "geschenkt" : formatEur(now)} (öffnet Stripe in neuem Tab)`}
             className="group -mx-2 flex flex-col gap-1.5 rounded-xl border-b border-[var(--color-border)] px-2 py-4 transition-colors last:border-b-0 active:bg-[var(--color-foreground)]/[0.06] sm:mx-0 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:rounded-none sm:px-0 sm:py-5"
           >
             {/* Line 1 on mobile: name + discount badge */}
@@ -111,7 +114,7 @@ export default function OfferCalculator() {
                 className="hidden h-5 w-5 flex-none text-[var(--color-muted-foreground)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--color-foreground)] sm:block"
               />
             </div>
-          </Link>
+          </a>
         ))}
       </div>
 

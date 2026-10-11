@@ -126,7 +126,27 @@ export default function Datenschutz() {
           </p>
         </Section>
 
-        <Section title="6. Deine Rechte">
+        <Section title="6. Zahlungsabwicklung über Stripe">
+          <p>
+            Buchst du ein Paket über einen Zahlungslink, erfolgt die Zahlung über die Stripe Payments Europe
+            Ltd., 1 Grand Canal Street Lower, Dublin 2, Irland. Dabei verarbeitet Stripe Name, Firma, E-Mail,
+            Telefon, Rechnungsadresse und Zahlungsdaten zur Durchführung der Zahlung (Art. 6 Abs. 1 lit. b
+            DSGVO) sowie zur Betrugsprävention (Art. 6 Abs. 1 lit. f DSGVO). Eine Übermittlung an die Stripe,
+            Inc. in den USA ist möglich; Stripe ist unter dem EU-US Data Privacy Framework zertifiziert.
+            Rechnungsdaten bewahren wir gemäß § 147 AO bis zu 8 Jahre auf. Mehr:{" "}
+            <a
+              className="underline underline-offset-2 hover:text-[var(--color-foreground)]"
+              href="https://stripe.com/de/privacy"
+              target="_blank"
+              rel="noopener"
+            >
+              stripe.com/de/privacy
+            </a>
+            .
+          </p>
+        </Section>
+
+        <Section title="7. Deine Rechte">
           <p>
             Du hast gegenüber uns folgende Rechte hinsichtlich der dich
             betreffenden personenbezogenen Daten: Recht auf Auskunft (Art. 15
@@ -141,7 +161,7 @@ export default function Datenschutz() {
           </p>
         </Section>
 
-        <Section title="7. SSL-Verschlüsselung">
+        <Section title="8. SSL-Verschlüsselung">
           <p>
             Diese Seite nutzt aus Sicherheitsgründen eine SSL- bzw.
             TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennst du an
@@ -149,9 +169,9 @@ export default function Datenschutz() {
           </p>
         </Section>
 
-        <Section title="8. Aktualität">
+        <Section title="9. Aktualität">
           <p>
-            Diese Datenschutzerklärung ist aktuell gültig (Stand: Juni 2026).
+            Diese Datenschutzerklärung ist aktuell gültig (Stand: Oktober 2026).
             Durch die Weiterentwicklung der Website oder geänderte gesetzliche
             Vorgaben kann eine Anpassung erforderlich werden.
           </p>

@@ -6,7 +6,7 @@ import { buildPlans, MIN_TERM_MONTHS, ROUND_STEP } from "@/data/plans";
 import Seo from "@/lib/seo";
 
 /** Date of the current version — bump whenever the terms change. */
-const STAND = "Oktober 2026";
+const STAND = "Oktober 2026 (Version 2)";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -35,7 +35,7 @@ export default function Vertragsbedingungen() {
     <main className="mx-auto w-full max-w-4xl px-6 pb-32 pt-36 sm:pt-44">
       <Seo
         title="Vertragsbedingungen — PRJ1"
-        description="Allgemeine Vertragsbedingungen von PRJ1 für Webdesign-Projekte und Wartungsverträge, inklusive Widerrufsbelehrung für Verbraucher."
+        description="Allgemeine Vertragsbedingungen von PRJ1 für Webdesign-Projekte und Wartungsverträge mit Unternehmern."
         path="/vertragsbedingungen"
       />
 
@@ -56,8 +56,9 @@ export default function Vertragsbedingungen() {
               („Website-Projekt“) sowie über Hosting, Wartung und Betreuung („Wartungsvertrag“).
             </li>
             <li>
-              Sie gelten gegenüber Verbrauchern (§ 13 BGB) und Unternehmern (§ 14 BGB). Wo eine Regelung nur
-              für eine der beiden Gruppen gilt, ist das ausdrücklich gesagt.
+              Unsere Angebote richten sich ausschließlich an Unternehmer im Sinne des § 14 BGB. Mit der
+              Buchung bestätigt der Kunde, in Ausübung seiner gewerblichen oder selbständigen beruflichen
+              Tätigkeit zu handeln. Verträge mit Verbrauchern (§ 13 BGB) schließen wir nicht.
             </li>
             <li>
               Abweichende Bedingungen des Kunden gelten nur, wenn wir ihnen ausdrücklich in Textform
@@ -155,10 +156,6 @@ export default function Vertragsbedingungen() {
               Unwesentliche Mängel berechtigen nicht zur Verweigerung der Abnahme. Mit dem Launch auf Wunsch des
               Kunden gilt die Website als abgenommen.
             </li>
-            <li>
-              Ist der Kunde Verbraucher, gilt die Website nach Ablauf der Frist nur dann als abgenommen, wenn wir
-              ihn bei Bereitstellung in Textform auf diese Folge hingewiesen haben (§ 640 Abs. 2 BGB).
-            </li>
           </Ol>
         </Section>
 
@@ -166,12 +163,14 @@ export default function Vertragsbedingungen() {
           <Ol>
             <li>
               Website-Projekte werden zum Festpreis des gebuchten Pakets abgerechnet, Wartungsverträge
-              monatlich. Alle Preise auf dieser Website sind Endpreise in Euro.
+              monatlich. Alle Preise auf dieser Website sind Endpreise in Euro. Gemäß § 19 UStG wird keine
+              Umsatzsteuer berechnet.
             </li>
             <li>
-              Wird ein Paket über einen Zahlungslink gebucht, ist der Preis mit der Buchung fällig. Sonst gelten
-              die Zahlungsbedingungen des Angebots; ohne abweichende Vereinbarung sind 50 % bei Auftrag und
-              50 % bei Abnahme fällig. Rechnungen sind innerhalb von 14 Tagen ohne Abzug zu zahlen.
+              Wird ein Paket über einen Zahlungslink gebucht, ist der volle Preis mit der Buchung fällig und
+              wird über Stripe eingezogen. Bei individuellen Angeboten gelten die dort genannten
+              Zahlungsbedingungen; ohne abweichende Vereinbarung sind 50 % bei Auftrag und 50 % bei Abnahme
+              fällig.
             </li>
             <li>
               Wartungsentgelte sind monatlich im Voraus fällig. Zusatzleistungen nach § 4 Abs. 3 rechnen wir
@@ -241,9 +240,8 @@ export default function Vertragsbedingungen() {
 
         <Section title="§ 10 Gewährleistung">
           <p>
-            Es gelten die gesetzlichen Mängelrechte. Mängel beheben wir zunächst durch Nacherfüllung. Ist der
-            Kunde Unternehmer, verjähren Mängelansprüche in einem Jahr ab Abnahme; das gilt nicht für Ansprüche
-            nach § 11 Abs. 1.
+            Es gelten die gesetzlichen Mängelrechte. Mängel beheben wir zunächst durch Nacherfüllung.
+            Mängelansprüche verjähren in einem Jahr ab Abnahme; das gilt nicht für Ansprüche nach § 11 Abs. 1.
           </p>
         </Section>
 
@@ -280,100 +278,14 @@ export default function Vertragsbedingungen() {
           </p>
         </Section>
 
-        <Section title="§ 13 Widerrufsrecht für Verbraucher">
-          <p>
-            Verbrauchern steht bei Verträgen, die ausschließlich über Fernkommunikationsmittel (z. B. E-Mail,
-            Telefon oder diese Website) geschlossen werden, ein Widerrufsrecht nach Maßgabe der folgenden
-            Belehrung zu.
-          </p>
-
-          <div className="space-y-4 rounded-xl border border-[var(--color-border)] p-6 sm:p-8">
-            <h3 className="text-lg font-semibold tracking-tight text-[var(--color-foreground)]">
-              Widerrufsbelehrung
-            </h3>
-            <h4 className="font-semibold text-[var(--color-foreground)]">Widerrufsrecht</h4>
-            <p>
-              Sie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen.
-            </p>
-            <p>Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.</p>
-            <p>
-              Um Ihr Widerrufsrecht auszuüben, müssen Sie uns ({address}, E-Mail:{" "}
-              <a className={linkClass} href={`mailto:${SITE.email}`}>
-                {SITE.email}
-              </a>
-              ) mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder E-Mail) über
-              Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Sie können dafür das beigefügte
-              Muster-Widerrufsformular verwenden, das jedoch nicht vorgeschrieben ist.
-            </p>
-            <p>
-              Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung über die Ausübung des
-              Widerrufsrechts vor Ablauf der Widerrufsfrist absenden.
-            </p>
-            <h4 className="font-semibold text-[var(--color-foreground)]">Folgen des Widerrufs</h4>
-            <p>
-              Wenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten
-              haben, unverzüglich und spätestens binnen vierzehn Tagen ab dem Tag zurückzuzahlen, an dem die
-              Mitteilung über Ihren Widerruf dieses Vertrags bei uns eingegangen ist. Für diese Rückzahlung
-              verwenden wir dasselbe Zahlungsmittel, das Sie bei der ursprünglichen Transaktion eingesetzt
-              haben, es sei denn, mit Ihnen wurde ausdrücklich etwas anderes vereinbart; in keinem Fall werden
-              Ihnen wegen dieser Rückzahlung Entgelte berechnet.
-            </p>
-            <p>
-              Haben Sie verlangt, dass die Dienstleistungen während der Widerrufsfrist beginnen sollen, so haben
-              Sie uns einen angemessenen Betrag zu zahlen, der dem Anteil der bis zu dem Zeitpunkt, zu dem Sie
-              uns von der Ausübung des Widerrufsrechts hinsichtlich dieses Vertrags unterrichten, bereits
-              erbrachten Dienstleistungen im Vergleich zum Gesamtumfang der im Vertrag vorgesehenen
-              Dienstleistungen entspricht.
-            </p>
-            <h4 className="font-semibold text-[var(--color-foreground)]">Ende der Widerrufsbelehrung</h4>
-          </div>
-
-          <p>
-            Hinweis: Das Widerrufsrecht erlischt vorzeitig, wenn wir die Dienstleistung vollständig erbracht
-            haben und mit der Ausführung erst begonnen haben, nachdem Sie ausdrücklich zugestimmt und bestätigt
-            haben, dass Sie Ihr Widerrufsrecht bei vollständiger Vertragserfüllung verlieren (§ 356 Abs. 4 BGB).
-          </p>
-
-          <div className="space-y-4 rounded-xl border border-[var(--color-border)] p-6 sm:p-8">
-            <h3 className="text-lg font-semibold tracking-tight text-[var(--color-foreground)]">
-              Muster-Widerrufsformular
-            </h3>
-            <p>
-              (Wenn Sie den Vertrag widerrufen wollen, dann füllen Sie bitte dieses Formular aus und senden Sie
-              es zurück.)
-            </p>
-            <ul className="space-y-2">
-              <li>
-                – An {address}, E-Mail: {SITE.email}:
-              </li>
-              <li>
-                – Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über die
-                Erbringung der folgenden Dienstleistung (*)
-              </li>
-              <li>– Bestellt am (*)</li>
-              <li>– Name des/der Verbraucher(s)</li>
-              <li>– Anschrift des/der Verbraucher(s)</li>
-              <li>– Unterschrift des/der Verbraucher(s) (nur bei Mitteilung auf Papier)</li>
-              <li>– Datum</li>
-            </ul>
-            <p>(*) Unzutreffendes streichen.</p>
-          </div>
-        </Section>
-
-        <Section title="§ 14 Schlussbestimmungen">
+        <Section title="§ 13 Schlussbestimmungen">
           <Ol>
             <li>
-              Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts. Bei Verbrauchern gilt diese Rechtswahl
-              nur, soweit ihnen dadurch nicht der Schutz zwingender Vorschriften des Staates ihres gewöhnlichen
-              Aufenthalts entzogen wird.
+              Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts.
             </li>
             <li>
               Ist der Kunde Kaufmann, juristische Person des öffentlichen Rechts oder öffentlich-rechtliches
               Sondervermögen, ist Gerichtsstand {SITE.address.city}.
-            </li>
-            <li>
-              Wir nehmen nicht an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil und
-              sind dazu auch nicht verpflichtet.
             </li>
             <li>
               Sind einzelne Bestimmungen unwirksam, bleibt der Vertrag im Übrigen wirksam. An die Stelle der
