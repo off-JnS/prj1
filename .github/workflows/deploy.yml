@@ -33,6 +33,7 @@ jobs:
       #   FTP_USERNAME — the FTP account user
       #   FTP_PASSWORD — the FTP account password
       - name: Deploy via FTP
+        if: ${{ secrets.FTP_SERVER != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
