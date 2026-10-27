@@ -199,7 +199,7 @@ export default function SiteNav() {
                           aria-current={active ? "page" : undefined}
                           className="group flex min-h-14 items-center gap-4 py-3"
                         >
-                          <span className="font-mono text-[11px] tracking-[0.3em] text-white/65">
+                          <span className="font-mono text-xs tracking-[0.3em] text-white/75">
                             ({String(i + 1).padStart(2, "0")})
                           </span>
                           <span
@@ -231,13 +231,13 @@ export default function SiteNav() {
               >
                 Projekt starten
               </Link>
-              <div className="mt-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
+              <div className="mt-6 flex items-center justify-between font-mono text-xs uppercase tracking-[0.2em] text-white/70">
                 <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-white">
                   {SITE.email}
                 </a>
                 <span>Hamburg, DE</span>
               </div>
-              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 font-mono text-xs uppercase tracking-[0.2em] text-white/70">
                 {LEGAL_LINKS.map((l) => (
                   <Link key={l.href} to={l.href} className="transition-colors hover:text-white">
                     {l.label}

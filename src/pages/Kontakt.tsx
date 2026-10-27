@@ -16,7 +16,7 @@ const budgets = [
 ];
 
 const inputClass =
-  "w-full border-b border-[var(--color-input)] bg-transparent py-3 text-base text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)]/50 transition-colors duration-300 focus:border-[var(--color-foreground)] focus:outline-none";
+  "w-full border-b border-[var(--color-input)] bg-transparent py-3 text-base text-[var(--color-foreground)] placeholder:text-[var(--color-muted-foreground)]/80 transition-colors duration-300 focus:border-[var(--color-foreground)] focus:outline-none";
 
 function Field({
   label,
@@ -177,7 +177,7 @@ export default function Kontakt() {
         </FadeIn>
 
         {/* Form ------------------------------------------------------------ */}
-        <FadeIn lift delay={0.1} className="order-1 lg:order-2">
+        <FadeIn delay={0.1} className="order-1 lg:order-2">
           {status === "success" ? (
             <div className="flex h-full min-h-72 flex-col items-start justify-center rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)] p-10">
               <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--color-foreground)] text-[var(--color-background)]">

@@ -9,8 +9,10 @@ import Preloader from "@/components/layout/Preloader";
 import ConsentBanner from "@/components/layout/ConsentBanner";
 import SmoothScroll from "@/lib/smooth-scroll";
 import { IntroProvider } from "@/lib/intro";
+// The start page ships in the entry bundle: it is where most visits land,
+// and a lazy chunk would add a network round trip before the first paint.
+import Landing from "@/pages/Landing";
 
-const Landing = lazy(() => import("@/pages/Landing"));
 const Portfolio = lazy(() => import("@/pages/Portfolio"));
 const Pricing = lazy(() => import("@/pages/Pricing"));
 const Studio = lazy(() => import("@/pages/Studio"));
@@ -70,13 +72,13 @@ export default function App() {
             <a href="#main" className="skip-link">
               Zum Inhalt springen
             </a>
-            <div className="relative min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
+            <div className="u-paper min-h-screen bg-[var(--color-background)] text-[var(--color-foreground)]">
               <ScrollToTop />
               <SiteNav />
               <Suspense
                 fallback={
                   <div className="grid min-h-[100svh] place-items-center bg-black">
-                    <span className="u-kicker animate-pulse text-white/60">PRJ1</span>
+                    <span className="u-kicker animate-pulse text-white/70">PRJ1</span>
                   </div>
                 }
               >
@@ -101,7 +103,6 @@ export default function App() {
                     shoved down when the lazy page arrives (CLS ≈ 1.0 before). */}
                 <Footer />
               </Suspense>
-              <div className="paper-texture" aria-hidden="true" />
             </div>
             <ConsentBanner />
           </ClickSpark>

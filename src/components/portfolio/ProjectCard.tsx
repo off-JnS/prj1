@@ -43,12 +43,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
           href={project.url}
           target="_blank"
           rel="noreferrer noopener"
-          className="group relative z-[91] block"
+          className="group relative block"
           initial={{ opacity: 0, y: 56 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-12% 0px" }}
           transition={{ duration: 0.8, ease: EASE }}
-          aria-label={`${project.name} ansehen (öffnet in neuem Tab)`}
+          aria-label={`Website ansehen: ${project.name} (öffnet in neuem Tab)`}
         >
           <figure className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-card)]">
             {/* Browser chrome: makes it obvious this is a website. */}
@@ -59,11 +59,16 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             </div>
             <div className="aspect-[16/10] overflow-hidden">
               <img
-                src={project.image}
+                src={project.image.replace(/\.jpg$/, ".webp")}
+                srcSet={`${project.image.replace(/\.jpg$/, "-720.webp")} 720w, ${project.image.replace(/\.jpg$/, ".webp")} 1440w`}
+                sizes="(min-width: 1024px) 58vw, 100vw"
                 alt={project.imageAlt}
                 width={1440}
                 height={900}
-                loading="lazy"
+                // The first preview is the portfolio page's largest paint.
+                loading={index === 0 ? "eager" : "lazy"}
+                // React 18 passes the lowercase attribute through untouched.
+                {...{ fetchpriority: index === 0 ? "high" : "auto" }}
                 decoding="async"
                 className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.02]"
               />
@@ -98,7 +103,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
           <Link
             to="/preise"
-            className="u-lift group mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-border)] px-6 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
+            className="group mt-8 inline-flex min-h-11 items-center gap-2 rounded-full border border-[var(--color-border)] px-6 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
           >
             Paket {project.plan} ansehen
             <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -107,7 +112,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
       </div>
 
       {testimonial && (
-        <div className="u-lift mt-12 lg:ml-auto lg:max-w-xl">
+        <div className="mt-12 lg:ml-auto lg:max-w-xl">
           {testimonial.kind === "video" ? (
             <TestimonialVideo
               src={testimonial.src}

@@ -26,7 +26,7 @@ export default function NotFound() {
           </p>
           <Link
             to="/"
-            className="u-lift group mt-10 inline-flex min-h-12 items-center gap-2 rounded-full border border-[var(--color-border)] px-8 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
+            className="group mt-10 inline-flex min-h-12 items-center gap-2 rounded-full border border-[var(--color-border)] px-8 text-sm font-medium transition-colors duration-300 hover:bg-[var(--color-foreground)] hover:text-[var(--color-background)]"
           >
             Zurück zur Startseite
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

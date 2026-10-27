@@ -134,9 +134,9 @@
   /* Technical label: mono, uppercase, generously tracked. */
   .u-kicker {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     text-transform: uppercase;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.24em;
     color: var(--color-muted-foreground);
   }
 
@@ -219,29 +219,39 @@
   color: var(--color-foreground);
 }
 
-/* Newsprint texture — fibres, grain and uneven ink density. It is laid over
- * the whole document (not the viewport), so it scrolls with the content like
- * the paper it is printed on. Static and normal-blended: the tiles carry
- * both light and dark specks, so the same layer reads on black and on paper
- * without a full-screen mix-blend-mode. */
-.paper-texture {
-  position: absolute;
-  inset: 0;
-  z-index: 90;
+/* Newsprint texture — fibres, grain and uneven ink density. It lives in
+ * the background layer only: `.u-paper` paints it between a section's own
+ * background colour and its content, so text, cards and media always sit
+ * cleanly on top. The tiles carry both light and dark specks, so the same
+ * layer reads on black and on paper without mix-blend-mode. `.paper-grain`
+ * is the bare layer, for backdrops like the hero canvas that need the grain
+ * above them but below the copy. */
+.paper-grain,
+.u-paper::before,
+.section-invert::before {
   pointer-events: none;
   background-image: url("./assets/paper-grain.svg"), url("./assets/paper-mottle.svg");
   background-size: 300px 300px, 900px 900px;
+  opacity: 0.3;
+}
+
+/* Paper sections carry the stronger, printed look. */
+.section-invert::before {
   opacity: 0.4;
 }
 
-/* Foreground layer: cards, media, buttons and the hero copy sit on top of
- * the paper texture, so the grain stays on the backgrounds and these read
- * as objects placed on the page. Only works when no ancestor forms its own
- * stacking context (z-index, transform, opacity < 1, isolation) — put it on
- * the outermost animated wrapper, e.g. <FadeIn lift>. */
-.u-lift {
+.u-paper,
+.section-invert {
   position: relative;
-  z-index: 91;
+  isolation: isolate;
+}
+
+.u-paper::before,
+.section-invert::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
 }
 
 /* Respect reduced motion globally. Heavy WebGL/GSAP animations are

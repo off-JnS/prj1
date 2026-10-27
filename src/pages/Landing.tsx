@@ -85,6 +85,7 @@ function Hero() {
       className="relative flex min-h-[100svh] w-full items-center justify-center overflow-hidden bg-black px-6 pb-24 pt-28"
     >
       <HeroCanvas />
+      <div aria-hidden="true" className="paper-grain absolute inset-0" />
       {/* Scrim: keeps white copy legible where the light threads cross it. */}
       <div
         aria-hidden="true"
@@ -95,7 +96,7 @@ function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-black"
       />
 
-      <m.div style={parallax} className="u-lift mx-auto w-full max-w-6xl text-center text-white">
+      <m.div style={parallax} className="relative mx-auto w-full max-w-6xl text-center text-white">
         <m.p variants={heroFade} initial="hidden" animate={state} custom={0.05} className="u-kicker u-legible justify-center text-[0.8125rem] tracking-[0.22em] text-white/85">
           PRJ1 — Webdesign Studio, Hamburg
         </m.p>
@@ -195,7 +196,7 @@ export default function Landing() {
       <Hero />
 
       {/* MARQUEE ---------------------------------------------------------- */}
-      <section aria-hidden="true" className="relative border-y border-[var(--color-border)] bg-black py-5 sm:py-7">
+      <section aria-hidden="true" className="u-paper border-y border-[var(--color-border)] bg-black py-5 sm:py-7">
         <Marquee duration={26}>
           {marqueeWords.map((word) => (
             <span key={word} className="u-display flex items-center text-3xl uppercase text-white sm:text-5xl">
@@ -225,7 +226,7 @@ export default function Landing() {
                     ({s.n})
                   </span>
                   <h3 className="u-display text-2xl sm:text-4xl">{s.title}</h3>
-                  <p className="max-w-md text-sm leading-relaxed text-[var(--color-muted-foreground)] transition-colors duration-300 sm:text-base sm:group-hover:text-white/70">
+                  <p className="max-w-md text-base leading-relaxed text-[var(--color-muted-foreground)] transition-colors duration-300 sm:group-hover:text-white/70">
                     {s.body}
                   </p>
                   <ArrowUpRight
@@ -240,7 +241,7 @@ export default function Landing() {
       </section>
 
       {/* SELECTED WORK ----------------------------------------------------- */}
-      <section id="arbeiten" className="relative bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
+      <section id="arbeiten" className="u-paper bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
             <div>
@@ -252,7 +253,7 @@ export default function Landing() {
                 </Reveal>
               </h2>
               <FadeIn delay={0.15}>
-                <p className="mt-6 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
+                <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75">
                   Drei komplette Websites für fiktive Hamburger Marken — so sieht
                   Starter, Professional und Premium in echt aus.
                 </p>
@@ -278,15 +279,15 @@ export default function Landing() {
                   rel="noreferrer noopener"
                   className="group grid grid-cols-[1.75rem_1fr_1.25rem] items-center gap-3 border-t border-white/15 py-10 last:border-b sm:grid-cols-[6rem_1fr_1fr_3rem] sm:gap-8 sm:py-14"
                 >
-                  <span className="font-mono text-xs tracking-[0.3em] text-white/60">
+                  <span className="font-mono text-xs tracking-[0.3em] text-white/70">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <div className="sm:contents">
                     <h3 className="u-display text-[clamp(1.8rem,5vw,4rem)] transition-transform duration-500 ease-out group-hover:translate-x-3">
                       {p.name}
                     </h3>
-                    <p className="mt-2 max-w-md text-sm leading-relaxed text-white/65 sm:mt-0 sm:text-base">
-                      <span className="block font-mono text-[11px] uppercase tracking-[0.25em] text-white/80">
+                    <p className="mt-2 max-w-md text-base leading-relaxed text-white/75 sm:mt-0">
+                      <span className="block font-mono text-xs uppercase tracking-[0.25em] text-white/80">
                         Paket {p.plan}
                       </span>
                       <span className="mt-1 block">{p.sector}</span>
@@ -315,7 +316,7 @@ export default function Landing() {
       </section>
 
       {/* PROCESS ------------------------------------------------------------ */}
-      <section id="prozess" className="relative bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
+      <section id="prozess" className="u-paper bg-black px-6 py-28 text-white sm:px-10 sm:py-40">
         <div className="mx-auto max-w-7xl">
           <Kicker index="04">Prozess</Kicker>
           <h2 className="u-display mt-6 text-[clamp(2.4rem,6.5vw,5.5rem)]">
@@ -328,9 +329,9 @@ export default function Landing() {
             {processSteps.map((step, i) => (
               <FadeIn key={step.n} delay={i * 0.08} y={36}>
                 <div className="border-t-2 border-white pt-6">
-                  <span className="font-mono text-xs tracking-[0.3em] text-white/60">({step.n})</span>
+                  <span className="font-mono text-xs tracking-[0.3em] text-white/70">({step.n})</span>
                   <h3 className="u-display mt-4 text-2xl">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/60">{step.body}</p>
+                  <p className="mt-3 text-base leading-relaxed text-white/75">{step.body}</p>
                 </div>
               </FadeIn>
             ))}

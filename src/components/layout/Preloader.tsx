@@ -26,9 +26,9 @@ export default function Preloader() {
       setProgress(Math.round(value));
       if (value >= 100) {
         window.clearInterval(id);
-        window.setTimeout(finish, 350);
+        window.setTimeout(finish, 200);
       }
-    }, 70);
+    }, 45);
 
     return () => window.clearInterval(id);
   }, [finish]);
@@ -56,10 +56,10 @@ export default function Preloader() {
           key="preloader"
           className="fixed inset-0 z-[100] flex flex-col justify-between bg-black px-6 py-6 text-white sm:px-10 sm:py-8"
           exit={{ y: "-100%" }}
-          transition={{ duration: 0.9, ease: EASE }}
+          transition={{ duration: 0.75, ease: EASE }}
           aria-hidden="true"
         >
-          <div className="u-kicker text-white/60">
+          <div className="u-kicker text-white/70">
             PRJ1 — Webdesign Studio, Hamburg
           </div>
 

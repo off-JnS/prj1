@@ -116,7 +116,7 @@ export default function Studio() {
                     ({p.n})
                   </span>
                   <h3 className="u-display text-2xl sm:text-4xl">{p.title}</h3>
-                  <p className="max-w-md text-sm leading-relaxed text-[var(--color-muted-foreground)] sm:text-base">
+                  <p className="max-w-md text-base leading-relaxed text-[var(--color-muted-foreground)]">
                     {p.body}
                   </p>
                 </div>
@@ -127,9 +127,9 @@ export default function Studio() {
       </section>
 
       {/* Founder ---------------------------------------------------------- */}
-      <section className="bg-black px-6 py-28 text-white sm:px-10 sm:py-40" aria-label="Gründer">
+      <section className="u-paper bg-black px-6 py-28 text-white sm:px-10 sm:py-40" aria-label="Gründer">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
-          <FadeIn lift>
+          <FadeIn>
             <div className="flex aspect-square w-full max-w-sm items-center justify-center rounded-3xl border border-white/15 bg-[var(--color-card)]">
               <span className="u-display text-[clamp(4rem,10vw,8rem)] text-white/90" aria-hidden="true">
                 JN
@@ -148,7 +148,7 @@ export default function Studio() {
                 aus {SITE.address.city}.
               </p>
             </FadeIn>
-            <FadeIn lift delay={0.25} className="mt-10 flex flex-wrap items-center gap-6">
+            <FadeIn delay={0.25} className="mt-10 flex flex-wrap items-center gap-6">
               <Link
                 to="/kontakt"
                 className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-white/30 px-6 text-sm font-medium transition-colors duration-300 hover:bg-white hover:text-black"
@@ -158,7 +158,7 @@ export default function Studio() {
               </Link>
               <a
                 href={`mailto:${SITE.email}`}
-                className="font-mono text-sm text-white/60 transition-colors hover:text-white"
+                className="font-mono text-sm text-white/70 transition-colors hover:text-white"
               >
                 {SITE.email}
               </a>

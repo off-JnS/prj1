@@ -30,7 +30,7 @@ export default function ConsentBanner() {
   return (
     <AnimatePresence>
       {visible && (
-        <m.aside
+        <m.div
           initial={{ y: 32, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 32, opacity: 0 }}
@@ -39,7 +39,7 @@ export default function ConsentBanner() {
           role="dialog"
           aria-label="Cookie-Einwilligung"
         >
-          <p className="u-kicker text-white/60">Cookies</p>
+          <p className="u-kicker text-white/70">Cookies</p>
           <p className="mt-3 text-sm leading-relaxed text-white/80">
             Wir möchten Google Analytics nutzen, um zu verstehen, wie diese Website
             verwendet wird. Erst nach deiner Zustimmung werden Cookies gesetzt.{" "}
@@ -63,7 +63,7 @@ export default function ConsentBanner() {
               Ablehnen
             </button>
           </div>
-        </m.aside>
+        </m.div>
       )}
     </AnimatePresence>
   );

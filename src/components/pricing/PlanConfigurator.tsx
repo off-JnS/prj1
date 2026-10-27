@@ -35,7 +35,7 @@ export default function PlanConfigurator() {
         <div
           role="radiogroup"
           aria-label="Wartungspaket"
-          className="u-lift mx-auto grid max-w-2xl grid-cols-4 gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] p-1 shadow-2xl md:shadow-none"
+          className="mx-auto grid max-w-2xl grid-cols-4 gap-1 rounded-full border border-[var(--color-border)] bg-[var(--color-card)] p-1 shadow-2xl md:shadow-none"
         >
           {options.map((option) => {
             const active = option === care;
@@ -70,7 +70,7 @@ export default function PlanConfigurator() {
       {/* Website cards ---------------------------------------------------- */}
       <div className="mt-8 grid grid-cols-1 items-stretch gap-4 md:mt-14 md:grid-cols-3 lg:gap-8">
         {buildPlans.map((plan, i) => (
-          <FadeIn key={plan.name} lift delay={i * 0.08} y={40} className="h-full">
+          <FadeIn key={plan.name} delay={i * 0.08} y={40} className="h-full">
             <PlanCard plan={plan} care={care} />
           </FadeIn>
         ))}
@@ -104,9 +104,9 @@ function PlanCard({ plan, care }: { plan: BuildPlan; care: CarePlan | null }) {
       )}
     >
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="u-display text-2xl md:text-3xl">{plan.name}</h3>
+        <h2 className="u-display text-2xl md:text-3xl">{plan.name}</h2>
         {popular && (
-          <span className="rounded-full border border-current/30 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.2em]">
+          <span className="rounded-full border border-current/30 px-2.5 py-1 font-mono text-xs uppercase tracking-[0.2em]">
             Beliebt
           </span>
         )}
@@ -179,7 +179,7 @@ const allCareFeatures = careFeatures[careFeatures.length - 1];
 /** What each maintenance plan covers, as a check matrix. */
 export function CareMatrix() {
   return (
-    <div className="u-lift overflow-x-auto rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)]">
+    <div className="overflow-x-auto rounded-3xl border border-[var(--color-border)] bg-[var(--color-card)]">
       <table className="w-full table-fixed text-left text-sm sm:text-base">
         <caption className="sr-only">Leistungen der Wartungspakete</caption>
         <thead>

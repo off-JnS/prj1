@@ -26,7 +26,7 @@ export default function Footer() {
   const time = useHamburgTime();
 
   return (
-    <footer className="relative overflow-hidden border-t border-[var(--color-border)] bg-black text-white">
+    <footer className="u-paper overflow-hidden border-t border-[var(--color-border)] bg-black text-white">
       {/* Sitewide CTA ---------------------------------------------------- */}
       <div className="mx-auto max-w-7xl px-6 pb-20 pt-24 sm:px-10 sm:pt-32">
         <Kicker>Nächster Schritt</Kicker>
@@ -36,7 +36,7 @@ export default function Footer() {
             das man <em className="u-serif not-italic">zeigen</em> will.
           </Reveal>
         </h2>
-        <FadeIn lift delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
+        <FadeIn delay={0.2} className="mt-10 flex flex-col items-start gap-5 sm:flex-row sm:items-center">
           <Magnetic>
             <LiquidButton asChild size="xl" className="border border-white/30 text-white">
               <Link to="/kontakt">Projekt starten</Link>
@@ -88,7 +88,7 @@ export default function Footer() {
                 {SITE.email}
               </a>
             </li>
-            <li className="py-1.5 text-white/65">
+            <li className="py-1.5 text-white/75">
               {SITE.address.zip} {SITE.address.city}
             </li>
           </ul>
@@ -104,7 +104,7 @@ export default function Footer() {
               </span>
               Verfügbar für Projekte
             </li>
-            <li className="py-1.5 font-mono tabular-nums text-white/65">
+            <li className="py-1.5 font-mono tabular-nums text-white/75">
               Hamburg, DE {time && `— ${time} Uhr`}
             </li>
           </ul>
@@ -119,7 +119,7 @@ export default function Footer() {
         PRJ1<sup className="align-super text-[0.35em]">®</sup>
       </div>
 
-      <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 border-t border-white/10 px-6 py-6 font-mono text-[11px] uppercase tracking-[0.2em] text-white/60 sm:flex-row sm:items-center sm:px-10">
+      <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-2 border-t border-white/10 px-6 py-6 font-mono text-xs uppercase tracking-[0.2em] text-white/70 sm:flex-row sm:items-center sm:px-10">
         <span>© {new Date().getFullYear()} {SITE.name} — Alle Rechte vorbehalten</span>
         <span>Schwarz. Weiß. Sonst nichts.</span>
       </div>

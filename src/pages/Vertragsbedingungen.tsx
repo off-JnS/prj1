@@ -14,7 +14,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       <h2 className="text-xl font-semibold tracking-tight text-[var(--color-foreground)] sm:text-2xl">
         {title}
       </h2>
-      <div className="mt-4 space-y-4 text-sm leading-7 text-[var(--color-muted-foreground)] sm:text-base">
+      <div className="mt-4 space-y-4 text-base leading-7 text-[var(--color-muted-foreground)]">
         {children}
       </div>
     </section>

@@ -57,20 +57,17 @@ export function FadeIn({
   delay = 0,
   y = 28,
   once = true,
-  lift = false,
   className,
 }: {
   children: ReactNode;
   delay?: number;
   y?: number;
   once?: boolean;
-  /** Raise the block above the paper texture (see `.u-lift`). */
-  lift?: boolean;
   className?: string;
 }) {
   return (
     <m.div
-      className={cn(lift && "u-lift", className)}
+      className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once, margin: "-12% 0px" }}
