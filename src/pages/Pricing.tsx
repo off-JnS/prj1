@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Plus } from "lucide-react";
-import { BuildCards, CareCards } from "@/components/pricing/PricingCards";
-import OfferCalculator from "@/components/pricing/OfferCalculator";
+import PlanConfigurator, { CareMatrix } from "@/components/pricing/PlanConfigurator";
 import { FadeIn, Kicker, Reveal } from "@/components/ui/Reveal";
-import { buildPlans, carePlans, pricingFaq, MIN_TERM_MONTHS } from "@/data/plans";
+import { buildPlans, carePlans, pricingFaq } from "@/data/plans";
 import { SITE } from "@/config/site";
 import Seo, { JsonLd } from "@/lib/seo";
 
@@ -50,67 +49,33 @@ export default function Pricing() {
           </Reveal>
         </h1>
         <FadeIn delay={0.25}>
-          <p className="mt-8 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
-            Einmal zahlen, launchen, fertig — alles handgemacht, keine Templates.
-            Um den Betrieb kümmert sich danach ein Wartungspaket. Beides zusammen
-            gebucht, wird die Website deutlich günstiger — oft kostenlos.
+          <p className="mt-8 max-w-2xl text-lg leading-relaxed text-[var(--color-muted-foreground)] sm:text-xl">
+            Website einmal kaufen. Mit Wartung wird sie günstiger — oft gratis.
           </p>
         </FadeIn>
       </header>
 
-      {/* Website builds ------------------------------------------------------ */}
-      <section className="mx-auto mt-20 max-w-7xl sm:mt-28" aria-label="Website-Pakete">
-        <BuildCards plans={buildPlans} />
-        <p className="mt-8 text-sm text-[var(--color-muted-foreground)]">
-          Es gelten unsere{" "}
-          <Link
-            to="/vertragsbedingungen"
-            className="underline underline-offset-2 hover:text-[var(--color-foreground)]"
-          >
-            Vertragsbedingungen
-          </Link>
-          .
-        </p>
+      {/* Pricing ----------------------------------------------------------- */}
+      <section className="mx-auto mt-16 max-w-7xl sm:mt-24" aria-label="Preise">
+        <PlanConfigurator />
       </section>
 
-      {/* Maintenance retainers ----------------------------------------------- */}
-      <section className="mx-auto mt-28 max-w-7xl sm:mt-40" aria-label="Wartung und Betrieb">
-        <Kicker>Wartung & Betrieb</Kicker>
+      {/* Maintenance coverage ------------------------------------------------ */}
+      <section className="mx-auto mt-28 max-w-5xl sm:mt-40" aria-label="Wartung im Vergleich">
+        <Kicker>Wartung</Kicker>
         <h2 className="u-display mt-6 text-[clamp(2rem,5vw,3.8rem)]">
           <Reveal>
-            Wir halten sie <em className="u-serif not-italic">am Laufen.</em>
+            Was die Wartung <em className="u-serif not-italic">abdeckt.</em>
           </Reveal>
         </h2>
         <FadeIn delay={0.15}>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)]">
-            Hosting und Domain immer inklusive. In Kombination mit einer Website
-            gilt eine Mindestlaufzeit von {MIN_TERM_MONTHS} Monaten — danach
-            monatlich kündbar.
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--color-muted-foreground)]">
+            Nur zusammen mit einer Website buchbar.
           </p>
         </FadeIn>
-        <div className="mt-12">
-          <CareCards plans={carePlans} />
-        </div>
-      </section>
-
-      {/* Combination discount ------------------------------------------------ */}
-      <section className="mx-auto mt-28 max-w-7xl sm:mt-40" aria-label="Kombi-Rabatt">
-        <Kicker>Kombi-Rabatt</Kicker>
-        <h2 className="u-display mt-6 text-[clamp(2rem,5vw,3.8rem)]">
-          <Reveal>
-            Wartung dazu, Website <em className="u-serif not-italic">günstiger.</em>
-          </Reveal>
-        </h2>
-        <FadeIn delay={0.15}>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-muted-foreground)]">
-            Je größer das Wartungspaket, desto weniger kostet der Bau der Website —
-            in vielen Kombinationen gar nichts mehr.
-          </p>
+        <FadeIn delay={0.2} className="mt-12">
+          <CareMatrix />
         </FadeIn>
-
-        <div className="u-lift mt-12">
-          <OfferCalculator />
-        </div>
       </section>
 
       {/* FAQ ---------------------------------------------------------------- */}
@@ -126,14 +91,14 @@ export default function Pricing() {
           {pricingFaq.map((item, i) => (
             <FadeIn key={item.q} delay={i * 0.04}>
               <details className="group border-t border-[var(--color-border)] last:border-b">
-                <summary className="flex min-h-14 list-none items-center justify-between gap-6 py-5 text-base font-semibold tracking-tight transition-colors hover:text-[var(--color-muted-foreground)] sm:text-lg [&::-webkit-details-marker]:hidden">
+                <summary className="flex min-h-14 list-none items-center justify-between gap-6 py-5 text-lg font-semibold tracking-tight transition-colors hover:text-[var(--color-muted-foreground)] sm:text-xl [&::-webkit-details-marker]:hidden">
                   {item.q}
                   <Plus
                     aria-hidden="true"
                     className="h-5 w-5 flex-none transition-transform duration-300 group-open:rotate-45"
                   />
                 </summary>
-                <p className="max-w-2xl pb-6 text-sm leading-relaxed text-[var(--color-muted-foreground)] sm:text-base">
+                <p className="max-w-2xl pb-6 text-base leading-relaxed text-[var(--color-muted-foreground)] sm:text-lg">
                   {item.a}
                 </p>
               </details>

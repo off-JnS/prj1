@@ -6,6 +6,8 @@ export interface BuildPlan {
   price: number;
   features: string[];
   description: string;
+  /** Few-word summary for the pricing cards. */
+  tagline: string;
   buttonText: string;
   isPopular?: boolean;
   /**
@@ -26,7 +28,6 @@ export interface CarePlan {
    */
   discounts: [number, number, number];
   isPopular?: boolean;
-  paymentLink: string;
 }
 
 /** Offer prices are rounded down to this step — always in the client's favour. */
@@ -52,18 +53,28 @@ export function offerPrice(price: number, off: number): number {
   return Math.floor((price * (100 - off)) / 100 / ROUND_STEP) * ROUND_STEP;
 }
 
-/** Resolves a plan's checkout target: Stripe Payment Link or mailto fallback. */
-export function planHref(plan: BuildPlan | CarePlan): string {
-  return (
-    plan.paymentLink ||
-    `mailto:${SITE.email}?subject=${encodeURIComponent(`${plan.name}-Paket anfragen`)}`
-  );
+/** Website price after the combination discount (full price without care). */
+export function buildPriceWith(build: BuildPlan, care: CarePlan | null): number {
+  if (!care) return build.price;
+  return offerPrice(build.price, care.discounts[buildPlans.indexOf(build)]);
+}
+
+/**
+ * Checkout target for a selection. A website can be booked on its own; a
+ * maintenance plan only ever together with a website, via its combination
+ * link — there is deliberately no standalone maintenance checkout.
+ */
+export function checkoutHref(build: BuildPlan, care: CarePlan | null): string {
+  const link = care ? KOMBI_LINKS[care.name][build.name] : build.paymentLink;
+  const subject = care ? `${build.name} + Wartung ${care.name} anfragen` : `${build.name}-Paket anfragen`;
+  return link || `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}`;
 }
 
 /** Website builds — one-time, fixed price. */
 export const buildPlans: BuildPlan[] = [
   {
     name: "Starter",
+    tagline: "One-Pager",
     price: 1000,
     description: "Eine fokussierte One-Page-Website — der schnellste Weg zu einem starken Auftritt.",
     features: [
@@ -79,6 +90,7 @@ export const buildPlans: BuildPlan[] = [
   },
   {
     name: "Professional",
+    tagline: "Bis zu 5 Seiten mit Motion",
     price: 1750,
     description: "Mehrseitige Website mit eigener Motion — für Marken, die auffallen wollen.",
     features: [
@@ -96,6 +108,7 @@ export const buildPlans: BuildPlan[] = [
   },
   {
     name: "Premium",
+    tagline: "Alles individuell, inkl. 3D & Texte",
     price: 2750,
     description: "Das Flaggschiff: Art Direction, Motion und Technik ohne Kompromisse.",
     features: [
@@ -112,8 +125,8 @@ export const buildPlans: BuildPlan[] = [
 ];
 
 /**
- * Maintenance retainers — monthly. `discounts` drives the combination offer
- * shown by the calculator on /preise.
+ * Maintenance retainers — monthly, bookable only together with a website.
+ * `discounts` drives the combination offer on /preise.
  */
 export const carePlans: CarePlan[] = [
   {
@@ -121,7 +134,6 @@ export const carePlans: CarePlan[] = [
     price: 59,
     features: ["Hosting", "Domain-Verwaltung", "Uptime-Überwachung"],
     discounts: [100, 50, 25],
-    paymentLink: "https://buy.stripe.com/9B65kD4ssbRyeKtffd3Ru0k",
   },
   {
     name: "Standard",
@@ -129,7 +141,6 @@ export const carePlans: CarePlan[] = [
     features: ["Alles aus Basic", "Monatlicher Bericht per E-Mail", "Kleine inhaltliche Änderungen"],
     discounts: [100, 100, 50],
     isPopular: true,
-    paymentLink: "https://buy.stripe.com/5kQ14n6AA4p66dX8QP3Ru0l",
   },
   {
     name: "Premium",
@@ -140,7 +151,6 @@ export const carePlans: CarePlan[] = [
       "Laufende Google-Optimierung",
     ],
     discounts: [100, 100, 100],
-    paymentLink: "https://buy.stripe.com/9B6bJ1aQQg7OeKt4Az3Ru0m",
   },
 ];
 
@@ -185,12 +195,8 @@ export const pricingFaq = [
     a: `Wer ein Wartungspaket bucht, zahlt weniger für die Website — je nach Kombination bis zu 100 % weniger. Voraussetzung sind ${MIN_TERM_MONTHS} Monate Mindestlaufzeit des Wartungsvertrags, danach ist er monatlich kündbar. Endpreise runden wir auf volle ${ROUND_STEP} € ab, immer zu deinen Gunsten.`,
   },
   {
-    q: "Brauche ich ein Wartungspaket?",
-    a: "Keine Pflicht — ohne Wartungspaket übergeben wir dir die Website zum Selbst-Hosten, inklusive kurzer Einweisung. Dann gilt allerdings der volle Website-Preis, weil der Kombi-Rabatt am Wartungsvertrag hängt.",
-  },
-  {
-    q: "Was ist in der Wartung enthalten?",
-    a: `Basic deckt Hosting, Domain-Verwaltung und Uptime-Überwachung ab. Standard ergänzt einen monatlichen Bericht und kleine inhaltliche Änderungen, Premium zusätzlich die Pflege deines Google-Business-Profils und laufende Google-Optimierung. Alles darüber hinaus rechnen wir transparent nach Aufwand ab.`,
+    q: "Kann ich nur Wartung buchen?",
+    a: "Nein, nur zusammen mit einer Website von uns. Schon Kunde? Schreib uns.",
   },
   {
     q: "Wem gehört die Website?",
